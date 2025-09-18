@@ -1,0 +1,15 @@
+/build/
+
+/.idea/
+/*.iml
+
+/.classpath
+/.project
+/.settings/
+
+.DS_Store
+Thumbs.db
+
+docker-compose.yml
+
+application-*.yml

@@ -1,1 +1,1 @@
-# Splitty-Server
+# test-cicd-with-jenkins
