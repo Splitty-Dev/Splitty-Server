@@ -68,9 +68,10 @@ pipeline {
                         sh """
                             ssh -o StrictHostKeyChecking=no ubuntu@$EC2_IP '
                                 cd ~/ &&
-                                docker pull $DOCKER_USER/$DOCKER_IMAGE &&
                                 docker stop $DOCKER_CONTAINER || true &&
                                 docker rm $DOCKER_CONTAINER -f || true &&
+                                docker rmi $DOCKER_USER/$DOCKER_IMAGE || true &&
+                                docker pull $DOCKER_USER/$DOCKER_IMAGE &&
                                 docker-compose up -d &&
                                 docker image prune -f
                             '
