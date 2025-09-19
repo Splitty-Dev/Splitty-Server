@@ -13,4 +13,5 @@ Thumbs.db
 
 docker-compose.yml
 
-application-*.yml
+application-local.yml
+application-prod.yml
