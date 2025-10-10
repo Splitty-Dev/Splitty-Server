@@ -29,6 +29,7 @@ public class MemberController {
 
     private final GetMemberInfoUseCase getMemberInfoUseCase;
     private final GetWishListUsecase getWishListUsecase;
+    private final SetNeighborhoodUsecase setNeighborhoodUsecase;
     private final SaveWishListUsecase saveWishListUsecase;
 
     @Operation(summary = "회원 정보 조회")
@@ -71,5 +72,16 @@ public class MemberController {
     ) {
         saveWishListUsecase.execute(user.getEmail(), goodsId);
         return ResponseEntity.ok(ApiResponse.success());
+    }
+
+    @Operation(summary = "나의 지역 설정")
+    @PostMapping("/neighborhood")
+    public ResponseEntity<ApiResponse<MemberInfo>> setNeighborhood(
+            @RequestBody SetNeighborhood request,
+            @AuthenticationPrincipal CustomOAuth2User user) {
+
+        return ResponseEntity.ok(
+                ApiResponse.success(setNeighborhoodUsecase.execute(user.getId(), request))
+        );
     }
 }
