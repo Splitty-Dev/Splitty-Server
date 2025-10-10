@@ -4,6 +4,7 @@ package com.chaegangjo.member.domain;
 import com.chaegangjo.entity.BaseEntity;
 import com.chaegangjo.member.enums.Role;
 import com.chaegangjo.member.enums.SocialType;
+import com.chaegangjo.member.utils.RandomUsername;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -55,7 +56,7 @@ public class Member extends BaseEntity {
         this.socialType = socialType;
         this.rating = 0;
         this.role = role;
-        this.username = "";
+        this.username = RandomUsername.getRandomUsername();
     }
 
     public void setNeighName(String neighName) {
