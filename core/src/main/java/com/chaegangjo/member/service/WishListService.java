@@ -1,7 +1,5 @@
 package com.chaegangjo.member.service;
 
-
-import com.chaegangjo.exception.MemberErrorCode;
 import com.chaegangjo.exception.MemberException;
 import com.chaegangjo.goods.domain.Goods;
 import com.chaegangjo.member.domain.Member;
@@ -26,4 +24,9 @@ public class WishListService {
         return wishListRepository.findWishListsByCursor(cursorPage);
     }
 
+    @Transactional
+    public void saveWishList(Member member, Goods goods) {
+        if (wishListRepository.existsByMemberAndGoods(member, goods)) throw new MemberException(WISH_ALREADY_EXISTS);
+        wishListRepository.save(new WishList(member, goods));
+    }
 }

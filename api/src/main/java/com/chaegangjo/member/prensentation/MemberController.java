@@ -29,6 +29,7 @@ public class MemberController {
 
     private final GetMemberInfoUseCase getMemberInfoUseCase;
     private final GetWishListUsecase getWishListUsecase;
+    private final SaveWishListUsecase saveWishListUsecase;
 
     @Operation(summary = "회원 정보 조회")
 //    @PreAuthorize("#id == principal.id")
@@ -60,5 +61,15 @@ public class MemberController {
         return ResponseEntity.ok(
                 ApiResponse.success(getWishListUsecase.execute(user.getId(), request))
         );
+    }
+
+    @Operation(summary = "관심 상품 저장")
+    @PostMapping("/wishlist/{goodsId}")
+    public ResponseEntity<ApiResponse<Void>> saveWishlist(
+            @RequestParam Long goodsId,
+            @AuthenticationPrincipal CustomOAuth2User user
+    ) {
+        saveWishListUsecase.execute(user.getEmail(), goodsId);
+        return ResponseEntity.ok(ApiResponse.success());
     }
 }
