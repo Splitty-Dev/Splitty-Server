@@ -1,15 +1,15 @@
 package com.chaegangjo.goods.application;
 
 
+import com.chaegangjo.goods.dto.response.GoodsCursorPageInfo;
+import com.chaegangjo.goods.dto.response.GoodsCursorPageInfo.NextCursor;
 import com.chaegangjo.pagination.CursorPageInfo;
 import com.chaegangjo.goods.domain.Goods;
 import com.chaegangjo.goods.dto.response.GoodsInfo;
-import com.chaegangjo.goods.dto.response.GoodsNextCursor;
 import com.chaegangjo.goods.service.GoodsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -21,12 +21,12 @@ public class GetGoodsUsecase {
 
     private final GoodsService goodsService;
 
-    public CursorPageInfo execute(Long memberId, Long cursorId) {
+    public GoodsCursorPageInfo<List<GoodsInfo>> execute(Long memberId, Long cursorId) {
 
         List<Goods> goods = goodsService.getGoods(memberId, cursorId);
 
         if (goods.isEmpty()) {
-            return CursorPageInfo.builder()
+            return GoodsCursorPageInfo.<List<GoodsInfo>>builder()
                     .data(Collections.EMPTY_LIST)
                     .build();
         }
@@ -38,10 +38,10 @@ public class GetGoodsUsecase {
 
         boolean hasNext = goods.size() == GOODS_PAGE_SIZE;
 
-        return CursorPageInfo.builder()
+        return GoodsCursorPageInfo.<List<GoodsInfo>>builder()
                 .data(data)
                 .hasNext(hasNext)
-                .nextCursor(new GoodsNextCursor(last.getId()))
+                .nextCursor(new NextCursor(last.getId()))
                 .build();
     }
 }

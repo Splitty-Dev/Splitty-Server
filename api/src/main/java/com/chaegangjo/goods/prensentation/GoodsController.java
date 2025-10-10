@@ -2,6 +2,7 @@ package com.chaegangjo.goods.prensentation;
 
 
 import com.chaegangjo.dto.ApiResponse;
+import com.chaegangjo.goods.dto.response.GoodsCursorPageInfo;
 import com.chaegangjo.pagination.CursorPageInfo;
 import com.chaegangjo.goods.application.GetGoodsUsecase;
 import com.chaegangjo.goods.dto.response.GoodsInfo;
@@ -28,7 +29,7 @@ public class GoodsController {
 
     @Operation(summary = "전체 상품 조회")
     @GetMapping
-    public ResponseEntity<ApiResponse<CursorPageInfo<List<GoodsInfo>>>> getGoods(
+    public ResponseEntity<ApiResponse<GoodsCursorPageInfo<List<GoodsInfo>>>> getGoods(
             @RequestParam Long cursorId,
             @AuthenticationPrincipal CustomOAuth2User user
     ) {

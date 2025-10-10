@@ -14,12 +14,9 @@ public class CursorPageInfo<T> {
 
     T data;
     boolean hasNext = false;
-    Object NextCursor = null;
 
-    @Builder
-    public CursorPageInfo(T data, boolean hasNext, Object nextCursor) {
+    public CursorPageInfo(T data, boolean hasNext) {
         this.data = data;
         this.hasNext = hasNext;
-        NextCursor = nextCursor;
     }
 }

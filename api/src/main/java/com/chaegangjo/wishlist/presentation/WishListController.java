@@ -3,11 +3,13 @@ package com.chaegangjo.wishlist.presentation;
 import com.chaegangjo.dto.ApiResponse;
 import com.chaegangjo.goods.dto.response.GoodsInfo;
 import com.chaegangjo.member.appllication.GetWishListUsecase;
-import com.chaegangjo.member.dto.request.GetWishList;
+import com.chaegangjo.wishlist.dto.WishListCursorPage;
+import com.chaegangjo.wishlist.dto.request.GetWishList;
 import com.chaegangjo.pagination.CursorPageInfo;
 import com.chaegangjo.security.oauth2.entity.CustomOAuth2User;
 import com.chaegangjo.wishlist.application.DeleteWishListItemUsecase;
 import com.chaegangjo.wishlist.application.SaveWishListItemUsecase;
+import com.chaegangjo.wishlist.dto.response.WishListCursorPageInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +31,7 @@ public class WishListController {
 
     @Operation(summary = "나의 관심 상품 조회")
     @GetMapping
-    public ResponseEntity<ApiResponse<CursorPageInfo<List<GoodsInfo>>>> getWishlist(
+    public ResponseEntity<ApiResponse<WishListCursorPageInfo<List<GoodsInfo>>>> getWishlist(
             GetWishList request,
             @AuthenticationPrincipal CustomOAuth2User user
     ) {

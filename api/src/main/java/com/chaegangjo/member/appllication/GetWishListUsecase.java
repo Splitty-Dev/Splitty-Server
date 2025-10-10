@@ -4,14 +4,15 @@ package com.chaegangjo.member.appllication;
 import com.chaegangjo.goods.dto.response.GoodsInfo;
 import com.chaegangjo.wishlist.domain.WishList;
 import com.chaegangjo.wishlist.dto.WishListCursorPage;
-import com.chaegangjo.member.dto.request.GetWishList;
-import com.chaegangjo.member.dto.response.WishListNextCursor;
+import com.chaegangjo.wishlist.dto.request.GetWishList;
+import com.chaegangjo.wishlist.dto.response.WishListCursorPageInfo;
+import com.chaegangjo.wishlist.dto.response.WishListCursorPageInfo.NextCursor;
 import com.chaegangjo.wishlist.service.WishListService;
-import com.chaegangjo.pagination.CursorPageInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -20,7 +21,7 @@ public class GetWishListUsecase {
 
     private final WishListService wishListService;
 
-    public CursorPageInfo<List<GoodsInfo>> execute(Long memberId, GetWishList request) {
+    public WishListCursorPageInfo<List<GoodsInfo>> execute(Long memberId, GetWishList request) {
 
         WishListCursorPage cursorPage = new WishListCursorPage(request.cursorId(), request.cursorCreatedAt(), memberId);
         Slice<WishList> wishLists = wishListService.findWishListsByCursor(cursorPage);
@@ -28,7 +29,12 @@ public class GetWishListUsecase {
         List<WishList> content = wishLists.getContent();
 
 
-        if (!content.isEmpty()) {
+        if (content.isEmpty()) {
+            return WishListCursorPageInfo.<List<GoodsInfo>>builder()
+                    .data(Collections.EMPTY_LIST)
+                    .build();
+        }
+        else {
             WishList last = content.getLast();
 
             List<GoodsInfo> data = content.stream()
@@ -36,17 +42,11 @@ public class GetWishListUsecase {
                             GoodsInfo.from(wishList.getGoods()))
                     .toList();
 
-            return CursorPageInfo.<List<GoodsInfo>>builder()
+            return WishListCursorPageInfo.<List<GoodsInfo>>builder()
                     .data(data)
                     .hasNext(wishLists.hasNext())
-                    .nextCursor(new WishListNextCursor(last.getId(), last.getCreatedAt()))
+                    .nextCursor(new NextCursor(last.getId(), last.getCreatedAt()))
                     .build();
         }
-        else {
-            return CursorPageInfo.<List<GoodsInfo>>builder()
-                    .hasNext(false)
-                    .build();
-        }
-
     }
 }
