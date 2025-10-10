@@ -3,7 +3,7 @@ package com.chaegangjo.exception;
 
 public class MemberException extends BaseException {
 
-    public MemberException(BaseErrorCode errorCode) {
+    public MemberException(MemberErrorCode errorCode) {
         super(errorCode);
     }
 }
