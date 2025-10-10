@@ -1,7 +1,8 @@
-package com.chaegangjo.member.domain;
+package com.chaegangjo.wishlist.domain;
 
 import com.chaegangjo.entity.BaseEntity;
 import com.chaegangjo.goods.domain.Goods;
+import com.chaegangjo.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

@@ -1,8 +1,8 @@
-package com.chaegangjo.member.repository;
+package com.chaegangjo.wishlist.repository;
 
 
-import com.chaegangjo.member.domain.WishList;
-import com.chaegangjo.member.dto.WishListCursorPage;
+import com.chaegangjo.wishlist.domain.WishList;
+import com.chaegangjo.wishlist.dto.WishListCursorPage;
 import org.springframework.data.domain.Slice;
 
 public interface WishListCustomRepository {

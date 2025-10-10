@@ -5,6 +5,7 @@ import com.chaegangjo.entity.BaseEntity;
 import com.chaegangjo.member.enums.Role;
 import com.chaegangjo.member.enums.SocialType;
 import com.chaegangjo.member.utils.RandomUsername;
+import com.chaegangjo.wishlist.domain.WishList;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;

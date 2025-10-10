@@ -1,4 +1,4 @@
-package com.chaegangjo.member.dto;
+package com.chaegangjo.wishlist.dto;
 
 
 import com.chaegangjo.pagination.CursorPage;

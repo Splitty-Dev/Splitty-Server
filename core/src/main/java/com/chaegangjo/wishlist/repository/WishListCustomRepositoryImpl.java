@@ -1,10 +1,10 @@
-package com.chaegangjo.member.repository;
+package com.chaegangjo.wishlist.repository;
 
 
 import com.chaegangjo.goods.domain.QGoods;
-import com.chaegangjo.member.domain.QWishList;
-import com.chaegangjo.member.domain.WishList;
-import com.chaegangjo.member.dto.WishListCursorPage;
+import com.chaegangjo.wishlist.domain.QWishList;
+import com.chaegangjo.wishlist.domain.WishList;
+import com.chaegangjo.wishlist.dto.WishListCursorPage;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;

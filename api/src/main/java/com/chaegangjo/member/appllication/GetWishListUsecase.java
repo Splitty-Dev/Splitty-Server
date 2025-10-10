@@ -2,11 +2,11 @@ package com.chaegangjo.member.appllication;
 
 
 import com.chaegangjo.goods.dto.response.GoodsInfo;
-import com.chaegangjo.member.domain.WishList;
-import com.chaegangjo.member.dto.WishListCursorPage;
+import com.chaegangjo.wishlist.domain.WishList;
+import com.chaegangjo.wishlist.dto.WishListCursorPage;
 import com.chaegangjo.member.dto.request.GetWishList;
 import com.chaegangjo.member.dto.response.WishListNextCursor;
-import com.chaegangjo.member.service.WishListService;
+import com.chaegangjo.wishlist.service.WishListService;
 import com.chaegangjo.pagination.CursorPageInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
