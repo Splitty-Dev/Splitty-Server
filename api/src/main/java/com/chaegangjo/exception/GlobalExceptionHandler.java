@@ -2,6 +2,7 @@ package com.chaegangjo.exception;
 
 
 import com.chaegangjo.dto.ApiResponse;
+import com.chaegangjo.wishlist.domain.WishList;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MemberException.class)
     public ResponseEntity<ApiResponse<Void>> handleMemberException(MemberException e) {
         log.warn("Member Exception: {}", e);
+
+        return ResponseEntity.internalServerError()
+                .body(ApiResponse.failure(e.getErrorCode()));
+    }
+
+    @ExceptionHandler(WishListException.class)
+    public ResponseEntity<ApiResponse<Void>> handleWishListException(WishListException e) {
+        log.warn("WishList Exception: {}", e);
 
         return ResponseEntity.internalServerError()
                 .body(ApiResponse.failure(e.getErrorCode()));
