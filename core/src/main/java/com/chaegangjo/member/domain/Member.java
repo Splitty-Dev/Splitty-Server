@@ -1,0 +1,64 @@
+package com.chaegangjo.member.domain;
+
+
+import com.chaegangjo.entity.BaseEntity;
+import com.chaegangjo.member.enums.Role;
+import com.chaegangjo.member.enums.SocialType;
+import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
+public class Member extends BaseEntity {
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private String email;
+
+    private String socialId;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private SocialType socialType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
+
+    @Column(nullable = false, length=60)
+    private String username;
+
+    @Column(nullable = false)
+    private float rating;
+
+    @Column(length = 20)
+    private String neighName;
+
+    private String profileImageUrl;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<WishList> wishLists = new ArrayList<>();
+
+    @Builder
+    public Member(String email, String socialId, SocialType socialType, Role role) {
+        this.email = email;
+        this.socialId = socialId;
+        this.socialType = socialType;
+        this.rating = 0;
+        this.role = role;
+        this.username = "";
+    }
+
+    public void setNeighName(String neighName) {
+        this.neighName = neighName;
+    }
+}
