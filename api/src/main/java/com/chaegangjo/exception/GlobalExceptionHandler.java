@@ -12,6 +12,13 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(MemberException.class)
+    public ResponseEntity<ApiResponse<Void>> handleMemberException(MemberException e) {
+        log.warn("Member Exception: {}", e);
+
+        return ResponseEntity.internalServerError()
+                .body(ApiResponse.failure(e.getErrorCode()));
+    }
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Void>> handleException(Exception e) {
         log.warn("Exception: {}", e);

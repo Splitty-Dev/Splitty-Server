@@ -1,0 +1,20 @@
+package com.chaegangjo.member.dto;
+
+
+import com.chaegangjo.pagination.CursorPage;
+import lombok.Getter;
+
+import java.time.LocalDateTime;
+
+@Getter
+public class WishListCursorPage extends CursorPage {
+
+    private final LocalDateTime cursorCreatedAt;
+    private final Long memberId;
+
+    public WishListCursorPage(Long cursorId, LocalDateTime cursorCreatedAt, Long memberId) {
+        super(cursorId);
+        this.cursorCreatedAt = cursorCreatedAt;
+        this.memberId = memberId;
+    }
+}
