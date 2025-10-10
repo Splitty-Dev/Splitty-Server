@@ -8,6 +8,7 @@ import com.chaegangjo.goods.application.GetGoodsUsecase;
 import com.chaegangjo.goods.dto.response.GoodsInfo;
 import com.chaegangjo.security.oauth2.entity.CustomOAuth2User;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,7 @@ public class GoodsController {
     @Operation(summary = "전체 상품 조회")
     @GetMapping
     public ResponseEntity<ApiResponse<GoodsCursorPageInfo<List<GoodsInfo>>>> getGoods(
+            @Schema(example = "10")
             @RequestParam Long cursorId,
             @AuthenticationPrincipal CustomOAuth2User user
     ) {
