@@ -19,6 +19,15 @@ public class GlobalExceptionHandler {
         return ResponseEntity.internalServerError()
                 .body(ApiResponse.failure(e.getErrorCode()));
     }
+
+    @ExceptionHandler(GoodsException.class)
+    public ResponseEntity<ApiResponse<Void>> handleGoodsException(GoodsException e) {
+        log.warn("Goods Exception: {}", e);
+
+        return ResponseEntity.internalServerError()
+                .body(ApiResponse.failure(e.getErrorCode()));
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Void>> handleException(Exception e) {
         log.warn("Exception: {}", e);
