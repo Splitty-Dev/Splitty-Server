@@ -2,8 +2,9 @@ package com.chaegangjo.goods.prensentation;
 
 
 import com.chaegangjo.dto.ApiResponse;
+import com.chaegangjo.goods.application.GetDetailGoodsUsecase;
 import com.chaegangjo.goods.dto.response.GoodsCursorPageInfo;
-import com.chaegangjo.pagination.CursorPageInfo;
+import com.chaegangjo.goods.dto.response.DetailGoodsInfo;
 import com.chaegangjo.goods.application.GetGoodsUsecase;
 import com.chaegangjo.goods.dto.response.GoodsInfo;
 import com.chaegangjo.security.oauth2.entity.CustomOAuth2User;
@@ -27,6 +28,7 @@ import java.util.List;
 public class GoodsController {
 
     private final GetGoodsUsecase getGoodsUsecase;
+    private final GetDetailGoodsUsecase getDetailGoodsUsecase;
 
     @Operation(summary = "전체 상품 조회")
     @GetMapping
@@ -38,5 +40,14 @@ public class GoodsController {
         return ResponseEntity.ok(
                 ApiResponse.success(getGoodsUsecase.execute(user.getId(), cursorId))
         );
+    }
+
+    @Operation(summary = "상품 조회")
+    @GetMapping("{goodsId}")
+    public ResponseEntity<ApiResponse<DetailGoodsInfo>> getGoods(
+            @Schema(example = "1")
+            @RequestParam Long goodsId)
+    {
+        return ResponseEntity.ok(ApiResponse.success(getDetailGoodsUsecase.execute(goodsId)));
     }
 }

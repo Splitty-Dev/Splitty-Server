@@ -35,6 +35,9 @@ public class Goods extends BaseEntity {
     @Column(nullable = false)
     private String name;
 
+    @Column(columnDefinition = "TEXT")
+    private String description;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TradeStatus status;
@@ -43,10 +46,13 @@ public class Goods extends BaseEntity {
     private int totalPrice;
 
     @Column(nullable = false)
+    private int unitPrice;
+
+    @Column(nullable = false)
     private int viewCount;
 
     @Column(nullable = false)
-    private int quantity;
+    private int totalQuantity;
 
     @Column(nullable = false)
     private int leftQuantity;
@@ -57,20 +63,27 @@ public class Goods extends BaseEntity {
     @Column(nullable = false)
     private int currParticipants;
 
+    private String preferredLocation;
+
     @OneToMany(mappedBy = "goods", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<GoodsImage> images;
 
     @Builder
-    public Goods(Member seller, Category category, String neighName, String name, int totalPrice, int quantity, int maxParticipants) {
+    public Goods(Member seller, Category category, String neighName, String name, int totalPrice, int totalQuantity, int maxParticipants) {
         this.seller = seller;
         this.category = category;
         this.neighName = neighName;
         this.name = name;
         this.status = TradeStatus.OPEN;
         this.totalPrice = totalPrice;
+        this.unitPrice = calculateUnitPrice(totalPrice, totalQuantity);
         this.viewCount = 0;
-        this.quantity = quantity;
+        this.totalQuantity = totalQuantity;
         this.maxParticipants = maxParticipants;
         this.currParticipants = 1;
+    }
+
+    public int calculateUnitPrice(int totalPrice, int totalQuantity) {
+        return (int) Math.ceil((double) totalPrice / totalQuantity);
     }
 }

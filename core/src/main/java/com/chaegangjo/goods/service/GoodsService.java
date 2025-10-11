@@ -39,4 +39,8 @@ public class GoodsService {
     public Goods findGoodsById(Long goodsId) {
         return goodsRepository.findById(goodsId).orElseThrow(() -> new GoodsException(GOODS_NOT_FOUND));
     }
+
+    public Goods findGoodsWishDetail(Long goodsId) {
+        return goodsRepository.findGoodsWithDetail(goodsId).orElseThrow(() -> new GoodsException(GOODS_NOT_FOUND));
+    }
 }

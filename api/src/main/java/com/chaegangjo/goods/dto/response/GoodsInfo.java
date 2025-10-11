@@ -27,10 +27,10 @@ public record GoodsInfo(
         return new GoodsInfo(
                 goods.getId(),
                 goods.getName(),
-                (int) Math.ceil((double) goods.getTotalPrice() / goods.getQuantity()),
+                (int) Math.ceil((double) goods.getTotalPrice() / goods.getTotalQuantity()),
                 goods.getNeighName(),
                 goods.getLeftQuantity(),
-                goods.getQuantity(),
+                goods.getTotalQuantity(),
                 goods.getCurrParticipants(),
                 null
 //                goods.getImages().getFirst().getImageUrl()
