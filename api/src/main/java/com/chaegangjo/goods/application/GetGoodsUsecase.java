@@ -3,7 +3,6 @@ package com.chaegangjo.goods.application;
 
 import com.chaegangjo.goods.dto.response.GoodsCursorPageInfo;
 import com.chaegangjo.goods.dto.response.GoodsCursorPageInfo.NextCursor;
-import com.chaegangjo.pagination.CursorPageInfo;
 import com.chaegangjo.goods.domain.Goods;
 import com.chaegangjo.goods.dto.response.GoodsInfo;
 import com.chaegangjo.goods.service.GoodsService;
@@ -23,7 +22,7 @@ public class GetGoodsUsecase {
 
     public GoodsCursorPageInfo<List<GoodsInfo>> execute(Long memberId, Long cursorId) {
 
-        List<Goods> goods = goodsService.getGoods(memberId, cursorId);
+        List<Goods> goods = goodsService.findAllByCursor(memberId, cursorId);
 
         if (goods.isEmpty()) {
             return GoodsCursorPageInfo.<List<GoodsInfo>>builder()

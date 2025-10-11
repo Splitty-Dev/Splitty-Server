@@ -7,5 +7,5 @@ import org.springframework.data.domain.Slice;
 
 public interface WishListCustomRepository {
 
-    Slice<WishList> findWishListsByCursor(WishListCursorPage page);
+    Slice<WishList> findAllByCursor(WishListCursorPage page);
 }

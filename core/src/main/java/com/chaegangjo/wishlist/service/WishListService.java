@@ -1,6 +1,5 @@
 package com.chaegangjo.wishlist.service;
 
-import com.chaegangjo.exception.MemberException;
 import com.chaegangjo.exception.WishListException;
 import com.chaegangjo.goods.domain.Goods;
 import com.chaegangjo.member.domain.Member;
@@ -23,7 +22,7 @@ public class WishListService {
     private final WishListRepository wishListRepository;
 
     public Slice<WishList> findWishListsByCursor(WishListCursorPage cursorPage) {
-        return wishListRepository.findWishListsByCursor(cursorPage);
+        return wishListRepository.findAllByCursor(cursorPage);
     }
 
     @Transactional
@@ -35,7 +34,7 @@ public class WishListService {
 
     @Transactional
     public void deleteWishItem(Member member, Goods goods) {
-        wishListRepository.getWishListByMemberAndGoods(member, goods)
+        wishListRepository.findWishListByMemberAndGoods(member, goods)
                 .orElseThrow(() -> new WishListException(WISH_NOT_FOUND));
     }
 }

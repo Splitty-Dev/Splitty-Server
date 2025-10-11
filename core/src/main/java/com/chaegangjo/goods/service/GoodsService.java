@@ -25,7 +25,7 @@ public class GoodsService {
 
     private final static int RESTRICT_DISTANCE = 3000;
 
-    public List<Goods> getGoods(Long memberId, Long cursorId) {
+    public List<Goods> findAllByCursor(Long memberId, Long cursorId) {
         List<Long> nearByIds = redisUtil.getNearByIds(memberId, RESTRICT_DISTANCE);
         nearByIds.sort(Comparator.reverseOrder());
 

@@ -23,7 +23,7 @@ public class WishListCustomRepositoryImpl implements WishListCustomRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Slice<WishList> findWishListsByCursor(WishListCursorPage page) {
+    public Slice<WishList> findAllByCursor(WishListCursorPage page) {
 
         QWishList wishList = QWishList.wishList;
         QGoods goods = QGoods.goods;
