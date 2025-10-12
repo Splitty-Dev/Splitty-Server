@@ -1,6 +1,5 @@
-package com.chaegangjo.security.jwt;
+package com.chaegangjo.security.jwt.utils;
 
-import com.chaegangjo.jwt.JwtTokenProvider;
 import com.chaegangjo.security.oauth2.entity.CustomOAuth2User;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;

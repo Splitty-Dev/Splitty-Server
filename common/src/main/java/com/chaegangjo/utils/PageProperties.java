@@ -1,4 +1,4 @@
-package com.chaegangjo.pagination;
+package com.chaegangjo.utils;
 
 
 public class PageProperties {

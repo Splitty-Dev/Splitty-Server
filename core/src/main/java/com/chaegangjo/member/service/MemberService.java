@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.chaegangjo.exception.MemberErrorCode.MEMBER_NOT_FOUND;
+import static com.chaegangjo.exception.errorcode.MemberErrorCode.MEMBER_NOT_FOUND;
 
 @Slf4j
 @RequiredArgsConstructor

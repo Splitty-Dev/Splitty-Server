@@ -1,12 +1,8 @@
-package com.chaegangjo.pagination;
+package com.chaegangjo.dto;
 
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.Collection;
-import java.util.Collections;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter

@@ -1,8 +1,10 @@
-package com.chaegangjo.exception;
+package com.chaegangjo.exception.handler;
 
 
 import com.chaegangjo.dto.ApiResponse;
-import com.chaegangjo.wishlist.domain.WishList;
+import com.chaegangjo.exception.GoodsException;
+import com.chaegangjo.exception.MemberException;
+import com.chaegangjo.exception.WishListException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

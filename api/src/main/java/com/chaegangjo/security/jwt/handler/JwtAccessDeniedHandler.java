@@ -1,7 +1,7 @@
 package com.chaegangjo.security.jwt.handler;
 
 import com.chaegangjo.dto.ApiResponse;
-import com.chaegangjo.security.JsonResponseWriter;
+import com.chaegangjo.security.utils.JsonResponseWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -12,7 +12,7 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
 import java.io.IOException;
 
-import static com.chaegangjo.exception.JwtErrorCode.ACCESS_DENIED;
+import static com.chaegangjo.exception.errorcode.JwtErrorCode.ACCESS_DENIED;
 
 /**
  * 인가(Authorization) 예외가 발생했을 때 예외 처리 -> 인증된 사용자가 필요한 권한없이 접근하려고 하는 경우

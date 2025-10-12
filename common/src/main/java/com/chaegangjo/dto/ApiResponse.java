@@ -1,7 +1,7 @@
 package com.chaegangjo.dto;
 
 
-import com.chaegangjo.exception.BaseErrorCode;
+import com.chaegangjo.exception.errorcode.BaseErrorCode;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;

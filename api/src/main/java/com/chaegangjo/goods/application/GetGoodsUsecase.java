@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import java.util.Collections;
 import java.util.List;
 
-import static com.chaegangjo.pagination.PageProperties.GOODS_PAGE_SIZE;
+import static com.chaegangjo.utils.PageProperties.GOODS_PAGE_SIZE;
 
 @RequiredArgsConstructor
 @Component

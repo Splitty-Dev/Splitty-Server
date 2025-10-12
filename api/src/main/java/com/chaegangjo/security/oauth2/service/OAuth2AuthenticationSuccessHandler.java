@@ -1,7 +1,7 @@
 package com.chaegangjo.security.oauth2.service;
 
 import com.chaegangjo.jwt.JwtProperties;
-import com.chaegangjo.jwt.JwtTokenProvider;
+import com.chaegangjo.security.jwt.utils.JwtTokenProvider;
 import com.chaegangjo.jwt.TokenInfo;
 import com.chaegangjo.member.domain.Member;
 import com.chaegangjo.security.oauth2.dto.OAuth2UserImpl;

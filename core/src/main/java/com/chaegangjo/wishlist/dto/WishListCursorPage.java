@@ -1,7 +1,7 @@
 package com.chaegangjo.wishlist.dto;
 
 
-import com.chaegangjo.pagination.CursorPage;
+import com.chaegangjo.dto.CursorPage;
 import lombok.Getter;
 
 import java.time.LocalDateTime;

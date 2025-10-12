@@ -1,5 +1,6 @@
-package com.chaegangjo.pagination;
+package com.chaegangjo.dto;
 
+import com.chaegangjo.utils.PageProperties;
 import lombok.Getter;
 
 @Getter

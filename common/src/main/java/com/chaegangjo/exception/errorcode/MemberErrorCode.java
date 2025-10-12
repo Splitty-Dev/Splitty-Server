@@ -1,4 +1,4 @@
-package com.chaegangjo.exception;
+package com.chaegangjo.exception.errorcode;
 
 
 import lombok.AllArgsConstructor;

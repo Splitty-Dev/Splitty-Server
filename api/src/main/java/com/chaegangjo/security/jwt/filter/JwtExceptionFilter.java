@@ -3,8 +3,8 @@ package com.chaegangjo.security.jwt.filter;
 
 import com.chaegangjo.dto.ApiResponse;
 import com.chaegangjo.exception.CustomJwtException;
-import com.chaegangjo.exception.JwtErrorCode;
-import com.chaegangjo.security.JsonResponseWriter;
+import com.chaegangjo.exception.errorcode.JwtErrorCode;
+import com.chaegangjo.security.utils.JsonResponseWriter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,7 +15,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-import static com.chaegangjo.exception.JwtErrorCode.JWT_ERROR;
+import static com.chaegangjo.exception.errorcode.JwtErrorCode.JWT_ERROR;
 
 @Slf4j
 @Component

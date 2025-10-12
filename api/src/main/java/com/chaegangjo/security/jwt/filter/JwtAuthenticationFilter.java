@@ -1,7 +1,7 @@
 package com.chaegangjo.security.jwt.filter;
 
-import com.chaegangjo.jwt.JwtTokenProvider;
-import com.chaegangjo.security.jwt.JwtTokenAuthenticator;
+import com.chaegangjo.security.jwt.utils.JwtTokenProvider;
+import com.chaegangjo.security.jwt.utils.JwtTokenAuthenticator;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

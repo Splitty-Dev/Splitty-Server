@@ -1,4 +1,4 @@
-package com.chaegangjo.security;
+package com.chaegangjo.security.utils;
 
 
 import com.chaegangjo.dto.ApiResponse;

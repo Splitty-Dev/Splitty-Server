@@ -1,8 +1,10 @@
-package com.chaegangjo.jwt;
+package com.chaegangjo.security.jwt.utils;
 
 
 import com.chaegangjo.exception.CustomJwtException;
-import com.chaegangjo.exception.JwtErrorCode;
+import com.chaegangjo.exception.errorcode.JwtErrorCode;
+import com.chaegangjo.jwt.JwtProperties;
+import com.chaegangjo.jwt.TokenInfo;
 import com.chaegangjo.member.enums.Role;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;

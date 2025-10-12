@@ -1,7 +1,7 @@
 package com.chaegangjo.wishlist.dto.response;
 
 
-import com.chaegangjo.pagination.CursorPageInfo;
+import com.chaegangjo.dto.CursorPageInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 

@@ -2,7 +2,7 @@ package com.chaegangjo.security.jwt.handler;
 
 
 import com.chaegangjo.dto.ApiResponse;
-import com.chaegangjo.security.JsonResponseWriter;
+import com.chaegangjo.security.utils.JsonResponseWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,7 +13,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 import java.io.IOException;
 
-import static com.chaegangjo.exception.JwtErrorCode.UNAUTHORIZED_ACCESS;
+import static com.chaegangjo.exception.errorcode.JwtErrorCode.UNAUTHORIZED_ACCESS;
 
 
 /**

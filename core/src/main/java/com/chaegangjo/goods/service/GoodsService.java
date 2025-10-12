@@ -12,8 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Comparator;
 import java.util.List;
 
-import static com.chaegangjo.exception.GoodsErrorCode.GOODS_NOT_FOUND;
-import static com.chaegangjo.pagination.PageProperties.GOODS_PAGE_SIZE;
+import static com.chaegangjo.exception.errorcode.GoodsErrorCode.GOODS_NOT_FOUND;
+import static com.chaegangjo.utils.PageProperties.GOODS_PAGE_SIZE;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
