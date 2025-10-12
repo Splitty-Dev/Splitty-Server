@@ -1,6 +1,7 @@
 dependencyManagement {
     imports {
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:2025.0.0"
+        mavenBom "org.springframework.boot:spring-boot-dependencies:3.3.5"
     }
 }
 dependencies {
@@ -10,11 +11,6 @@ dependencies {
 
     //jpa
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-
-    //jwt
-    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-    implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
-    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
     //querydsl
     implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
@@ -30,5 +26,4 @@ clean {
     delete file('src/main/generated')
 }
 
-bootJar { enabled = false }
 jar { enabled = true }
