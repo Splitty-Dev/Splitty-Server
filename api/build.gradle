@@ -6,6 +6,7 @@ dependencyManagement {
 dependencies {
     implementation project(':common')
     implementation project(':core')
+    implementation project(':websocket')
 
     apply plugin: 'org.springframework.boot'
 
@@ -29,10 +30,13 @@ dependencies {
 
     //openfeign
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+
+    //websocket
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
 }
 
 springBoot {
-    mainClass.set('com.chaegangjo.api.ApiApplication')
+    mainClass.set('com.chaegangjo.ApiApplication')
 }
 
 bootJar {
