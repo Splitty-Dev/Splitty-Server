@@ -3,7 +3,7 @@ package com.chaegangjo.goods.dto.request;
 
 import com.chaegangjo.goods.domain.Category;
 
-public record CreateGoods(
+public record CreateGoodsRequest(
         Category category,
         String name,
         String description,

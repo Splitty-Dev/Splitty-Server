@@ -11,6 +11,8 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.SignatureException;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -33,6 +35,20 @@ public class JwtTokenProvider {
 		this.secretKey = Keys.hmacShaKeyFor(decoded);
 	}
 
+	public String extractToken(HttpServletRequest request) {
+		String token = null;
+		Cookie[] cookies = request.getCookies();
+		if (cookies != null) {
+			for (Cookie cookie : cookies) {
+				if ("accessToken".equals(cookie.getName())) {
+					token = cookie.getValue();
+				}
+			}
+		}
+
+		return token;
+	}
+
 	public TokenInfo issueAccessToken(String email, Long id) {
 		Instant issuedAt = Instant.now();
 		Instant expiration = issuedAt.plusMillis(jwtProperties.getAccessExpirationTime());
@@ -43,8 +59,8 @@ public class JwtTokenProvider {
 
 	public String buildJwtToken(String email, Long id, Instant issuedAt, Instant expiration) {
 		return Jwts.builder()
-			.setSubject(email)
-			.claim("id", id)
+			.setSubject(String.valueOf(id))
+			.claim("email", email)
 			.claim("role", Role.USER)
 			.setIssuedAt(Date.from(issuedAt))
 			.setExpiration(Date.from(expiration))
@@ -60,23 +76,27 @@ public class JwtTokenProvider {
 				.parseClaimsJws(token)
 				.getBody();
 		} catch (ExpiredJwtException e) {
-			log.warn("Expired Token: {}", e.getMessage());
+//			log.warn("[!] Expired Token: {}", e.getMessage());
 			throw new CustomJwtException(JwtErrorCode.EXPIRED_TOKEN);
 		} catch (MalformedJwtException | UnsupportedJwtException | SignatureException | IllegalArgumentException e) {
-			log.warn("Invalid Token: {}", e.getMessage());
+//			log.warn("[!] Invalid Token: {}", e.getMessage());
 			throw new CustomJwtException(JwtErrorCode.INVALID_TOKEN);
 		} catch (Exception e) {
-			log.error("Unexpected JWT Error: {}", e.getMessage());
+//			log.error("[!] Unexpected JWT Error: {}", e.getMessage());
 			throw new CustomJwtException(JwtErrorCode.JWT_ERROR);
 		}
 	}
 
-	public String getSubject(Claims claims) { // 현재 subject -> email
+	public String getSubject(Claims claims) { // 현재 subject -> id
 		return claims.getSubject();
 	}
 
 	public Long getId(Claims claims) {
-		return claims.get("id", Long.class);
+		return Long.parseLong(claims.getSubject());
+	}
+
+	public String getEmail(Claims claims) {
+		return claims.get("email", String.class);
 	}
 
 	public String getAuthority(Claims claims) {

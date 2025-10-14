@@ -1,6 +1,5 @@
-package com.chaegangjo.exception;
+package com.chaegangjo.exception.errorcode;
 
-import com.chaegangjo.exception.errorcode.BaseErrorCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

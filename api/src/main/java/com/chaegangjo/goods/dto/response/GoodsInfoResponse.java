@@ -4,7 +4,7 @@ package com.chaegangjo.goods.dto.response;
 import com.chaegangjo.goods.domain.Goods;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-public record GoodsInfo(
+public record GoodsInfoResponse(
         @Schema(example = "1")
         Long id,
         @Schema(description = "상품명", example = "에코 생수 500ml")
@@ -23,8 +23,8 @@ public record GoodsInfo(
         String image
 ) {
 
-    public static GoodsInfo from(Goods goods) {
-        return new GoodsInfo(
+    public static GoodsInfoResponse from(Goods goods) {
+        return new GoodsInfoResponse(
                 goods.getId(),
                 goods.getName(),
                 (int) Math.ceil((double) goods.getTotalPrice() / goods.getTotalQuantity()),

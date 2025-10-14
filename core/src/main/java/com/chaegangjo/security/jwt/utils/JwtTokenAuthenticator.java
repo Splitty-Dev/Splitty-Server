@@ -18,9 +18,9 @@ public class JwtTokenAuthenticator {
     public Authentication getAuthentication(Claims claims) {
         CustomOAuth2User oAuth2User = new CustomOAuth2User(
                 CustomOAuth2User.getAuthorities(jwtTokenProvider.getAuthority(claims)),
-                Map.of("email", jwtTokenProvider.getSubject(claims)),
-                "email",
-                jwtTokenProvider.getSubject(claims), // email
+                Map.of("id", jwtTokenProvider.getSubject(claims)),
+                "id",
+                jwtTokenProvider.getEmail(claims),
                 jwtTokenProvider.getId(claims)
         );
 

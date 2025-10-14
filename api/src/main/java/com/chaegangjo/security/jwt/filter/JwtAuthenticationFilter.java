@@ -5,7 +5,6 @@ import com.chaegangjo.security.jwt.utils.JwtTokenAuthenticator;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +26,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
 									FilterChain filterChain) throws ServletException, IOException {
 
-		String token = extractToken(request);
+		String token = jwtTokenProvider.extractToken(request);
 
 		if (token != null) {
 			Claims claims = jwtTokenProvider.validateToken(token);
@@ -37,19 +36,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		}
 
 		filterChain.doFilter(request, response);
-	}
-
-	public String extractToken(HttpServletRequest request) {
-		String token = null;
-		Cookie[] cookies = request.getCookies();
-		if (cookies != null) {
-			for (Cookie cookie : cookies) {
-				if ("accessToken".equals(cookie.getName())) {
-					token = cookie.getValue();
-				}
-			}
-		}
-
-		return token;
 	}
 }

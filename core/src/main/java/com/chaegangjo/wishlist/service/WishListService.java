@@ -11,8 +11,8 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.chaegangjo.exception.WishListErrorCode.WISH_ALREADY_EXISTS;
-import static com.chaegangjo.exception.WishListErrorCode.WISH_NOT_FOUND;
+import static com.chaegangjo.exception.errorcode.WishListErrorCode.WISH_ALREADY_EXISTS;
+import static com.chaegangjo.exception.errorcode.WishListErrorCode.WISH_NOT_FOUND;
 
 @Transactional(readOnly = true)
 @RequiredArgsConstructor

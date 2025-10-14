@@ -1,7 +1,7 @@
 package com.chaegangjo.member.appllication;
 
 
-import com.chaegangjo.member.dto.response.MemberInfo;
+import com.chaegangjo.member.dto.response.MemberInfoResponse;
 import com.chaegangjo.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -12,13 +12,13 @@ public class GetMemberInfoUseCase {
 
     private final MemberService memberService;
 
-    public MemberInfo execute(Long memberId) {
+    public MemberInfoResponse execute(Long memberId) {
 
-        return MemberInfo.from(memberService.findMemberById(memberId));
+        return MemberInfoResponse.from(memberService.findMemberById(memberId));
     }
 
-    public MemberInfo execute(String email) {
+    public MemberInfoResponse execute(String email) {
 
-        return MemberInfo.from(memberService.findMemberByEmail(email));
+        return MemberInfoResponse.from(memberService.findMemberByEmail(email));
     }
 }

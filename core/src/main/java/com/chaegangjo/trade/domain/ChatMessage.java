@@ -1,5 +1,7 @@
 package com.chaegangjo.trade.domain;
 
+import com.chaegangjo.entity.BaseCreatedEntity;
+import com.chaegangjo.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -11,7 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class ChatMessage {
+public class ChatMessage extends BaseCreatedEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,7 +25,8 @@ public class ChatMessage {
     @JoinColumn(name = "trade_member_id")
     private TradeMember tradeMember;
 
-    @CreatedDate
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    public ChatMessage(TradeMember tradeMember, String message) {
+        this.message = message;
+        this.tradeMember = tradeMember;
+    }
 }

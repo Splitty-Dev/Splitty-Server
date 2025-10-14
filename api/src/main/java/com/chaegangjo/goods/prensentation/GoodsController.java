@@ -3,10 +3,10 @@ package com.chaegangjo.goods.prensentation;
 
 import com.chaegangjo.dto.ApiResponse;
 import com.chaegangjo.goods.application.GetDetailGoodsUsecase;
-import com.chaegangjo.goods.dto.response.GoodsCursorPageInfo;
-import com.chaegangjo.goods.dto.response.DetailGoodsInfo;
+import com.chaegangjo.goods.dto.response.GoodsCursorPageResponse;
+import com.chaegangjo.goods.dto.response.DetailGoodsInfoResponse;
 import com.chaegangjo.goods.application.GetGoodsUsecase;
-import com.chaegangjo.goods.dto.response.GoodsInfo;
+import com.chaegangjo.goods.dto.response.GoodsInfoResponse;
 import com.chaegangjo.security.oauth2.entity.CustomOAuth2User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -14,10 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,7 +29,7 @@ public class GoodsController {
 
     @Operation(summary = "전체 상품 조회")
     @GetMapping
-    public ResponseEntity<ApiResponse<GoodsCursorPageInfo<List<GoodsInfo>>>> getGoods(
+    public ResponseEntity<ApiResponse<GoodsCursorPageResponse<List<GoodsInfoResponse>>>> getAllGoods(
             @Schema(example = "10")
             @RequestParam Long cursorId,
             @AuthenticationPrincipal CustomOAuth2User user
@@ -43,10 +40,10 @@ public class GoodsController {
     }
 
     @Operation(summary = "상품 조회")
-    @GetMapping("{goodsId}")
-    public ResponseEntity<ApiResponse<DetailGoodsInfo>> getGoods(
+    @GetMapping("/{goodsId}")
+    public ResponseEntity<ApiResponse<DetailGoodsInfoResponse>> getGoods(
             @Schema(example = "1")
-            @RequestParam Long goodsId)
+            @PathVariable Long goodsId)
     {
         return ResponseEntity.ok(ApiResponse.success(getDetailGoodsUsecase.execute(goodsId)));
     }

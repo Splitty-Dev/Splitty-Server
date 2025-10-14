@@ -3,8 +3,8 @@ package com.chaegangjo.member.prensentation;
 
 import com.chaegangjo.dto.ApiResponse;
 import com.chaegangjo.member.appllication.*;
-import com.chaegangjo.member.dto.request.SetNeighborhood;
-import com.chaegangjo.member.dto.response.MemberInfo;
+import com.chaegangjo.member.dto.request.SetNeighborhoodRequest;
+import com.chaegangjo.member.dto.response.MemberInfoResponse;
 import com.chaegangjo.security.oauth2.entity.CustomOAuth2User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -26,7 +26,7 @@ public class MemberController {
     @Operation(summary = "회원 정보 조회")
 //    @PreAuthorize("#id == principal.id")
     @GetMapping("/{memberId}")
-    public ResponseEntity<ApiResponse<MemberInfo>> getMemberInfo(
+    public ResponseEntity<ApiResponse<MemberInfoResponse>> getMemberInfo(
             @Schema(example = "1")
             @PathVariable Long memberId) {
 
@@ -37,7 +37,7 @@ public class MemberController {
 
     @Operation(summary = "나의 정보 조회")
     @GetMapping("/me")
-    public ResponseEntity<ApiResponse<MemberInfo>> getMyInfo(
+    public ResponseEntity<ApiResponse<MemberInfoResponse>> getMyInfo(
             @AuthenticationPrincipal CustomOAuth2User user) {
 
         return ResponseEntity.ok(
@@ -47,8 +47,8 @@ public class MemberController {
 
     @Operation(summary = "나의 지역 설정")
     @PostMapping("/neighborhood")
-    public ResponseEntity<ApiResponse<MemberInfo>> setNeighborhood(
-            @RequestBody SetNeighborhood request,
+    public ResponseEntity<ApiResponse<MemberInfoResponse>> setNeighborhood(
+            @RequestBody SetNeighborhoodRequest request,
             @AuthenticationPrincipal CustomOAuth2User user) {
 
         return ResponseEntity.ok(

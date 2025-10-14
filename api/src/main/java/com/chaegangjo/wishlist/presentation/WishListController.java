@@ -1,13 +1,13 @@
 package com.chaegangjo.wishlist.presentation;
 
 import com.chaegangjo.dto.ApiResponse;
-import com.chaegangjo.goods.dto.response.GoodsInfo;
+import com.chaegangjo.goods.dto.response.GoodsInfoResponse;
 import com.chaegangjo.member.appllication.GetWishListUsecase;
-import com.chaegangjo.wishlist.dto.request.GetWishList;
+import com.chaegangjo.wishlist.dto.request.GetWishListRequest;
 import com.chaegangjo.security.oauth2.entity.CustomOAuth2User;
 import com.chaegangjo.wishlist.application.DeleteWishListItemUsecase;
 import com.chaegangjo.wishlist.application.SaveWishListItemUsecase;
-import com.chaegangjo.wishlist.dto.response.WishListCursorPageInfo;
+import com.chaegangjo.wishlist.dto.response.WishListCursorPageResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -30,8 +30,8 @@ public class WishListController {
 
     @Operation(summary = "나의 관심 상품 조회")
     @GetMapping
-    public ResponseEntity<ApiResponse<WishListCursorPageInfo<List<GoodsInfo>>>> getWishlist(
-            GetWishList request,
+    public ResponseEntity<ApiResponse<WishListCursorPageResponse<List<GoodsInfoResponse>>>> getWishlist(
+            GetWishListRequest request,
             @AuthenticationPrincipal CustomOAuth2User user
     ) {
         return ResponseEntity.ok(
@@ -43,7 +43,7 @@ public class WishListController {
     @PostMapping("/{goodsId}")
     public ResponseEntity<ApiResponse<Void>> saveWishItem(
             @Schema(example = "1")
-            @RequestParam Long goodsId,
+            @PathVariable Long goodsId,
             @AuthenticationPrincipal CustomOAuth2User user
     ) {
         saveWishListItemUsecase.execute(user.getEmail(), goodsId);
@@ -54,7 +54,7 @@ public class WishListController {
     @DeleteMapping("/{goodsId}")
     public ResponseEntity<ApiResponse<Void>> deleteWishItem(
             @Schema(example = "1")
-            @RequestParam Long goodsId,
+            @PathVariable Long goodsId,
             @AuthenticationPrincipal CustomOAuth2User user
     ) {
         deleteWishListItemUsecase.execute(user.getEmail(), goodsId);

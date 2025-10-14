@@ -30,6 +30,6 @@ public class OAuth2UserImpl implements OAuth2User, Serializable {
 
 	@Override
 	public String getName() {
-		return member.getUsername();
+		return String.valueOf(member.getId());
 	}
 }

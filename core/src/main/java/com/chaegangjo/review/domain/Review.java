@@ -1,6 +1,8 @@
 package com.chaegangjo.review.domain;
 
 
+import com.chaegangjo.entity.BaseCreatedEntity;
+import com.chaegangjo.entity.BaseEntity;
 import com.chaegangjo.member.domain.Member;
 import com.chaegangjo.trade.domain.TradeMember;
 import jakarta.persistence.*;
@@ -14,7 +16,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Review {
+public class Review extends BaseCreatedEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -32,8 +34,4 @@ public class Review {
 
     @Column(nullable = false)
     private float rating;
-
-    @CreatedDate
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
 }

@@ -4,7 +4,7 @@ package com.chaegangjo.member.dto.response;
 import com.chaegangjo.member.domain.Member;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-public record MemberInfo(
+public record MemberInfoResponse(
         @Schema(example = "1")
         Long id,
         @Schema(example = "귀여운고양이35")
@@ -17,8 +17,8 @@ public record MemberInfo(
         String profileImageUrl
 ) {
 
-    public static MemberInfo from(Member member) {
-        return new MemberInfo(
+    public static MemberInfoResponse from(Member member) {
+        return new MemberInfoResponse(
                 member.getId(),
                 member.getUsername(),
                 member.getRating(),

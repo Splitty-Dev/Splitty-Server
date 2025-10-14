@@ -1,17 +1,20 @@
-package com.chaegangjo.goods.dto.response;
+package com.chaegangjo.wishlist.dto.response;
 
-import com.chaegangjo.dto.CursorPageInfo;
+
+import com.chaegangjo.dto.CursorPageResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class GoodsCursorPageInfo<T> extends CursorPageInfo<T> {
+public class WishListCursorPageResponse<T> extends CursorPageResponse<T> {
 
     NextCursor nextCursor;
 
     @Builder
-    public GoodsCursorPageInfo(T data, boolean hasNext, NextCursor nextCursor) {
+    public WishListCursorPageResponse(T data, boolean hasNext, NextCursor nextCursor) {
         super(data, hasNext);
         this.nextCursor = nextCursor;
     }
@@ -23,5 +26,7 @@ public class GoodsCursorPageInfo<T> extends CursorPageInfo<T> {
 
         @Schema(example = "10")
         Long lastId;
+        @Schema(example = "2025-10-10T14:51:24.999")
+        LocalDateTime lastCreatedAt;
     }
 }

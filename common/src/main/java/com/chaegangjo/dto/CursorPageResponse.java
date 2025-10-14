@@ -6,12 +6,12 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class CursorPageInfo<T> {
+public class CursorPageResponse<T> {
 
     T data;
     boolean hasNext = false;
 
-    public CursorPageInfo(T data, boolean hasNext) {
+    public CursorPageResponse(T data, boolean hasNext) {
         this.data = data;
         this.hasNext = hasNext;
     }
