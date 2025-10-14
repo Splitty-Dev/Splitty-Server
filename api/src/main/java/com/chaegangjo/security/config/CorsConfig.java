@@ -15,18 +15,19 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CorsConfig implements WebMvcConfigurer {
 
-    private static final String SERVER_IP = "15.165.93.250";
+    private static final String SERVER = "splitty.store";
 
     public static CorsConfigurationSource apiConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        ArrayList<String> allowedOriginPatterns = new ArrayList<>();
-        allowedOriginPatterns.add("http://localhost:3000");
-        allowedOriginPatterns.add("http://localhost:8080");
-        allowedOriginPatterns.add("https://" + SERVER_IP + ":3000");
-        allowedOriginPatterns.add("https://" + SERVER_IP + ":8000");
+        configuration.setAllowedOrigins(List.of(
+                "http://localhost:3000",
+                "http://localhost:8080",
+                "https://" + SERVER,
+                "http://" + SERVER,
+                "https://jiangxy.github.io/" //stomp test
+        ));
 
-        configuration.setAllowedOrigins(allowedOriginPatterns);
         configuration.setAllowedMethods(List.of("HEAD", "POST", "GET", "DELETE", "PUT", "OPTIONS", "PATCH"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);

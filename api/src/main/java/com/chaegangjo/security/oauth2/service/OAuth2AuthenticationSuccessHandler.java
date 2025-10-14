@@ -1,17 +1,17 @@
 package com.chaegangjo.security.oauth2.service;
 
 import com.chaegangjo.jwt.JwtProperties;
-import com.chaegangjo.security.jwt.utils.JwtTokenProvider;
 import com.chaegangjo.jwt.TokenInfo;
 import com.chaegangjo.member.domain.Member;
+import com.chaegangjo.security.jwt.utils.JwtTokenProvider;
 import com.chaegangjo.security.oauth2.dto.OAuth2UserImpl;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -39,10 +39,12 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         TokenInfo tokenInfo = jwtTokenProvider.issueAccessToken(member.getEmail(), member.getId());
 
-        Cookie cookie = new Cookie("accessToken", tokenInfo.accessToken());
-        cookie.setMaxAge(Math.toIntExact(jwtProperties.getAccessExpirationTime()));
-        cookie.setPath("/");
-        response.addCookie(cookie);
+        ResponseCookie cookie = ResponseCookie.from("accessToken", tokenInfo.accessToken())
+                .maxAge(jwtProperties.getAccessExpirationTime())
+                .path("/")
+                .sameSite("None")
+                .secure(true) // SameSite=None일 때는 Secure 필수
+                .build();
 
         String fullRedirectUrl = UriComponentsBuilder
                 .fromUriString(redirectUrl)
@@ -50,6 +52,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 .build()
                 .toUriString();
 
+        response.addHeader("Set-Cookie", cookie.toString());
         response.sendRedirect(fullRedirectUrl);
     }
 }
