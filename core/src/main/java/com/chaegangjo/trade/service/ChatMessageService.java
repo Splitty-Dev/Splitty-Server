@@ -1,13 +1,19 @@
 package com.chaegangjo.trade.service;
 
+import com.chaegangjo.paging.IdCreatedAtCursorPage;
+import com.chaegangjo.paging.PageProperties;
 import com.chaegangjo.trade.domain.ChatMessage;
 import com.chaegangjo.trade.domain.TradeMember;
 import com.chaegangjo.trade.repository.ChatMessageRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
+
+import static com.chaegangjo.paging.PageProperties.CHAT_MESSAGE_PAGE_SIZE;
 
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -23,7 +29,8 @@ public class ChatMessageService {
         return chatMessageRepository.save(chatMessage);
     }
 
-    public List<ChatMessage> getChatMessages(Long tradeId, Long cursorId) {
-        return null;
+    public Slice<ChatMessage> getChatMessages(Long tradeId, Long cursorId, LocalDateTime createdAt) {
+        return chatMessageRepository.findAllByCursor(
+                new IdCreatedAtCursorPage(CHAT_MESSAGE_PAGE_SIZE, cursorId, createdAt), tradeId);
     }
 }

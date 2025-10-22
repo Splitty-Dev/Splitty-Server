@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface TradeMemberRepository extends JpaRepository<TradeMember, Long> {
+public interface TradeMemberRepository extends JpaRepository<TradeMember, Long>, TradeMemberCustomRepository {
 
-    public Optional<TradeMember> findByTrade_IdAndMember_Id(Long tradeId, Long memberId);
+    Optional<TradeMember> findByTrade_IdAndMember_Id(Long tradeId, Long memberId);
 }

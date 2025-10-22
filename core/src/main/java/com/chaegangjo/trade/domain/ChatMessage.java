@@ -25,8 +25,17 @@ public class ChatMessage extends BaseCreatedEntity {
     @JoinColumn(name = "trade_member_id")
     private TradeMember tradeMember;
 
+    @Enumerated(EnumType.STRING)
+    private ChatType chatType = ChatType.MESSAGE;
+
     public ChatMessage(TradeMember tradeMember, String message) {
         this.message = message;
         this.tradeMember = tradeMember;
+    }
+
+    public ChatMessage(TradeMember tradeMember, String message, ChatType chatType) {
+        this.message = message;
+        this.tradeMember = tradeMember;
+        this.chatType = chatType;
     }
 }
