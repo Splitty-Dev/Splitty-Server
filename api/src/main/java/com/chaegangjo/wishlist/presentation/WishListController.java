@@ -1,5 +1,6 @@
 package com.chaegangjo.wishlist.presentation;
 
+import com.chaegangjo.chat.dto.request.SaveWishItemRequest;
 import com.chaegangjo.dto.ApiResponse;
 import com.chaegangjo.dto.CursorPageResponse;
 import com.chaegangjo.goods.dto.response.GoodsInfo;
@@ -43,12 +44,13 @@ public class WishListController {
     }
 
     @Operation(summary = "관심 상품 저장")
+    @PostMapping
     public ResponseEntity<ApiResponse<Void>> saveWishItem(
             @Parameter(example = "1")
-            @RequestBody Long goodsId,
+            @RequestBody SaveWishItemRequest request,
             @AuthenticationPrincipal CustomOAuth2User user
     ) {
-        saveWishListItemUsecase.execute(user.getEmail(), goodsId);
+        saveWishListItemUsecase.execute(user.getId(), request);
         return ResponseEntity.ok(ApiResponse.success());
     }
 
@@ -59,7 +61,7 @@ public class WishListController {
             @PathVariable Long goodsId,
             @AuthenticationPrincipal CustomOAuth2User user
     ) {
-        deleteWishListItemUsecase.execute(user.getEmail(), goodsId);
+        deleteWishListItemUsecase.execute(user.getId(), goodsId);
         return ResponseEntity.ok(ApiResponse.success());
     }
 }

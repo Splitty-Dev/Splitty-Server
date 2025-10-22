@@ -1,5 +1,6 @@
 package com.chaegangjo.wishlist.application;
 
+import com.chaegangjo.chat.dto.request.SaveWishItemRequest;
 import com.chaegangjo.goods.domain.Goods;
 import com.chaegangjo.goods.service.GoodsService;
 import com.chaegangjo.member.domain.Member;
@@ -16,11 +17,9 @@ public class SaveWishListItemUsecase {
     private final GoodsService goodsService;
     private final WishListService wishListService;
 
-    public void execute(String email, Long goodsId) {
-
-        Member member = memberService.findMemberByEmail(email);
-        Goods goods = goodsService.findGoodsById(goodsId);
-
+    public void execute(Long memberId, SaveWishItemRequest request) {
+        Member member = memberService.findMemberById(memberId);
+        Goods goods = goodsService.findGoodsById(request.goodsId());
         wishListService.saveWishItem(member, goods);
     }
 }
