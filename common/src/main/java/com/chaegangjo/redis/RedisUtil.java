@@ -1,5 +1,7 @@
 package com.chaegangjo.redis;
 
+import com.chaegangjo.exception.MemberException;
+import com.chaegangjo.exception.errorcode.MemberErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.GeoResult;
@@ -48,6 +50,9 @@ public class RedisUtil {
         GeoOperations<String, Object> geoOperations = redisTemplate.opsForGeo();
 
         Point memberPoint = geoOperations.position(RedisProperties.MEMBER_KEY, memberId.toString()).get(0);
+        if (memberPoint == null) {
+            throw new MemberException(MemberErrorCode.MEMBER_LOCATION_NOT_FOUND);
+        }
         GeoReference<Object> reference = GeoReference.fromCoordinate(memberPoint);
 
         Distance radius = new Distance(restrictDistance, Metrics.METERS); // 반경 범위 설정
