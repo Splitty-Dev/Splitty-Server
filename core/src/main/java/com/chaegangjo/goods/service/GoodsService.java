@@ -13,7 +13,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import static com.chaegangjo.exception.errorcode.GoodsErrorCode.GOODS_NOT_FOUND;
-import static com.chaegangjo.utils.PageProperties.GOODS_PAGE_SIZE;
+import static com.chaegangjo.paging.PageProperties.GOODS_PAGE_SIZE;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -25,7 +25,7 @@ public class GoodsService {
 
     private final static int RESTRICT_DISTANCE = 3000;
 
-    public List<Goods> findAllByCursor(Long memberId, Long cursorId) {
+    public List<Goods> findGoodsByCursor(Long memberId, Long cursorId) {
         List<Long> nearByIds = redisUtil.getNearByIds(memberId, RESTRICT_DISTANCE);
         nearByIds.sort(Comparator.reverseOrder());
 

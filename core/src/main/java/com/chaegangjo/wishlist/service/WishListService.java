@@ -4,7 +4,7 @@ import com.chaegangjo.exception.WishListException;
 import com.chaegangjo.goods.domain.Goods;
 import com.chaegangjo.member.domain.Member;
 import com.chaegangjo.wishlist.domain.WishList;
-import com.chaegangjo.wishlist.dto.WishListCursorPage;
+import com.chaegangjo.paging.IdCreatedAtCursorPage;
 import com.chaegangjo.wishlist.repository.WishListRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
@@ -21,8 +21,8 @@ public class WishListService {
 
     private final WishListRepository wishListRepository;
 
-    public Slice<WishList> findWishListsByCursor(WishListCursorPage cursorPage) {
-        return wishListRepository.findAllByCursor(cursorPage);
+    public Slice<WishList> findWishListByCursor(IdCreatedAtCursorPage cursorPage, Long memberId) {
+        return wishListRepository.findAllByCursor(cursorPage, memberId);
     }
 
     @Transactional

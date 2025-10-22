@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import java.util.Collections;
 import java.util.List;
 
-import static com.chaegangjo.utils.PageProperties.GOODS_PAGE_SIZE;
+import static com.chaegangjo.paging.PageProperties.GOODS_PAGE_SIZE;
 
 @RequiredArgsConstructor
 @Component
@@ -22,7 +22,7 @@ public class GetGoodsUsecase {
 
     public GoodsCursorPageResponse<List<GoodsInfoResponse>> execute(Long memberId, Long cursorId) {
 
-        List<Goods> goods = goodsService.findAllByCursor(memberId, cursorId);
+        List<Goods> goods = goodsService.findGoodsByCursor(memberId, cursorId);
 
         if (goods.isEmpty()) {
             return GoodsCursorPageResponse.<List<GoodsInfoResponse>>builder()
@@ -31,7 +31,6 @@ public class GetGoodsUsecase {
         }
 
         Goods last = goods.getLast();
-
         List<GoodsInfoResponse> data = goods.stream().map(GoodsInfoResponse::from)
                 .toList();
 

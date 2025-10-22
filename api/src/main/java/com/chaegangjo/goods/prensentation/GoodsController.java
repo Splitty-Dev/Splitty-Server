@@ -9,6 +9,7 @@ import com.chaegangjo.goods.application.GetGoodsUsecase;
 import com.chaegangjo.goods.dto.response.GoodsInfoResponse;
 import com.chaegangjo.security.oauth2.entity.CustomOAuth2User;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -27,10 +28,10 @@ public class GoodsController {
     private final GetGoodsUsecase getGoodsUsecase;
     private final GetDetailGoodsUsecase getDetailGoodsUsecase;
 
-    @Operation(summary = "전체 상품 조회", description = "첫 요청 시 null 값으로 요청 (cursorId=null) / 이후에는 response의 nextCursor 값으로 요청")
+    @Operation(summary = "전체 상품 조회")
     @GetMapping
     public ResponseEntity<ApiResponse<GoodsCursorPageResponse<List<GoodsInfoResponse>>>> getAllGoods(
-            @Schema(example = "10")
+            @Parameter(example = "10", description = "첫 요청 시 null, 이후에는 response의 nextCursor.lastId 값")
             @RequestParam(required = false) Long cursorId,
             @AuthenticationPrincipal CustomOAuth2User user
     ) {
@@ -42,7 +43,7 @@ public class GoodsController {
     @Operation(summary = "상품 조회")
     @GetMapping("/{goodsId}")
     public ResponseEntity<ApiResponse<DetailGoodsInfoResponse>> getGoods(
-            @Schema(example = "1")
+            @Parameter(example = "1")
             @PathVariable Long goodsId)
     {
         return ResponseEntity.ok(ApiResponse.success(getDetailGoodsUsecase.execute(goodsId)));

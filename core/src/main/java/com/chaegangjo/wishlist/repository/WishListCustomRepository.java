@@ -2,10 +2,10 @@ package com.chaegangjo.wishlist.repository;
 
 
 import com.chaegangjo.wishlist.domain.WishList;
-import com.chaegangjo.wishlist.dto.WishListCursorPage;
+import com.chaegangjo.paging.IdCreatedAtCursorPage;
 import org.springframework.data.domain.Slice;
 
 public interface WishListCustomRepository {
 
-    Slice<WishList> findAllByCursor(WishListCursorPage page);
+    Slice<WishList> findAllByCursor(IdCreatedAtCursorPage page, Long memberId);
 }

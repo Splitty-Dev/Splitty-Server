@@ -7,6 +7,7 @@ import com.chaegangjo.member.dto.request.SetNeighborhoodRequest;
 import com.chaegangjo.member.dto.response.MemberInfoResponse;
 import com.chaegangjo.security.oauth2.entity.CustomOAuth2User;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,7 @@ public class MemberController {
 //    @PreAuthorize("#id == principal.id")
     @GetMapping("/{memberId}")
     public ResponseEntity<ApiResponse<MemberInfoResponse>> getMemberInfo(
-            @Schema(example = "1")
+            @Parameter(example = "1")
             @PathVariable Long memberId) {
 
         return ResponseEntity.ok(
