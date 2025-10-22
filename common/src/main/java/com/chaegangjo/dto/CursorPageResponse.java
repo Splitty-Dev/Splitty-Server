@@ -1,6 +1,8 @@
 package com.chaegangjo.dto;
 
+import com.chaegangjo.paging.NextCursor;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,9 +12,12 @@ public class CursorPageResponse<T> {
 
     T data;
     boolean hasNext = false;
+    NextCursor nextCursor;
 
-    public CursorPageResponse(T data, boolean hasNext) {
+    @Builder
+    public CursorPageResponse(T data, boolean hasNext, NextCursor nextCursor) {
         this.data = data;
         this.hasNext = hasNext;
+        this.nextCursor = nextCursor;
     }
 }
