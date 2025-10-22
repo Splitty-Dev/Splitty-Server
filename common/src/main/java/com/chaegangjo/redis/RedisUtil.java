@@ -39,9 +39,7 @@ public class RedisUtil {
 
     public void saveLocation(String key, Long id, double latitude, double longitude) {
         GeoOperations<String, Object> geoOperations = redisTemplate.opsForGeo();
-
         Point point = new Point(longitude, latitude);
-
         geoOperations.add(key, point, String.valueOf(id));
     }
 
@@ -49,7 +47,7 @@ public class RedisUtil {
 
         GeoOperations<String, Object> geoOperations = redisTemplate.opsForGeo();
 
-        Point memberPoint = geoOperations.position(RedisProperties.MEMBER_KEY, memberId).get(0);
+        Point memberPoint = geoOperations.position(RedisProperties.MEMBER_KEY, memberId.toString()).get(0);
         GeoReference<Object> reference = GeoReference.fromCoordinate(memberPoint);
 
         Distance radius = new Distance(restrictDistance, Metrics.METERS); // 반경 범위 설정
