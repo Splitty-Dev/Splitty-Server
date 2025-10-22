@@ -51,12 +51,13 @@ public class Member extends BaseEntity {
     private List<WishList> wishLists = new ArrayList<>();
 
     @Builder
-    public Member(String email, String socialId, SocialType socialType, Role role) {
+    public Member(String email, String socialId, SocialType socialType, Role role, String profileImageUrl) {
         this.email = email;
         this.socialId = socialId;
         this.socialType = socialType;
         this.rating = 0;
         this.role = role;
+        this.profileImageUrl = profileImageUrl;
         this.username = RandomUsername.getRandomUsername();
     }
 

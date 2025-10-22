@@ -44,6 +44,7 @@ public class OAuthAttributes {
                 .socialId(oAuth2UserInfo.getId())
                 .socialType(socialType)
                 .email(oAuth2UserInfo.getEmail())
+                .profileImageUrl(oAuth2UserInfo.getImageUrl())
                 .build();
     }
 }
