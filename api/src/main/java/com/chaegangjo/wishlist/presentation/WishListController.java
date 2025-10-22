@@ -28,7 +28,7 @@ public class WishListController {
     private final SaveWishListItemUsecase saveWishListItemUsecase;
     private final DeleteWishListItemUsecase deleteWishListItemUsecase;
 
-    @Operation(summary = "나의 관심 상품 조회")
+    @Operation(summary = "나의 관심 상품 조회", description = "첫 요청 시 null 값으로 요청 (cursorId=null, cursorCreatedAt=null) / 이후에는 response의 nextCursor 값으로 요청")
     @GetMapping
     public ResponseEntity<ApiResponse<WishListCursorPageResponse<List<GoodsInfoResponse>>>> getWishlist(
             GetWishListRequest request,

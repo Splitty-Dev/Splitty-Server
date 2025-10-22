@@ -29,9 +29,14 @@ public class GoodsService {
         List<Long> nearByIds = redisUtil.getNearByIds(memberId, RESTRICT_DISTANCE);
         nearByIds.sort(Comparator.reverseOrder());
 
-        List<Long> ids = nearByIds.stream().filter(id -> id < cursorId)
-                .limit(GOODS_PAGE_SIZE)
-                .toList();
+        List<Long> ids;
+        if (cursorId == null) {
+            ids = nearByIds.subList(0, Math.min(GOODS_PAGE_SIZE, nearByIds.size()));
+        } else {
+            ids = nearByIds.stream().filter(id -> id < cursorId)
+                    .limit(GOODS_PAGE_SIZE)
+                    .toList();
+        }
 
         return goodsRepository.findAllByIdInOrderByIdDesc(ids);
     }

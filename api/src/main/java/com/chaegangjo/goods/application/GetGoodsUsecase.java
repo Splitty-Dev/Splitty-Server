@@ -35,12 +35,17 @@ public class GetGoodsUsecase {
         List<GoodsInfoResponse> data = goods.stream().map(GoodsInfoResponse::from)
                 .toList();
 
-        boolean hasNext = goods.size() == GOODS_PAGE_SIZE;
+        boolean hasNext = false;
+        NextCursor nextCursor = null;
+        if (goods.size() == GOODS_PAGE_SIZE) {
+            hasNext = true;
+            nextCursor = new NextCursor(last.getId());
+        }
 
         return GoodsCursorPageResponse.<List<GoodsInfoResponse>>builder()
                 .data(data)
                 .hasNext(hasNext)
-                .nextCursor(new NextCursor(last.getId()))
+                .nextCursor(nextCursor)
                 .build();
     }
 }

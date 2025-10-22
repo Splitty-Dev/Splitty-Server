@@ -46,7 +46,7 @@ public class WishListCustomRepositoryImpl implements WishListCustomRepository {
 
 
     private BooleanExpression eqMemberId(Long memberId, QWishList wishList) {
-        if (memberId == null) return null;
+        if (memberId == null) return null; //조건 적용X
 
         return wishList.member.id.eq(memberId);
     }

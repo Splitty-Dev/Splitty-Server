@@ -2,6 +2,7 @@ package com.chaegangjo.member.appllication;
 
 
 import com.chaegangjo.goods.dto.response.GoodsInfoResponse;
+import com.chaegangjo.utils.PageProperties;
 import com.chaegangjo.wishlist.domain.WishList;
 import com.chaegangjo.wishlist.dto.WishListCursorPage;
 import com.chaegangjo.wishlist.dto.request.GetWishListRequest;
@@ -35,7 +36,11 @@ public class GetWishListUsecase {
                     .build();
         }
         else {
-            WishList last = content.getLast();
+            NextCursor nextCursor = null;
+            if (content.size() == PageProperties.DEFAULT_PAGE_SIZE) {
+                WishList last = content.getLast();
+                nextCursor = new NextCursor(last.getId(), last.getCreatedAt());
+            }
 
             List<GoodsInfoResponse> data = content.stream()
                     .map(wishList ->
@@ -45,7 +50,7 @@ public class GetWishListUsecase {
             return WishListCursorPageResponse.<List<GoodsInfoResponse>>builder()
                     .data(data)
                     .hasNext(wishLists.hasNext())
-                    .nextCursor(new NextCursor(last.getId(), last.getCreatedAt()))
+                    .nextCursor(nextCursor)
                     .build();
         }
     }

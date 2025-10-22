@@ -27,11 +27,11 @@ public class GoodsController {
     private final GetGoodsUsecase getGoodsUsecase;
     private final GetDetailGoodsUsecase getDetailGoodsUsecase;
 
-    @Operation(summary = "전체 상품 조회")
+    @Operation(summary = "전체 상품 조회", description = "첫 요청 시 null 값으로 요청 (cursorId=null) / 이후에는 response의 nextCursor 값으로 요청")
     @GetMapping
     public ResponseEntity<ApiResponse<GoodsCursorPageResponse<List<GoodsInfoResponse>>>> getAllGoods(
             @Schema(example = "10")
-            @RequestParam Long cursorId,
+            @RequestParam(required = false) Long cursorId,
             @AuthenticationPrincipal CustomOAuth2User user
     ) {
         return ResponseEntity.ok(

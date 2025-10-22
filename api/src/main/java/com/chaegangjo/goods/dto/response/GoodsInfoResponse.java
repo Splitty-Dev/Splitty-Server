@@ -11,7 +11,7 @@ public record GoodsInfoResponse(
         String name,
         @Schema(description = "1개당 가격", example = "600")
         int price, // 1개당 가격
-        @Schema(description = "공릉동")
+        @Schema(description = "법정동", example = "공릉동")
         String neighName,
         @Schema(description = "남은 수량", example = "5")
         int leftQuantity,
