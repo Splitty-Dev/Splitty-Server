@@ -3,9 +3,12 @@ package com.chaegangjo.goods.service;
 
 import com.chaegangjo.exception.GoodsException;
 import com.chaegangjo.goods.domain.Goods;
+import com.chaegangjo.goods.enums.TradeStatus;
 import com.chaegangjo.goods.repository.GoodsRepository;
+import com.chaegangjo.paging.IdCreatedAtCursorPage;
 import com.chaegangjo.redis.RedisUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +28,7 @@ public class GoodsService {
 
     private final static int RESTRICT_DISTANCE = 3000;
 
-    public List<Goods> findGoodsByCursor(Long memberId, Long cursorId) {
+    public List<Goods> findAllByCursor(Long memberId, Long cursorId) {
         List<Long> nearByIds = redisUtil.getNearByIds(memberId, RESTRICT_DISTANCE);
         nearByIds.sort(Comparator.reverseOrder());
 
@@ -39,6 +42,10 @@ public class GoodsService {
         }
 
         return goodsRepository.findAllByIdInOrderByIdDesc(ids);
+    }
+
+    public Slice<Goods> findAllByCursor(IdCreatedAtCursorPage page, Long sellerId, TradeStatus status) {
+        return goodsRepository.findAllByCursor(page, sellerId, status);
     }
 
     public Goods findGoodsById(Long goodsId) {

@@ -2,9 +2,10 @@ package com.chaegangjo.goods.dto.response;
 
 
 import com.chaegangjo.goods.domain.Goods;
+import com.chaegangjo.goods.enums.TradeStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-public record GoodsInfoResponse(
+public record GoodsInfo(
         @Schema(example = "1")
         Long id,
         @Schema(description = "상품명", example = "에코 생수 500ml")
@@ -20,11 +21,13 @@ public record GoodsInfoResponse(
         @Schema(description = "현재 참여 인원", example = "3")
         int currParticipants,
         @Schema(example = "https://image.jpg")
-        String image
+        String image,
+        @Schema(description = "거래 상태", example = "OPEN")
+        TradeStatus status
 ) {
 
-    public static GoodsInfoResponse from(Goods goods) {
-        return new GoodsInfoResponse(
+    public static GoodsInfo from(Goods goods) {
+        return new GoodsInfo(
                 goods.getId(),
                 goods.getName(),
                 (int) Math.ceil((double) goods.getTotalPrice() / goods.getTotalQuantity()),
@@ -33,7 +36,9 @@ public record GoodsInfoResponse(
                 goods.getTotalQuantity(),
                 goods.getCurrParticipants(),
                 null
-//                goods.getImages().getFirst().getImageUrl()
+//                goods.getImages().getFirst().getImageUrl(),
+                ,
+                goods.getStatus()
         );
     }
 }

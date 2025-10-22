@@ -4,15 +4,15 @@ package com.chaegangjo.goods.dto.response;
 import com.chaegangjo.goods.domain.Goods;
 import com.chaegangjo.goods.domain.GoodsImage;
 import com.chaegangjo.goods.enums.TradeStatus;
-import com.chaegangjo.member.dto.response.MemberInfoResponse;
+import com.chaegangjo.member.dto.response.MemberInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
-public record DetailGoodsInfoResponse(
+public record DetailGoodsInfo(
         @Schema(example = "1")
         Long id,
-        MemberInfoResponse seller,
+        MemberInfo seller,
         @Schema(example = "식품")
         String category,
         @Schema(example = "성수동")
@@ -37,10 +37,10 @@ public record DetailGoodsInfoResponse(
         List<String> images
 ) {
 
-    public static DetailGoodsInfoResponse from(Goods goods) {
-        return new DetailGoodsInfoResponse(
+    public static DetailGoodsInfo from(Goods goods) {
+        return new DetailGoodsInfo(
                 goods.getId(),
-                MemberInfoResponse.from(goods.getSeller()),
+                MemberInfo.from(goods.getSeller()),
                 goods.getCategory().getName(),
                 goods.getNeighName(),
                 goods.getName(),

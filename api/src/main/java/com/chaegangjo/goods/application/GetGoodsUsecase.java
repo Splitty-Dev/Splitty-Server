@@ -1,11 +1,11 @@
 package com.chaegangjo.goods.application;
 
 
-import com.chaegangjo.goods.dto.response.GoodsCursorPageResponse;
-import com.chaegangjo.goods.dto.response.GoodsCursorPageResponse.NextCursor;
+import com.chaegangjo.dto.CursorPageResponse;
 import com.chaegangjo.goods.domain.Goods;
-import com.chaegangjo.goods.dto.response.GoodsInfoResponse;
+import com.chaegangjo.goods.dto.response.GoodsInfo;
 import com.chaegangjo.goods.service.GoodsService;
+import com.chaegangjo.paging.NextCursor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -20,18 +20,18 @@ public class GetGoodsUsecase {
 
     private final GoodsService goodsService;
 
-    public GoodsCursorPageResponse<List<GoodsInfoResponse>> execute(Long memberId, Long cursorId) {
+    public CursorPageResponse<List<GoodsInfo>> execute(Long memberId, Long cursorId) {
 
-        List<Goods> goods = goodsService.findGoodsByCursor(memberId, cursorId);
+        List<Goods> goods = goodsService.findAllByCursor(memberId, cursorId);
 
         if (goods.isEmpty()) {
-            return GoodsCursorPageResponse.<List<GoodsInfoResponse>>builder()
+            return CursorPageResponse.<List<GoodsInfo>>builder()
                     .data(Collections.EMPTY_LIST)
                     .build();
         }
 
         Goods last = goods.getLast();
-        List<GoodsInfoResponse> data = goods.stream().map(GoodsInfoResponse::from)
+        List<GoodsInfo> data = goods.stream().map(GoodsInfo::from)
                 .toList();
 
         boolean hasNext = false;
@@ -41,7 +41,7 @@ public class GetGoodsUsecase {
             nextCursor = new NextCursor(last.getId());
         }
 
-        return GoodsCursorPageResponse.<List<GoodsInfoResponse>>builder()
+        return CursorPageResponse.<List<GoodsInfo>>builder()
                 .data(data)
                 .hasNext(hasNext)
                 .nextCursor(nextCursor)

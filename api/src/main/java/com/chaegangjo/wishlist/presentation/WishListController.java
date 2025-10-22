@@ -1,15 +1,14 @@
 package com.chaegangjo.wishlist.presentation;
 
 import com.chaegangjo.dto.ApiResponse;
-import com.chaegangjo.goods.dto.response.GoodsInfoResponse;
+import com.chaegangjo.dto.CursorPageResponse;
+import com.chaegangjo.goods.dto.response.GoodsInfo;
 import com.chaegangjo.wishlist.application.GetWishListUsecase;
 import com.chaegangjo.security.oauth2.entity.CustomOAuth2User;
 import com.chaegangjo.wishlist.application.DeleteWishListItemUsecase;
 import com.chaegangjo.wishlist.application.SaveWishListItemUsecase;
-import com.chaegangjo.wishlist.dto.response.WishListCursorPageResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +30,7 @@ public class WishListController {
 
     @Operation(summary = "나의 관심 상품 조회")
     @GetMapping
-    public ResponseEntity<ApiResponse<WishListCursorPageResponse<List<GoodsInfoResponse>>>> getWishlist(
+    public ResponseEntity<ApiResponse<CursorPageResponse<List<GoodsInfo>>>> getWishlist(
             @Parameter(example = "20", description = "첫 요청 시 null, 이후에는 response의 nextCursor.lastId 값")
             @RequestParam(required = false) Long cursorId,
             @Parameter(example = "2025-10-12T14:51:24.999", description = "첫 요청 시 null, 이후에는 response의 nextCursor.lastCreatedAt 값")

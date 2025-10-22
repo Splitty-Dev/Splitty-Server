@@ -2,18 +2,23 @@ package com.chaegangjo.member.prensentation;
 
 
 import com.chaegangjo.dto.ApiResponse;
+import com.chaegangjo.dto.CursorPageResponse;
+import com.chaegangjo.goods.dto.response.GoodsInfo;
+import com.chaegangjo.goods.enums.TradeStatus;
 import com.chaegangjo.member.appllication.*;
 import com.chaegangjo.member.dto.request.SetNeighborhoodRequest;
-import com.chaegangjo.member.dto.response.MemberInfoResponse;
+import com.chaegangjo.member.dto.response.MemberInfo;
 import com.chaegangjo.security.oauth2.entity.CustomOAuth2User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Tag(name = "회원", description = "회원 관련 API")
 @RequiredArgsConstructor
@@ -23,11 +28,12 @@ public class MemberController {
 
     private final GetMemberInfoUseCase getMemberInfoUseCase;
     private final SetNeighborhoodUsecase setNeighborhoodUsecase;
+    private final GetMemberSalesUseCase getMemberSalesUseCase;
 
     @Operation(summary = "회원 정보 조회")
 //    @PreAuthorize("#id == principal.id")
     @GetMapping("/{memberId}")
-    public ResponseEntity<ApiResponse<MemberInfoResponse>> getMemberInfo(
+    public ResponseEntity<ApiResponse<MemberInfo>> getMemberInfo(
             @Parameter(example = "1")
             @PathVariable Long memberId) {
 
@@ -38,7 +44,7 @@ public class MemberController {
 
     @Operation(summary = "나의 정보 조회")
     @GetMapping("/me")
-    public ResponseEntity<ApiResponse<MemberInfoResponse>> getMyInfo(
+    public ResponseEntity<ApiResponse<MemberInfo>> getMyInfo(
             @AuthenticationPrincipal CustomOAuth2User user) {
 
         return ResponseEntity.ok(
@@ -47,13 +53,29 @@ public class MemberController {
     }
 
     @Operation(summary = "나의 지역 설정")
-    @PostMapping("/neighborhood")
-    public ResponseEntity<ApiResponse<MemberInfoResponse>> setNeighborhood(
+    @PostMapping("/me/neighborhood")
+    public ResponseEntity<ApiResponse<MemberInfo>> setNeighborhood(
             @RequestBody SetNeighborhoodRequest request,
             @AuthenticationPrincipal CustomOAuth2User user) {
 
         return ResponseEntity.ok(
                 ApiResponse.success(setNeighborhoodUsecase.execute(user.getId(), request))
+        );
+    }
+
+    @Operation(summary = "나의 판매내역 조회")
+    @GetMapping("/me/sales")
+    public ResponseEntity<ApiResponse<CursorPageResponse<List<GoodsInfo>>>> getMySales(
+            @Parameter(example = "OPEN")
+            @RequestParam TradeStatus status,
+            @Parameter(example = "20", description = "첫 요청 시 null, 이후에는 response의 nextCursor.lastId 값")
+            @RequestParam(required = false) Long cursorId,
+            @Parameter(example = "2025-10-12T14:51:24.999", description = "첫 요청 시 null, 이후에는 response의 nextCursor.lastCreatedAt 값")
+            @RequestParam(required = false) LocalDateTime cursorCreatedAt,
+            @AuthenticationPrincipal CustomOAuth2User user) {
+
+        return ResponseEntity.ok(
+                ApiResponse.success(getMemberSalesUseCase.execute(user.getId(), status, cursorId, cursorCreatedAt))
         );
     }
 }

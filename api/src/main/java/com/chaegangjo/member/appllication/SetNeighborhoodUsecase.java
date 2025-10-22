@@ -2,7 +2,7 @@ package com.chaegangjo.member.appllication;
 
 
 import com.chaegangjo.member.dto.request.SetNeighborhoodRequest;
-import com.chaegangjo.member.dto.response.MemberInfoResponse;
+import com.chaegangjo.member.dto.response.MemberInfo;
 import com.chaegangjo.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -13,9 +13,9 @@ public class SetNeighborhoodUsecase {
 
     private final MemberService memberService;
 
-    public MemberInfoResponse execute(Long memberId, SetNeighborhoodRequest request) {
+    public MemberInfo execute(Long memberId, SetNeighborhoodRequest request) {
 
-        return MemberInfoResponse.from(
+        return MemberInfo.from(
                 memberService.saveMemberLocation(memberId, request.latitude(), request.longitude()));
     }
 }
