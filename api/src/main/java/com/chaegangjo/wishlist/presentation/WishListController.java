@@ -44,10 +44,9 @@ public class WishListController {
     }
 
     @Operation(summary = "관심 상품 저장")
-    @PostMapping("/{goodsId}")
     public ResponseEntity<ApiResponse<Void>> saveWishItem(
             @Parameter(example = "1")
-            @PathVariable Long goodsId,
+            @RequestBody Long goodsId,
             @AuthenticationPrincipal CustomOAuth2User user
     ) {
         saveWishListItemUsecase.execute(user.getEmail(), goodsId);
