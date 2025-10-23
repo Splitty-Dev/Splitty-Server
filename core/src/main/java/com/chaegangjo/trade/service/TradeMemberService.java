@@ -2,7 +2,6 @@ package com.chaegangjo.trade.service;
 
 import com.chaegangjo.exception.TradeMemberException;
 import com.chaegangjo.exception.errorcode.TradeMemberErrorCode;
-import com.chaegangjo.member.domain.Member;
 import com.chaegangjo.trade.domain.TradeMember;
 import com.chaegangjo.trade.repository.TradeMemberRepository;
 import lombok.RequiredArgsConstructor;

@@ -22,7 +22,7 @@ public class GetGoodsUsecase {
 
     public CursorPageResponse<List<GoodsInfo>> execute(Long memberId, Long cursorId) {
 
-        List<Goods> goods = goodsService.findAllByCursor(memberId, cursorId);
+        List<Goods> goods = goodsService.findSoldGoodsByCursor(memberId, cursorId);
 
         if (goods.isEmpty()) {
             return CursorPageResponse.<List<GoodsInfo>>builder()

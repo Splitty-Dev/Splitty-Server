@@ -18,14 +18,25 @@ import static com.chaegangjo.paging.PageProperties.GOODS_PAGE_SIZE;
 
 @RequiredArgsConstructor
 @Component
-public class GetMemberSalesUseCase {
+public class GetMemberGoodsUseCase {
 
     private final GoodsService goodsService;
 
-    public CursorPageResponse<List<GoodsInfo>> execute(Long sellerId, TradeStatus status, Long cursorId, LocalDateTime cursorCreatedAt) {
-        Slice<Goods> goods = goodsService.findAllByCursor(
+    public CursorPageResponse<List<GoodsInfo>> purchased(Long sellerId, TradeStatus status, Long cursorId, LocalDateTime cursorCreatedAt) {
+        Slice<Goods> goods = goodsService.findPurchasedGoodsByCursor(
                 new IdCreatedAtCursorPage(GOODS_PAGE_SIZE, cursorId, cursorCreatedAt), sellerId, status);
 
+        return getListCursorPageResponse(goods);
+    }
+
+    public CursorPageResponse<List<GoodsInfo>> sold(Long sellerId, TradeStatus status, Long cursorId, LocalDateTime cursorCreatedAt) {
+        Slice<Goods> goods = goodsService.findSoldGoodsByCursor(
+                new IdCreatedAtCursorPage(GOODS_PAGE_SIZE, cursorId, cursorCreatedAt), sellerId, status);
+
+        return getListCursorPageResponse(goods);
+    }
+
+    private static CursorPageResponse<List<GoodsInfo>> getListCursorPageResponse(Slice<Goods> goods) {
         List<Goods> content = goods.getContent();
         IdCreatedAtNextCursor nextCursor = null;
         if (goods.hasNext()) {

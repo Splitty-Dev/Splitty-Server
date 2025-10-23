@@ -6,6 +6,8 @@ import com.chaegangjo.goods.domain.QGoods;
 import com.chaegangjo.goods.enums.TradeStatus;
 import com.chaegangjo.member.domain.QMember;
 import com.chaegangjo.paging.IdCreatedAtCursorPage;
+import com.chaegangjo.trade.domain.QTrade;
+import com.chaegangjo.trade.domain.QTradeMember;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +42,7 @@ public class GoodsCustomRepositoryImpl implements GoodsCustomRepository {
     }
 
     @Override
-    public Slice<Goods> findAllByCursor(IdCreatedAtCursorPage page, Long sellerId, TradeStatus status) {
+    public Slice<Goods> findPurchasedGoodsByCursor(IdCreatedAtCursorPage page, Long sellerId, TradeStatus status) {
         QMember member = QMember.member;
         QGoods goods = QGoods.goods;
 
@@ -61,12 +63,40 @@ public class GoodsCustomRepositoryImpl implements GoodsCustomRepository {
         return new SliceImpl<>(fetch, PageRequest.of(0, page.getSize()), hasNext);
     }
 
+    @Override
+    public Slice<Goods> findSoldGoodsByCursor(IdCreatedAtCursorPage page, Long buyerId, TradeStatus status) {
+        QGoods goods = QGoods.goods;
+        QTrade trade = QTrade.trade;
+        QTradeMember tradeMember = QTradeMember.tradeMember;
+
+        List<Goods> fetch = queryFactory.selectFrom(goods)
+                .join(trade).on(trade.goods.eq(goods))
+                .join(tradeMember).on(tradeMember.trade.eq(trade))
+                .where(
+                        eqBuyerId(buyerId, tradeMember),
+                        eqStatus(status, goods),
+                        createdAtAndCursorId(page.getCursorCreatedAt(), page.getCursorId(), goods)
+                )
+                .orderBy(goods.createdAt.desc(), goods.id.desc())
+                .limit(page.getSize() + 1)
+                .fetch();
+
+        boolean hasNext = fetch.size() > page.getSize();
+        if (hasNext) fetch.getLast();
+
+        return new SliceImpl<>(fetch, PageRequest.of(0, page.getSize()), hasNext);
+    }
+
     private BooleanExpression eqStatus(TradeStatus status, QGoods goods) {
         return (status != null) ? goods.status.eq(status) : null;
     }
 
     private BooleanExpression eqSellerId(Long sellerId, QGoods goods) {
         return (sellerId != null) ? goods.seller.id.eq(sellerId) : null;
+    }
+
+    private BooleanExpression eqBuyerId(Long buyerId, QTradeMember tradeMember) {
+        return (buyerId != null) ? tradeMember.member.id.eq(buyerId) : null;
     }
 
     private BooleanExpression createdAtAndCursorId(LocalDateTime cursorCreatedAt, Long cursorId, QGoods goods) {

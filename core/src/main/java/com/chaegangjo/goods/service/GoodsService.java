@@ -28,7 +28,7 @@ public class GoodsService {
 
     private final static int RESTRICT_DISTANCE = 3000;
 
-    public List<Goods> findAllByCursor(Long memberId, Long cursorId) {
+    public List<Goods> findSoldGoodsByCursor(Long memberId, Long cursorId) {
         List<Long> nearByIds = redisUtil.getNearByIds(memberId, RESTRICT_DISTANCE);
         nearByIds.sort(Comparator.reverseOrder());
 
@@ -44,8 +44,12 @@ public class GoodsService {
         return goodsRepository.findAllByIdInOrderByIdDesc(ids);
     }
 
-    public Slice<Goods> findAllByCursor(IdCreatedAtCursorPage page, Long sellerId, TradeStatus status) {
-        return goodsRepository.findAllByCursor(page, sellerId, status);
+    public Slice<Goods> findSoldGoodsByCursor(IdCreatedAtCursorPage page, Long sellerId, TradeStatus status) {
+        return goodsRepository.findSoldGoodsByCursor(page, sellerId, status);
+    }
+
+    public Slice<Goods> findPurchasedGoodsByCursor(IdCreatedAtCursorPage page, Long buyerId, TradeStatus status) {
+        return goodsRepository.findPurchasedGoodsByCursor(page, buyerId, status);
     }
 
     public Goods findGoodsById(Long goodsId) {
