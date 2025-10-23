@@ -29,12 +29,15 @@ public record ChatMessageInfo(Long id,
     public static ChatMessageInfo from(ChatMessage chatMessage) {
         TradeMember tradeMember = chatMessage.getTradeMember();
         Long senderId = tradeMember.getId();
-
+        String message = chatMessage.getMessage();
+        if (chatMessage.getType() == MessageType.ENTER || chatMessage.getType() == MessageType.LEAVE) {
+            message = tradeMember.getUsername() + chatMessage.getType().getMessage();
+        }
         return ChatMessageInfo.builder()
                 .id(chatMessage.getId())
                 .senderId(senderId)
                 .type(chatMessage.getType())
-                .message(chatMessage.getMessage())
+                .message(message)
                 .createdAt(chatMessage.getCreatedAt())
                 .build();
     }
