@@ -6,9 +6,11 @@ import com.chaegangjo.goods.domain.Goods;
 import com.chaegangjo.goods.enums.TradeStatus;
 import com.chaegangjo.goods.repository.GoodsRepository;
 import com.chaegangjo.paging.IdCreatedAtCursorPage;
+import com.chaegangjo.redis.RedisProperties;
 import com.chaegangjo.redis.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -61,6 +63,9 @@ public class GoodsService {
     }
 
     public Goods saveGoods(Goods goods) {
-        return goodsRepository.save(goods);
+        Point memberPoint = redisUtil.getPoint(RedisProperties.MEMBER_KEY, goods.getSeller().getId());
+        Goods newGoods = goodsRepository.save(goods);
+        redisUtil.saveLocation(RedisProperties.GOODS_KEY, newGoods.getId(), memberPoint);
+        return newGoods;
     }
 }

@@ -45,11 +45,13 @@ public class RedisUtil {
         geoOperations.add(key, point, String.valueOf(id));
     }
 
-    public List<Long> getNearByIds(Long memberId, int restrictDistance) {
-
+    public void saveLocation(String key, Long id, Point point) {
         GeoOperations<String, Object> geoOperations = redisTemplate.opsForGeo();
+        geoOperations.add(key, point, String.valueOf(id));
+    }
 
-        Point memberPoint = geoOperations.position(RedisProperties.MEMBER_KEY, memberId.toString()).get(0);
+    public List<Long> getNearByIds(Long memberId, int restrictDistance) {
+        Point memberPoint = getPoint(RedisProperties.MEMBER_KEY, memberId);
         if (memberPoint == null) {
             throw new MemberException(MemberErrorCode.MEMBER_LOCATION_NOT_FOUND);
         }
@@ -62,6 +64,7 @@ public class RedisUtil {
                 .includeDistance()
                 .sortAscending();
 
+        GeoOperations<String, Object> geoOperations = redisTemplate.opsForGeo();
         GeoResults<RedisGeoCommands.GeoLocation<Object>> results = geoOperations
                 .search(RedisProperties.GOODS_KEY, reference, radius, args);
 
@@ -77,5 +80,10 @@ public class RedisUtil {
         }
 
         return nearByIds;
+    }
+
+    public Point getPoint(String key, Long id) {
+        GeoOperations<String, Object> geoOperations = redisTemplate.opsForGeo();
+        return geoOperations.position(key, id.toString()).get(0);
     }
 }
