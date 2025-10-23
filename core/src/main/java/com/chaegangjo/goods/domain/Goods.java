@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -62,14 +63,19 @@ public class Goods extends BaseEntity {
 
     private String preferredLocation;
 
+    private String mainImageName;
+
     @OneToMany(mappedBy = "goods", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<GoodsImage> images;
+    private List<GoodsImage> images = new ArrayList<>();
 
     @Builder
-    public Goods(Member seller, Category category, String neighName, String name, int totalPrice, int totalQuantity) {
+    public Goods(Member seller, Category category, String name, int totalPrice, int totalQuantity, String description, int leftQuantity, String preferredLocation, String mainImageName) {
         this.seller = seller;
         this.category = category;
-        this.neighName = neighName;
+        this.neighName = seller.getNeighName();
+        this.description = description;
+        this.leftQuantity = leftQuantity;
+        this.preferredLocation = preferredLocation;
         this.name = name;
         this.status = TradeStatus.OPEN;
         this.totalPrice = totalPrice;
@@ -77,6 +83,7 @@ public class Goods extends BaseEntity {
         this.viewCount = 0;
         this.totalQuantity = totalQuantity;
         this.currParticipants = 1;
+        this.mainImageName = mainImageName;
     }
 
     public int calculateUnitPrice(int totalPrice, int totalQuantity) {
@@ -92,7 +99,12 @@ public class Goods extends BaseEntity {
         this.currParticipants -= 1;
     }
 
-    public boolean isOpend() {
+    public boolean isOpened() {
         return status == TradeStatus.OPEN;
+    }
+
+    public void addImage(GoodsImage image) {
+        this.images.add(image);
+        image.setGoods(this);
     }
 }

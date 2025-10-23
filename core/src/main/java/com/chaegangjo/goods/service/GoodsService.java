@@ -59,4 +59,8 @@ public class GoodsService {
     public Goods findGoodsWishDetail(Long goodsId) {
         return goodsRepository.findGoodsWithDetail(goodsId).orElseThrow(() -> new GoodsException(GOODS_NOT_FOUND));
     }
+
+    public Goods saveGoods(Goods goods) {
+        return goodsRepository.save(goods);
+    }
 }

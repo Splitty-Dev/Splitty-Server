@@ -3,7 +3,7 @@ package com.chaegangjo.wishlist.presentation;
 import com.chaegangjo.chat.dto.request.SaveWishItemRequest;
 import com.chaegangjo.dto.ApiResponse;
 import com.chaegangjo.dto.CursorPageResponse;
-import com.chaegangjo.goods.dto.response.GoodsInfo;
+import com.chaegangjo.goods.dto.GoodsInfo;
 import com.chaegangjo.wishlist.application.GetWishListUsecase;
 import com.chaegangjo.security.oauth2.entity.CustomOAuth2User;
 import com.chaegangjo.wishlist.application.DeleteWishListItemUsecase;

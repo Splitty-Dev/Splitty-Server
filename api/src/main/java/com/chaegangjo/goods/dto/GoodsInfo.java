@@ -1,12 +1,9 @@
-package com.chaegangjo.goods.dto.response;
+package com.chaegangjo.goods.dto;
 
 
 import com.chaegangjo.goods.domain.Goods;
-import com.chaegangjo.goods.domain.GoodsImage;
 import com.chaegangjo.goods.enums.TradeStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.util.List;
 
 public record GoodsInfo(
         @Schema(example = "1")
@@ -32,11 +29,6 @@ public record GoodsInfo(
 ) {
 
     public static GoodsInfo from(Goods goods) {
-        List<GoodsImage> images = goods.getImages();
-        String mainImageUrl = null;
-        if (!images.isEmpty()) {
-            mainImageUrl = images.getFirst().getImageUrl();
-        }
         return new GoodsInfo(
                 goods.getId(),
                 goods.getName(),
@@ -45,7 +37,7 @@ public record GoodsInfo(
                 goods.getLeftQuantity(),
                 goods.getTotalQuantity(),
                 goods.getCurrParticipants(),
-                mainImageUrl,
+                goods.getMainImageName(),
                 goods.getSeller().getId(),
                 goods.getStatus()
         );

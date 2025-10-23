@@ -2,7 +2,7 @@ package com.chaegangjo.member.appllication;
 
 import com.chaegangjo.dto.CursorPageResponse;
 import com.chaegangjo.goods.domain.Goods;
-import com.chaegangjo.goods.dto.response.GoodsInfo;
+import com.chaegangjo.goods.dto.GoodsInfo;
 import com.chaegangjo.goods.enums.TradeStatus;
 import com.chaegangjo.goods.service.GoodsService;
 import com.chaegangjo.paging.IdCreatedAtCursorPage;

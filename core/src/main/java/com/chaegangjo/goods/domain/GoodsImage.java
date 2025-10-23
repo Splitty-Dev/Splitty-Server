@@ -18,12 +18,14 @@ public class GoodsImage {
     private Goods goods;
 
     @Column(nullable = false)
-    private boolean isMain = false;
+    private String imageName;
 
-    @Column(nullable = false)
-    private String fileName;
+    public GoodsImage(Goods goods, String imageName) {
+        this.goods = goods;
+        this.imageName = imageName;
+    }
 
-    public String getImageUrl() {
-        return "https://splitty-bucket.s3.ap-northeast-2.amazonaws.com/" + fileName;
+    public void setGoods(Goods goods) {
+        this.goods = goods;
     }
 }

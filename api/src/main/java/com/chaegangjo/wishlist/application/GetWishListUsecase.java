@@ -2,9 +2,8 @@ package com.chaegangjo.wishlist.application;
 
 
 import com.chaegangjo.dto.CursorPageResponse;
-import com.chaegangjo.goods.dto.response.GoodsInfo;
+import com.chaegangjo.goods.dto.GoodsInfo;
 import com.chaegangjo.paging.IdCreatedAtNextCursor;
-import com.chaegangjo.paging.NextCursor;
 import com.chaegangjo.wishlist.domain.WishList;
 import com.chaegangjo.paging.IdCreatedAtCursorPage;
 import com.chaegangjo.wishlist.service.WishListService;

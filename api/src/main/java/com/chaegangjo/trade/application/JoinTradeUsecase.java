@@ -31,7 +31,7 @@ public class JoinTradeUsecase {
     @Transactional
     public void execute(JoinTradeRequest request, Long buyerId) {
         Goods goods = goodsService.findGoodsById(request.goodsId());
-        if (!goods.isOpend()) {
+        if (!goods.isOpened()) {
             throw new TradeException(TRADE_NOT_OPENED);
         }
         if (goods.canBuy(request.quantity())) {

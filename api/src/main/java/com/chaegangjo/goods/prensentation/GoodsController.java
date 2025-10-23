@@ -4,9 +4,11 @@ package com.chaegangjo.goods.prensentation;
 import com.chaegangjo.dto.ApiResponse;
 import com.chaegangjo.dto.CursorPageResponse;
 import com.chaegangjo.goods.application.GetDetailGoodsUsecase;
-import com.chaegangjo.goods.dto.response.DetailGoodsInfo;
+import com.chaegangjo.goods.application.SaveGoodsUsecase;
+import com.chaegangjo.goods.dto.request.SaveGoodsRequest;
+import com.chaegangjo.goods.dto.DetailGoodsInfo;
 import com.chaegangjo.goods.application.GetGoodsUsecase;
-import com.chaegangjo.goods.dto.response.GoodsInfo;
+import com.chaegangjo.goods.dto.GoodsInfo;
 import com.chaegangjo.security.oauth2.entity.CustomOAuth2User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -26,6 +28,7 @@ public class GoodsController {
 
     private final GetGoodsUsecase getGoodsUsecase;
     private final GetDetailGoodsUsecase getDetailGoodsUsecase;
+    private final SaveGoodsUsecase saveGoodsUsecase;
 
     @Operation(summary = "전체 상품 조회")
     @GetMapping
@@ -46,5 +49,14 @@ public class GoodsController {
             @PathVariable Long goodsId)
     {
         return ResponseEntity.ok(ApiResponse.success(getDetailGoodsUsecase.execute(goodsId)));
+    }
+
+    @Operation(summary = "상품 등록")
+    @PostMapping
+    public ResponseEntity<ApiResponse<DetailGoodsInfo>> saveGoods(
+            @RequestBody SaveGoodsRequest request,
+            @AuthenticationPrincipal CustomOAuth2User user
+    ) {
+        return ResponseEntity.ok(ApiResponse.success(saveGoodsUsecase.execute(request, user.getId())));
     }
 }

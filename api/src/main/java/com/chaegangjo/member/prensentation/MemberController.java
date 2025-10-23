@@ -3,7 +3,7 @@ package com.chaegangjo.member.prensentation;
 
 import com.chaegangjo.dto.ApiResponse;
 import com.chaegangjo.dto.CursorPageResponse;
-import com.chaegangjo.goods.dto.response.GoodsInfo;
+import com.chaegangjo.goods.dto.GoodsInfo;
 import com.chaegangjo.goods.enums.TradeStatus;
 import com.chaegangjo.member.appllication.*;
 import com.chaegangjo.member.dto.request.SetNeighborhoodRequest;

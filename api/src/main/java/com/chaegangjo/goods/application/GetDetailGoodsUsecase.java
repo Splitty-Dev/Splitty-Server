@@ -1,6 +1,6 @@
 package com.chaegangjo.goods.application;
 
-import com.chaegangjo.goods.dto.response.DetailGoodsInfo;
+import com.chaegangjo.goods.dto.DetailGoodsInfo;
 import com.chaegangjo.goods.service.GoodsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

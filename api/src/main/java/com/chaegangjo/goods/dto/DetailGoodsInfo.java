@@ -1,13 +1,16 @@
-package com.chaegangjo.goods.dto.response;
+package com.chaegangjo.goods.dto;
 
 
 import com.chaegangjo.goods.domain.Goods;
 import com.chaegangjo.goods.domain.GoodsImage;
 import com.chaegangjo.goods.enums.TradeStatus;
 import com.chaegangjo.member.dto.response.MemberInfo;
+import com.chaegangjo.utils.S3Utils;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public record DetailGoodsInfo(
         @Schema(example = "1")
@@ -51,8 +54,37 @@ public record DetailGoodsInfo(
                 goods.getLeftQuantity(),
                 goods.getCurrParticipants(),
                 goods.getPreferredLocation(),
-                goods.getImages().stream()
-                        .map(GoodsImage::getImageUrl).toList()
+                getImageUrls(goods, goods.getImages())
         );
+    }
+
+    public static DetailGoodsInfo of(Goods goods, List<GoodsImage> images) {
+        return new DetailGoodsInfo(
+                goods.getId(),
+                MemberInfo.from(goods.getSeller()),
+                goods.getCategory().getName(),
+                goods.getNeighName(),
+                goods.getName(),
+                goods.getDescription(),
+                goods.getStatus(),
+                goods.getUnitPrice(),
+                goods.getViewCount(),
+                goods.getLeftQuantity(),
+                goods.getCurrParticipants(),
+                goods.getPreferredLocation(),
+                getImageUrls(goods, images)
+        );
+    }
+
+    public static List<String> getImageUrls(Goods goods, List<GoodsImage> images) {
+        List<String> imageUrls = new ArrayList<>();
+        imageUrls.add(S3Utils.getImageUrl(goods.getMainImageName()));
+
+        List<String> subImageUrls = images.stream()
+                .map(image -> S3Utils.getImageUrl(image.getImageName()))
+                .collect(Collectors.toList());
+        imageUrls.addAll(subImageUrls);
+
+        return imageUrls;
     }
 }
