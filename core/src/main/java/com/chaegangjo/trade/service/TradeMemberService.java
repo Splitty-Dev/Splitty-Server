@@ -2,6 +2,8 @@ package com.chaegangjo.trade.service;
 
 import com.chaegangjo.exception.TradeMemberException;
 import com.chaegangjo.exception.errorcode.TradeMemberErrorCode;
+import com.chaegangjo.member.domain.Member;
+import com.chaegangjo.trade.domain.Trade;
 import com.chaegangjo.trade.domain.TradeMember;
 import com.chaegangjo.trade.repository.TradeMemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,10 +21,19 @@ public class TradeMemberService {
 
     public TradeMember findTradeMember(Long tradeId, Long memberId) {
         return tradeMemberRepository.findByTrade_IdAndMember_Id(tradeId, memberId)
-                .orElseThrow(() -> new TradeMemberException(TradeMemberErrorCode.TRADEMEMBER_NOT_FOUND));
+                .orElseThrow(() -> new TradeMemberException(TradeMemberErrorCode.TRADE_MEMBER_NOT_FOUND));
     }
 
     public List<TradeMember> findMembersByTradeId(Long tradeId) {
         return tradeMemberRepository.findAllByTradeId(tradeId);
+    }
+
+    @Transactional
+    public TradeMember saveTradeMember(Trade trade, Member buyer, int quantity) {
+        return tradeMemberRepository.save(new TradeMember(trade, buyer, quantity));
+    }
+
+    public boolean existsByTradeAndMember(Trade trade, Member member) {
+        return tradeMemberRepository.existsByTradeAndMember(trade, member);
     }
 }

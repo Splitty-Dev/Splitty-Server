@@ -28,4 +28,11 @@ public class TradeMember extends BaseEntity {
 
     @Column(nullable = false)
     private int quantity;
+
+    public TradeMember(Trade trade, Member member, int quantity) {
+        this.member = member;
+        this.username = member.getUsername();
+        this.trade = trade;
+        this.quantity = quantity;
+    }
 }

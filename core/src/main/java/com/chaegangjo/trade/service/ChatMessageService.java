@@ -1,8 +1,8 @@
 package com.chaegangjo.trade.service;
 
 import com.chaegangjo.paging.IdCreatedAtCursorPage;
-import com.chaegangjo.paging.PageProperties;
 import com.chaegangjo.trade.domain.ChatMessage;
+import com.chaegangjo.trade.domain.MessageType;
 import com.chaegangjo.trade.domain.TradeMember;
 import com.chaegangjo.trade.repository.ChatMessageRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static com.chaegangjo.paging.PageProperties.CHAT_MESSAGE_PAGE_SIZE;
 
@@ -24,8 +23,13 @@ public class ChatMessageService {
 
     @Transactional
     public ChatMessage saveChatMessage(TradeMember tradeMember, String message) {
-
         ChatMessage chatMessage = new ChatMessage(tradeMember, message);
+        return chatMessageRepository.save(chatMessage);
+    }
+
+    @Transactional
+    public ChatMessage saveChatMessage(TradeMember tradeMember, MessageType messageType) {
+        ChatMessage chatMessage = new ChatMessage(tradeMember, messageType);
         return chatMessageRepository.save(chatMessage);
     }
 

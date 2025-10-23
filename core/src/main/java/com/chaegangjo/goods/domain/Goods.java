@@ -58,9 +58,6 @@ public class Goods extends BaseEntity {
     private int leftQuantity;
 
     @Column(nullable = false)
-    private int maxParticipants;
-
-    @Column(nullable = false)
     private int currParticipants;
 
     private String preferredLocation;
@@ -69,7 +66,7 @@ public class Goods extends BaseEntity {
     private List<GoodsImage> images;
 
     @Builder
-    public Goods(Member seller, Category category, String neighName, String name, int totalPrice, int totalQuantity, int maxParticipants) {
+    public Goods(Member seller, Category category, String neighName, String name, int totalPrice, int totalQuantity) {
         this.seller = seller;
         this.category = category;
         this.neighName = neighName;
@@ -79,11 +76,23 @@ public class Goods extends BaseEntity {
         this.unitPrice = calculateUnitPrice(totalPrice, totalQuantity);
         this.viewCount = 0;
         this.totalQuantity = totalQuantity;
-        this.maxParticipants = maxParticipants;
         this.currParticipants = 1;
     }
 
     public int calculateUnitPrice(int totalPrice, int totalQuantity) {
         return (int) Math.ceil((double) totalPrice / totalQuantity);
+    }
+
+    public boolean canBuy(int quantity) {
+        return this.leftQuantity >= quantity;
+    }
+
+    public void joinTrade(int quantity) {
+        this.leftQuantity -= quantity;
+        this.currParticipants -= 1;
+    }
+
+    public boolean isOpend() {
+        return status == TradeStatus.OPEN;
     }
 }

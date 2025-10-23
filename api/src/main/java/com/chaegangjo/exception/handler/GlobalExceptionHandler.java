@@ -38,6 +38,14 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.failure(e.getErrorCode()));
     }
 
+    @ExceptionHandler(TradeException.class)
+    public ResponseEntity<ApiResponse<Void>> handleException(TradeException e) {
+        log.warn("[!] Trade Exception: {}", e);
+
+        return ResponseEntity.status(e.getErrorCode().getStatus())
+                .body(ApiResponse.failure(e.getErrorCode()));
+    }
+
     @ExceptionHandler(GoodsException.class)
     public ResponseEntity<ApiResponse<Void>> handleException(GoodsException e) {
         log.warn("[!] Goods Exception: {}", e);

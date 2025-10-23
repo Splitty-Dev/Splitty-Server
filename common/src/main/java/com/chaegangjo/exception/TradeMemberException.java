@@ -1,10 +1,10 @@
 package com.chaegangjo.exception;
 
-import com.chaegangjo.exception.errorcode.BaseErrorCode;
+import com.chaegangjo.exception.errorcode.TradeMemberErrorCode;
 
 public class TradeMemberException extends BaseException{
 
-    public TradeMemberException(BaseErrorCode errorCode) {
+    public TradeMemberException(TradeMemberErrorCode errorCode) {
         super(errorCode);
     }
 }
