@@ -21,5 +21,9 @@ public class GoodsImage {
     private boolean isMain = false;
 
     @Column(nullable = false)
-    private String imageUrl;
+    private String fileName;
+
+    public String getImageUrl() {
+        return "https://splitty-bucket.s3.ap-northeast-2.amazonaws.com/" + fileName;
+    }
 }
