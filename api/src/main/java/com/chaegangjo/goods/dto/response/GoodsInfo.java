@@ -2,8 +2,11 @@ package com.chaegangjo.goods.dto.response;
 
 
 import com.chaegangjo.goods.domain.Goods;
+import com.chaegangjo.goods.domain.GoodsImage;
 import com.chaegangjo.goods.enums.TradeStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.List;
 
 public record GoodsInfo(
         @Schema(example = "1")
@@ -21,12 +24,19 @@ public record GoodsInfo(
         @Schema(description = "현재 참여 인원", example = "3")
         int currParticipants,
         @Schema(example = "https://image.jpg")
-        String image,
+        String imageUrl,
+        @Schema(example = "1")
+        Long sellerId,
         @Schema(description = "거래 상태", example = "OPEN")
         TradeStatus status
 ) {
 
     public static GoodsInfo from(Goods goods) {
+        List<GoodsImage> images = goods.getImages();
+        String mainImageUrl = null;
+        if (!images.isEmpty()) {
+            mainImageUrl = images.getFirst().getImageUrl();
+        }
         return new GoodsInfo(
                 goods.getId(),
                 goods.getName(),
@@ -35,9 +45,8 @@ public record GoodsInfo(
                 goods.getLeftQuantity(),
                 goods.getTotalQuantity(),
                 goods.getCurrParticipants(),
-                null
-//                goods.getImages().getFirst().getImageUrl(),
-                ,
+                mainImageUrl,
+                goods.getSeller().getId(),
                 goods.getStatus()
         );
     }

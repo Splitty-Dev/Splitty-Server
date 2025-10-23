@@ -34,7 +34,7 @@ public record DetailGoodsInfo(
         @Schema(example = "성수역 3번 출구")
         String preferredLocation,
         @Schema(example = "[\"http://image1.jpg\", \"http://image2.jpg\"]")
-        List<String> images
+        List<String> imageUrls
 ) {
 
     public static DetailGoodsInfo from(Goods goods) {
