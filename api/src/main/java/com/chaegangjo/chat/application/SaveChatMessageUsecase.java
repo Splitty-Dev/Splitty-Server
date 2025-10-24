@@ -17,7 +17,7 @@ public class SaveChatMessageUsecase {
     private final TradeMemberService tradeMemberService;
 
     public StompChatMessageResponse execute(Long senderId, Long tradeId, String message) {
-        TradeMember tradeMember = tradeMemberService.findTradeMember(senderId, tradeId);
+        TradeMember tradeMember = tradeMemberService.findTradeMember(tradeId, senderId);
         ChatMessage chatMessage = chatMessageService.saveChatMessage(tradeMember, message);
 
         return StompChatMessageResponse.of(chatMessage, tradeId, senderId, tradeMember.getUsername());
