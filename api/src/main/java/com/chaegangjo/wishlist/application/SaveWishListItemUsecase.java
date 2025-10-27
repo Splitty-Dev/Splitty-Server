@@ -20,6 +20,7 @@ public class SaveWishListItemUsecase {
     public void execute(Long memberId, SaveWishItemRequest request) {
         Member member = memberService.findMemberById(memberId);
         Goods goods = goodsService.findGoodsById(request.goodsId());
+        goods.incrementTotalWishlist();
         wishListService.saveWishItem(member, goods);
     }
 }

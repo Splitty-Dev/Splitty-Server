@@ -7,9 +7,6 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-
-import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -27,8 +24,7 @@ public class WishList extends BaseEntity {
     @JoinColumn(name = "goods_id")
     private Goods goods;
 
-    @CreatedDate
-    private LocalDateTime createdAt;
+    private Long quantity;
 
     public WishList(Member member, Goods goods) {
         this.member = member;

@@ -65,6 +65,8 @@ public class Goods extends BaseEntity {
 
     private String mainImageName;
 
+    private int totalWishlist;
+
     @OneToMany(mappedBy = "goods", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<GoodsImage> images = new ArrayList<>();
 
@@ -83,6 +85,7 @@ public class Goods extends BaseEntity {
         this.viewCount = 0;
         this.totalQuantity = totalQuantity;
         this.currParticipants = 1;
+        this.totalWishlist = 0;
         this.mainImageName = mainImageName;
     }
 
@@ -106,5 +109,15 @@ public class Goods extends BaseEntity {
     public void addImage(GoodsImage image) {
         this.images.add(image);
         image.setGoods(this);
+    }
+
+    public void incrementTotalWishlist() {
+        this.totalWishlist++;
+    }
+
+    public void decrementTotalWishlist() {
+        if (this.totalWishlist > 0) {
+            this.totalWishlist--;
+        }
     }
 }
