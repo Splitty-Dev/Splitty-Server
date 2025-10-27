@@ -2,13 +2,16 @@ package com.chaegangjo.trade.domain;
 
 import com.chaegangjo.entity.BaseEntity;
 import com.chaegangjo.goods.domain.Goods;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-
-import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -22,7 +25,7 @@ public class Trade extends BaseEntity {
     @JoinColumn(name = "goods_id")
     private Goods goods;
 
-    @CreatedDate
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    public Trade(Goods goods) {
+        this.goods = goods;
+    }
 }
