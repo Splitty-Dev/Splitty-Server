@@ -4,6 +4,7 @@ import com.chaegangjo.chat.dto.request.SaveWishItemRequest;
 import com.chaegangjo.dto.ApiResponse;
 import com.chaegangjo.dto.CursorPageResponse;
 import com.chaegangjo.goods.dto.GoodsInfo;
+import com.chaegangjo.wishlist.application.ExistsInWishListUsecase;
 import com.chaegangjo.wishlist.application.GetWishListUsecase;
 import com.chaegangjo.security.oauth2.entity.CustomOAuth2User;
 import com.chaegangjo.wishlist.application.DeleteWishListItemUsecase;
@@ -28,6 +29,7 @@ public class WishListController {
     private final GetWishListUsecase getWishListUsecase;
     private final SaveWishListItemUsecase saveWishListItemUsecase;
     private final DeleteWishListItemUsecase deleteWishListItemUsecase;
+    private final ExistsInWishListUsecase existsInWishListUsecase;
 
     @Operation(summary = "나의 관심 상품 조회")
     @GetMapping
@@ -63,5 +65,15 @@ public class WishListController {
     ) {
         deleteWishListItemUsecase.execute(user.getId(), goodsId);
         return ResponseEntity.ok(ApiResponse.success());
+    }
+
+    @Operation(summary = "관심 상품 등록 여부")
+    @GetMapping("/exists")
+    public ResponseEntity<ApiResponse<ExistsInWishListResponse>> ExistsInWishList(
+            @Parameter(example = "1", description = "상품 ID")
+            @RequestParam Long goodsId,
+            @AuthenticationPrincipal CustomOAuth2User user
+    ) {
+        return ResponseEntity.ok(ApiResponse.success(existsInWishListUsecase.execute(user.getId(), goodsId)));
     }
 }
