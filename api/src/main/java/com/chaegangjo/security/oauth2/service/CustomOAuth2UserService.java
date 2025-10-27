@@ -42,7 +42,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private Member getOrSave(OAuthAttributes attributes, SocialType socialType) {
         String socialId = attributes.getOAuth2UserInfo().getId();
-
         return memberRepository.findBySocialId(socialId)
                 .orElseGet(() -> memberRepository.save(attributes.toEntity(socialType)));
 

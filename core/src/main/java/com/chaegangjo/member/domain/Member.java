@@ -23,9 +23,10 @@ public class Member extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(unique = true)
     private String socialId;
 
     @Enumerated(EnumType.STRING)
@@ -42,6 +43,9 @@ public class Member extends BaseEntity {
     @Column(nullable = false)
     private float rating;
 
+    @Column(nullable = false)
+    private int reviewCount;
+
     @Column(length = 20)
     private String neighName;
 
@@ -56,6 +60,7 @@ public class Member extends BaseEntity {
         this.socialId = socialId;
         this.socialType = socialType;
         this.rating = 0;
+        this.reviewCount = 0;
         this.role = role;
         this.profileImageUrl = profileImageUrl;
         this.username = RandomUsername.getRandomUsername();
@@ -63,5 +68,12 @@ public class Member extends BaseEntity {
 
     public void setNeighName(String neighName) {
         this.neighName = neighName;
+    }
+
+    public void calculateRating(float newRating) {
+        float totalRating = rating * reviewCount;
+        totalRating += newRating;
+        reviewCount += 1;
+        rating = totalRating / reviewCount;
     }
 }
