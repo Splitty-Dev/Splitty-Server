@@ -1,17 +1,13 @@
 package com.chaegangjo.review.domain;
 
-
 import com.chaegangjo.entity.BaseCreatedEntity;
-import com.chaegangjo.entity.BaseEntity;
 import com.chaegangjo.member.domain.Member;
 import com.chaegangjo.trade.domain.TradeMember;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-
-import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -34,4 +30,12 @@ public class Review extends BaseCreatedEntity {
 
     @Column(nullable = false)
     private float rating;
+
+    @Builder
+    public Review(Member reviewee, TradeMember reviewer, String content, float rating) {
+        this.reviewee = reviewee;
+        this.reviewer = reviewer;
+        this.content = content;
+        this.rating = rating;
+    }
 }
