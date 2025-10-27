@@ -9,6 +9,7 @@ import com.chaegangjo.wishlist.application.GetWishListUsecase;
 import com.chaegangjo.security.oauth2.entity.CustomOAuth2User;
 import com.chaegangjo.wishlist.application.DeleteWishListItemUsecase;
 import com.chaegangjo.wishlist.application.SaveWishListItemUsecase;
+import com.chaegangjo.wishlist.dto.response.ExistsInWishListResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -40,9 +41,7 @@ public class WishListController {
             @RequestParam(required = false) LocalDateTime cursorCreatedAt,
             @AuthenticationPrincipal CustomOAuth2User user
     ) {
-        return ResponseEntity.ok(
-                ApiResponse.success(getWishListUsecase.execute(user.getId(), cursorId, cursorCreatedAt))
-        );
+        return ResponseEntity.ok(ApiResponse.success(getWishListUsecase.execute(user.getId(), cursorId, cursorCreatedAt)));
     }
 
     @Operation(summary = "관심 상품 저장")

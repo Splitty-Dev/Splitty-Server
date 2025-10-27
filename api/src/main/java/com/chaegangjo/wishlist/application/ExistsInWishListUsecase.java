@@ -4,7 +4,7 @@ import com.chaegangjo.goods.domain.Goods;
 import com.chaegangjo.goods.service.GoodsService;
 import com.chaegangjo.member.domain.Member;
 import com.chaegangjo.member.service.MemberService;
-import com.chaegangjo.wishlist.presentation.ExistsInWishListResponse;
+import com.chaegangjo.wishlist.dto.response.ExistsInWishListResponse;
 import com.chaegangjo.wishlist.service.WishListService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

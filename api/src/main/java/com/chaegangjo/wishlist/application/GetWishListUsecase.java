@@ -1,20 +1,19 @@
 package com.chaegangjo.wishlist.application;
 
 
+import static com.chaegangjo.paging.PageProperties.WISH_LIST_PAGE_SIZE;
+
 import com.chaegangjo.dto.CursorPageResponse;
 import com.chaegangjo.goods.dto.GoodsInfo;
+import com.chaegangjo.paging.IdCreatedAtCursorPage;
 import com.chaegangjo.paging.IdCreatedAtNextCursor;
 import com.chaegangjo.wishlist.domain.WishList;
-import com.chaegangjo.paging.IdCreatedAtCursorPage;
 import com.chaegangjo.wishlist.service.WishListService;
+import java.time.LocalDateTime;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
-import java.util.List;
-
-import static com.chaegangjo.paging.PageProperties.WISH_LIST_PAGE_SIZE;
 
 @RequiredArgsConstructor
 @Component
@@ -23,7 +22,7 @@ public class GetWishListUsecase {
     private final WishListService wishListService;
 
     public CursorPageResponse<List<GoodsInfo>> execute(Long memberId, Long cursorId, LocalDateTime cursorCreatedAt) {
-        Slice<WishList> wishLists = wishListService.findWishListByCursor(
+        Slice<WishList> wishLists = wishListService.getWishListByCursor(
                 new IdCreatedAtCursorPage(WISH_LIST_PAGE_SIZE, cursorId, cursorCreatedAt), memberId);
 
         List<WishList> content = wishLists.getContent();
