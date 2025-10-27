@@ -40,4 +40,17 @@ public class ReviewController {
         saveReviewsUsecase.execute(request, user.getId());
         return ResponseEntity.ok(ApiResponse.success());
     }
+
+    @Operation(summary = "회원 리뷰 조회")
+    @PostMapping("/{revieweeId}")
+    public ResponseEntity<ApiResponse<CursorPageResponse<List<ReviewInfo>>>> getReviewsByMember(
+            @Parameter
+            @PathVariable Long revieweeId,
+            @Parameter(example = "20", description = "첫 요청 시 null, 이후에는 response의 nextCursor.lastId 값")
+            @RequestParam(required = false) Long cursorId,
+            @Parameter(example = "2025-10-12T14:51:24.999", description = "첫 요청 시 null, 이후에는 response의 nextCursor.lastCreatedAt 값")
+            @RequestParam(required = false) LocalDateTime cursorCreatedAt
+    ) {
+        return ResponseEntity.ok(ApiResponse.success(getReviewsUsecase.execute(cursorId, cursorCreatedAt, revieweeId)));
+    }
 }

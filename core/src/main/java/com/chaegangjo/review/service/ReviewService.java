@@ -19,4 +19,8 @@ public class ReviewService {
     public void saveReviews(List<Review> reviews) {
         reviewRepository.saveAll(reviews);
     }
+
+    public Slice<Review> getReviews(IdCreatedAtCursorPage cursorPage, Long revieweeId) {
+        return reviewRepository.findAllByCursor(cursorPage, revieweeId);
+    }
 }
