@@ -3,6 +3,7 @@ package com.chaegangjo.goods.dto;
 
 import com.chaegangjo.goods.domain.Goods;
 import com.chaegangjo.goods.enums.TradeStatus;
+import com.chaegangjo.utils.S3Utils;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public record GoodsInfo(
@@ -20,8 +21,10 @@ public record GoodsInfo(
         int quantity,
         @Schema(description = "현재 참여 인원", example = "3")
         int currParticipants,
-        @Schema(example = "https://image.jpg")
-        String imageUrl,
+        @Schema(example = "https://bucket.amazonaws.com/")
+        String imageUrlPrefix,
+        @Schema(example = "image.jpg")
+        String imageName,
         @Schema(example = "1")
         Long sellerId,
         @Schema(description = "거래 상태", example = "OPEN")
@@ -37,6 +40,7 @@ public record GoodsInfo(
                 goods.getLeftQuantity(),
                 goods.getTotalQuantity(),
                 goods.getCurrParticipants(),
+                S3Utils.S3_BUCKET_URL_PREFIX,
                 goods.getMainImageName(),
                 goods.getSeller().getId(),
                 goods.getStatus()

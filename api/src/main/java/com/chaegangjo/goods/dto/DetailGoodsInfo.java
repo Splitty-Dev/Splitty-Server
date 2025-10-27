@@ -7,7 +7,6 @@ import com.chaegangjo.goods.enums.TradeStatus;
 import com.chaegangjo.member.dto.response.MemberInfo;
 import com.chaegangjo.utils.S3Utils;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,8 +35,12 @@ public record DetailGoodsInfo(
         int currParticipants,
         @Schema(example = "성수역 3번 출구")
         String preferredLocation,
-        @Schema(example = "[\"http://image1.jpg\", \"http://image2.jpg\"]")
-        List<String> imageUrls
+        @Schema(example = "https://bucket.amazonaws.com/")
+        String imageUrlPrefix,
+        @Schema(example = "[\"image1.jpg\", \"image2.jpg\"]")
+        List<String> imageName,
+        @Schema(example = "30")
+        int totalWishlist
 ) {
 
     public static DetailGoodsInfo from(Goods goods) {
@@ -54,7 +57,9 @@ public record DetailGoodsInfo(
                 goods.getLeftQuantity(),
                 goods.getCurrParticipants(),
                 goods.getPreferredLocation(),
-                getImageUrls(goods, goods.getImages())
+                S3Utils.S3_BUCKET_URL_PREFIX,
+                getImageName(goods, goods.getImages()),
+                goods.getTotalWishlist()
         );
     }
 
@@ -72,19 +77,19 @@ public record DetailGoodsInfo(
                 goods.getLeftQuantity(),
                 goods.getCurrParticipants(),
                 goods.getPreferredLocation(),
-                getImageUrls(goods, images)
+                S3Utils.S3_BUCKET_URL_PREFIX,
+                getImageName(goods, images),
+                goods.getTotalWishlist()
         );
     }
 
-    public static List<String> getImageUrls(Goods goods, List<GoodsImage> images) {
+    public static List<String> getImageName(Goods goods, List<GoodsImage> images) {
         List<String> imageUrls = new ArrayList<>();
-        imageUrls.add(S3Utils.getImageUrl(goods.getMainImageName()));
-
+        imageUrls.add(goods.getMainImageName());
         List<String> subImageUrls = images.stream()
-                .map(image -> S3Utils.getImageUrl(image.getImageName()))
+                .map(GoodsImage::getImageName)
                 .collect(Collectors.toList());
         imageUrls.addAll(subImageUrls);
-
         return imageUrls;
     }
 }
