@@ -10,6 +10,6 @@ import java.util.Optional;
 public interface TradeMemberRepository extends JpaRepository<TradeMember, Long>, TradeMemberCustomRepository {
 
     Optional<TradeMember> findByTrade_IdAndMember_Id(Long tradeId, Long memberId);
-
+    boolean existsByTrade_Goods_IdAndMember_Id(Long goodsId, Long memberId);
     boolean existsByTradeAndMember(Trade trade, Member member);
 }

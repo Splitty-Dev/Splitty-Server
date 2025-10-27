@@ -24,6 +24,10 @@ public class TradeMemberService {
                 .orElseThrow(() -> new TradeMemberException(TradeMemberErrorCode.TRADE_MEMBER_NOT_FOUND));
     }
 
+    public boolean existTradeMember(Long goodsId, Long memberId) {
+        return tradeMemberRepository.existsByTrade_Goods_IdAndMember_Id(goodsId, memberId);
+    }
+
     public List<TradeMember> findMembersByTradeId(Long tradeId) {
         return tradeMemberRepository.findAllByTradeId(tradeId);
     }
