@@ -22,9 +22,9 @@ public class SaveReviewsUsecase {
 
     @Transactional
     public void execute(SaveReviewsRequest request, Long reviewerId) {
-        TradeMember reviewer = tradeMemberService.findTradeMember(request.getTradeId(), reviewerId);
+        TradeMember reviewer = tradeMemberService.findTradeMember(request.tradeId(), reviewerId);
         //TODO: 리뷰 작성 권한 검증, 중복 작성 방지, 자기 자신 리뷰 작성 방지, 참여 회원 여부 검증
-        List<Review> reviews = request.getReviews().stream()
+        List<Review> reviews = request.reviews().stream()
                         .map(review -> {
                             Member reviewee = memberService.findMemberById(review.getRevieweeId());
                             reviewee.calculateRating(review.getRating());

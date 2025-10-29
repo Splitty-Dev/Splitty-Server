@@ -44,7 +44,7 @@ public class ReviewController {
     @Operation(summary = "회원 리뷰 조회")
     @PostMapping("/{revieweeId}")
     public ResponseEntity<ApiResponse<CursorPageResponse<List<ReviewInfo>>>> getReviewsByMember(
-            @Parameter
+            @Parameter(example = "2", description = "리뷰 받은 회원 ID")
             @PathVariable Long revieweeId,
             @Parameter(example = "20", description = "첫 요청 시 null, 이후에는 response의 nextCursor.lastId 값")
             @RequestParam(required = false) Long cursorId,

@@ -1,22 +1,23 @@
 package com.chaegangjo.review.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter
-public class SaveReviewsRequest {
-
-    private Long tradeId;
-    private List<ReviewInfo> reviews;
+public record SaveReviewsRequest (
+        @Schema(example = "1")
+        Long tradeId, List<SaveReviewInfo> reviews) {
 
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @Getter
-    public static class ReviewInfo {
+    public static class SaveReviewInfo {
+        @Schema(example = "2")
         private Long revieweeId;
+        @Schema(example = "5")
         private int rating;
+        @Schema(example = "정말 친절하고 빠르게 거래했어요!")
         private String content;
     }
 }

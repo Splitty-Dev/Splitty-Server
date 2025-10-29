@@ -39,4 +39,8 @@ public record SaveGoodsRequest(
                 .seller(seller)
                 .build();
     }
+
+    public int getMyQuantity() {
+        return totalQuantity - leftQuantity;
+    }
 }

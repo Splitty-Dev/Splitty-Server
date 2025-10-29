@@ -25,7 +25,7 @@ public class TradeService {
         return tradeRepository.findByGoods(goods).orElseThrow(() -> new TradeException(TRADE_NOT_FOUND));
     }
 
-    public void saveTrade(Trade trade) {
-        tradeRepository.save(trade);
+    public Trade saveTrade(Trade trade) {
+        return tradeRepository.save(trade);
     }
 }
