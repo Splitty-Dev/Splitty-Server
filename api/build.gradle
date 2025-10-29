@@ -30,9 +30,6 @@ dependencies {
 
     //openfeign
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
-
-    //websocket
-    implementation 'org.springframework.boot:spring-boot-starter-websocket'
 }
 
 springBoot {

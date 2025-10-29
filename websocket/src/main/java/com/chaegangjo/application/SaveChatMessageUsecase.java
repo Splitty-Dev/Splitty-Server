@@ -1,13 +1,12 @@
-package com.chaegangjo.chat.application;
+package com.chaegangjo.application;
 
-import com.chaegangjo.chat.dto.response.StompChatMessageResponse;
+import com.chaegangjo.dto.StompChatMessageResponse;
 import com.chaegangjo.trade.domain.ChatMessage;
 import com.chaegangjo.trade.domain.TradeMember;
 import com.chaegangjo.trade.service.ChatMessageService;
 import com.chaegangjo.trade.service.TradeMemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
 
 @RequiredArgsConstructor
 @Component

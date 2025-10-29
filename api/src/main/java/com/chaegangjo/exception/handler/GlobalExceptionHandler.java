@@ -6,7 +6,6 @@ import com.chaegangjo.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -14,13 +13,13 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @MessageExceptionHandler
-    public ResponseEntity<ApiResponse<Void>> handleException(ChatException e) {
-        log.warn("[!] Chat Exception: {}", e);
-
-        return ResponseEntity.status(e.getErrorCode().getStatus())
-                .body(ApiResponse.failure(e.getErrorCode()));
-    }
+//    @MessageExceptionHandler
+//    public ResponseEntity<ApiResponse<Void>> handleException(ChatException e) {
+//        log.warn("[!] Chat Exception: {}", e);
+//
+//        return ResponseEntity.status(e.getErrorCode().getStatus())
+//                .body(ApiResponse.failure(e.getErrorCode()));
+//    }
 
     @ExceptionHandler(MemberException.class)
     public ResponseEntity<ApiResponse<Void>> handleException(MemberException e) {

@@ -1,16 +1,15 @@
-package com.chaegangjo.chat.presentation;
+package com.chaegangjo.presentation;
 
-import com.chaegangjo.chat.application.SaveChatMessageUsecase;
-import com.chaegangjo.chat.dto.request.StompChatMessageRequest;
-import com.chaegangjo.chat.dto.response.StompChatMessageResponse;
+import com.chaegangjo.application.SaveChatMessageUsecase;
+import com.chaegangjo.dto.StompChatMessageRequest;
+import com.chaegangjo.dto.StompChatMessageResponse;
+import java.security.Principal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
-
-import java.security.Principal;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -23,9 +22,9 @@ public class StompChatController {
     @SendTo("/sub/trade.{tradeId}/chat") //server->client 주소: /sub/trade.{tradeId}/chat
     public StompChatMessageResponse send(StompChatMessageRequest request,
                                          Principal principal,
-                                         @DestinationVariable Long tradeId) {
+                                         @DestinationVariable("tradeId") Long tradeId) {
 
-        Long memberId = Long.parseLong(principal.getName());
-        return saveChatMessageUsecase.execute(memberId, tradeId, request.message());
+        Long senderId = Long.parseLong(principal.getName());
+        return saveChatMessageUsecase.execute(senderId, tradeId, request.message());
     }
 }
