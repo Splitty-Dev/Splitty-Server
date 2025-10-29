@@ -12,8 +12,4 @@ public class CursorPage {
         this.size = size;
         this.cursorId = cursorId;
     }
-
-    public CursorPage(Long cursorId) {
-        this.cursorId = cursorId;
-    }
 }

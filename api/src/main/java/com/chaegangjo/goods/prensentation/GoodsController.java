@@ -3,6 +3,7 @@ package com.chaegangjo.goods.prensentation;
 
 import com.chaegangjo.dto.ApiResponse;
 import com.chaegangjo.dto.CursorPageResponse;
+import com.chaegangjo.goods.application.GetCategoriesUsecase;
 import com.chaegangjo.goods.application.GetDetailGoodsUsecase;
 import com.chaegangjo.goods.application.SaveGoodsUsecase;
 import com.chaegangjo.goods.dto.request.SaveGoodsRequest;
@@ -35,10 +36,12 @@ public class GoodsController {
     public ResponseEntity<ApiResponse<CursorPageResponse<List<GoodsInfo>>>> getAllGoods(
             @Parameter(example = "10", description = "첫 요청 시 null, 이후에는 response의 nextCursor.lastId 값")
             @RequestParam(required = false) Long cursorId,
+            @Parameter(example = "0", description = "전체 조회 시 0, 카테고리별 조회 시 카테고리 ID")
+            @RequestParam Long categoryId,
             @AuthenticationPrincipal CustomOAuth2User user
     ) {
         return ResponseEntity.ok(
-                ApiResponse.success(getGoodsUsecase.execute(user.getId(), cursorId))
+                ApiResponse.success(getGoodsUsecase.execute(user.getId(), categoryId, cursorId))
         );
     }
 

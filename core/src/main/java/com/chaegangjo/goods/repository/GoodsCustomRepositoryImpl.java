@@ -5,20 +5,20 @@ import com.chaegangjo.goods.domain.QCategory;
 import com.chaegangjo.goods.domain.QGoods;
 import com.chaegangjo.goods.enums.TradeStatus;
 import com.chaegangjo.member.domain.QMember;
+import com.chaegangjo.paging.CursorPage;
 import com.chaegangjo.paging.IdCreatedAtCursorPage;
 import com.chaegangjo.trade.domain.QTrade;
 import com.chaegangjo.trade.domain.QTradeMember;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Repository;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Repository
@@ -64,6 +64,30 @@ public class GoodsCustomRepositoryImpl implements GoodsCustomRepository {
     }
 
     @Override
+    public Slice<Goods> findGoodsByCursor(CursorPage page, List<Long> goodsIds, Long categoryId) {
+        QGoods goods = QGoods.goods;
+
+        List<Goods> fetch = queryFactory.selectFrom(goods)
+                .where(
+                        inGoodsIds(goodsIds, goods),
+                        eqCategory(categoryId, goods),
+                        cursorId(page.getCursorId(), goods)
+                )
+                .orderBy(goods.createdAt.desc(), goods.id.desc())
+                .limit(page.getSize() + 1)
+                .fetch();
+
+        boolean hasNext = fetch.size() > page.getSize();
+        if (hasNext) fetch.getLast();
+
+        return new SliceImpl<>(fetch, PageRequest.of(0, page.getSize()), hasNext);
+    }
+
+    private static BooleanExpression inGoodsIds(List<Long> goodsIds, QGoods goods) {
+        return goods.id.in(goodsIds);
+    }
+
+    @Override
     public Slice<Goods> findSoldGoodsByCursor(IdCreatedAtCursorPage page, Long buyerId, TradeStatus status) {
         QGoods goods = QGoods.goods;
         QTrade trade = QTrade.trade;
@@ -87,6 +111,10 @@ public class GoodsCustomRepositoryImpl implements GoodsCustomRepository {
         return new SliceImpl<>(fetch, PageRequest.of(0, page.getSize()), hasNext);
     }
 
+    private static BooleanExpression eqCategory(Long categoryId, QGoods goods) {
+        return (categoryId != null && categoryId != 0) ? goods.category.id.eq(categoryId) : null;
+    }
+
     private BooleanExpression eqStatus(TradeStatus status, QGoods goods) {
         return (status != null) ? goods.status.eq(status) : null;
     }
@@ -99,8 +127,12 @@ public class GoodsCustomRepositoryImpl implements GoodsCustomRepository {
         return (buyerId != null) ? tradeMember.member.id.eq(buyerId) : null;
     }
 
+    private BooleanExpression cursorId(Long cursorId, QGoods goods) {
+        return (cursorId != null) ? goods.id.lt(cursorId) : null;
+    }
+
     private BooleanExpression createdAtAndCursorId(LocalDateTime cursorCreatedAt, Long cursorId, QGoods goods) {
-        return (cursorCreatedAt == null || cursorId == null) ?
+        return (cursorCreatedAt != null && cursorId != null) ?
                 goods.createdAt.lt(cursorCreatedAt).or(goods.createdAt.eq(cursorCreatedAt).and(goods.id.lt(cursorId)))
                 : null;
     }
