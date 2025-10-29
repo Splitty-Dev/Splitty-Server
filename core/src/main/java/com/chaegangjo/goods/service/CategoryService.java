@@ -3,6 +3,7 @@ package com.chaegangjo.goods.service;
 import com.chaegangjo.exception.GoodsException;
 import com.chaegangjo.goods.domain.Category;
 import com.chaegangjo.goods.repository.CategoryRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,5 +20,9 @@ public class CategoryService {
     public Category findCategoryById(Long id) {
         return categoryRepository.findById(id)
                 .orElseThrow(() -> new GoodsException(CATEGORY_NOT_FOUND));
+    }
+
+    public List<Category> getCategories() {
+        return categoryRepository.findAll();
     }
 }
