@@ -16,12 +16,12 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class GetReviewsUsecase {
+public class GetReviewsUseCase {
 
     private final ReviewService reviewService;
 
     public CursorPageResponse<List<ReviewInfo>> execute(Long cursorId, LocalDateTime createdAt, Long revieweeId) {
-        Slice<Review> reviews = reviewService.getReviews(new IdCreatedAtCursorPage(REVIEW_PAGE_SIZE, cursorId, createdAt), revieweeId);
+        Slice<Review> reviews = reviewService.findAllByCursor(new IdCreatedAtCursorPage(REVIEW_PAGE_SIZE, cursorId, createdAt), revieweeId);
         List<Review> content = reviews.getContent();
         IdCreatedAtNextCursor nextCursor = null;
         if (reviews.hasNext()) {

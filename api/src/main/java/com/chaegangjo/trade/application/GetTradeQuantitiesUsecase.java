@@ -11,14 +11,14 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class GetTradeQuantitiesUsecase {
+public class GetTradeQuantitiesUseCase {
 
     private final GoodsService goodsService;
     private final ChatMemberService chatMemberService;
 
     public GetTradeQuantitiesResponse execute(Long goodsId) {
         Goods goods = goodsService.findGoodsById(goodsId);
-        List<ChatMember> chatMembers = chatMemberService.findChatMembersByGoodsId(goodsId);
+        List<ChatMember> chatMembers = chatMemberService.findAllByGoodsId(goodsId);
         return GetTradeQuantitiesResponse.of(goods, chatMembers);
     }
 }

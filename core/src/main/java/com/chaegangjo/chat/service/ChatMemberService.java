@@ -1,11 +1,11 @@
 package com.chaegangjo.chat.service;
 
+import com.chaegangjo.chat.domain.ChatMember;
+import com.chaegangjo.chat.repository.ChatMemberRepository;
 import com.chaegangjo.exception.ChatMemberException;
 import com.chaegangjo.exception.errorcode.ChatMemberErrorCode;
 import com.chaegangjo.goods.domain.Goods;
 import com.chaegangjo.member.domain.Member;
-import com.chaegangjo.chat.domain.ChatMember;
-import com.chaegangjo.chat.repository.ChatMemberRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,26 +18,26 @@ public class ChatMemberService {
 
     private final ChatMemberRepository tradeMemberRepository;
 
-    public ChatMember findChatMember(Long goodsId, Long memberId) {
+    public ChatMember findChatMemberByGoodsIdAndMemberId(Long goodsId, Long memberId) {
         return tradeMemberRepository.findByGoods_IdAndMember_Id(goodsId, memberId)
                 .orElseThrow(() -> new ChatMemberException(ChatMemberErrorCode.TRADE_MEMBER_NOT_FOUND));
     }
 
-    public ChatMember findChatMember(Goods goods, Member member) {
+    public ChatMember findChatMemberByGoodsAndMember(Goods goods, Member member) {
         return tradeMemberRepository.findByGoodsAndMember(goods, member)
                 .orElseThrow(() -> new ChatMemberException(ChatMemberErrorCode.TRADE_MEMBER_NOT_FOUND));
     }
 
-    public boolean existChatMember(Long goodsId, Long memberId) {
-        return tradeMemberRepository.existsByGoods_IdAndMember_Id(goodsId, memberId);
-    }
-
-    public List<ChatMember> findChatMembersByGoodsId(Long goodsId) {
+    public List<ChatMember> findAllByGoodsId(Long goodsId) {
         return tradeMemberRepository.findAllByGoodsId(goodsId);
     }
 
-    public List<ChatMember> findChatMembersByMemberId(Long memberId) {
+    public List<ChatMember> findAllByMemberId(Long memberId) {
         return tradeMemberRepository.findAllByMemberId(memberId);
+    }
+
+    public boolean existChatMember(Long goodsId, Long memberId) {
+        return tradeMemberRepository.existsByGoods_IdAndMember_Id(goodsId, memberId);
     }
 
     @Transactional

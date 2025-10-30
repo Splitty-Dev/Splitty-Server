@@ -2,7 +2,7 @@ package com.chaegangjo.goods.prensentation;
 
 
 import com.chaegangjo.dto.ApiResponse;
-import com.chaegangjo.goods.application.GetCategoriesUsecase;
+import com.chaegangjo.goods.application.GetCategoriesUseCase;
 import com.chaegangjo.goods.dto.CategoryInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/categories/")
 public class CategoryController {
 
-    private final GetCategoriesUsecase getCategoriesUsecase;
+    private final GetCategoriesUseCase getCategoriesUsecase;
 
     @Operation(summary = "전체 카테고리 조회")
     @GetMapping

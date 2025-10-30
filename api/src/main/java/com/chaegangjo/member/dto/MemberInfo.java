@@ -1,4 +1,4 @@
-package com.chaegangjo.member.dto.response;
+package com.chaegangjo.member.dto;
 
 
 import com.chaegangjo.member.domain.Member;

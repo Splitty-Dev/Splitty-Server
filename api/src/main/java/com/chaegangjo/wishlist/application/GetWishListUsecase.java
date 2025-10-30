@@ -17,12 +17,12 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class GetWishListUsecase {
+public class GetWishListUseCase {
 
     private final WishListService wishListService;
 
     public CursorPageResponse<List<GoodsInfo>> execute(Long memberId, Long cursorId, LocalDateTime cursorCreatedAt) {
-        Slice<WishList> wishLists = wishListService.getWishListByCursor(
+        Slice<WishList> wishLists = wishListService.findAllByCursor(
                 new IdCreatedAtCursorPage(WISH_LIST_PAGE_SIZE, cursorId, cursorCreatedAt), memberId);
 
         List<WishList> content = wishLists.getContent();

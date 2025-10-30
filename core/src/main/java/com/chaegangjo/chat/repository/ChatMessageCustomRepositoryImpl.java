@@ -44,7 +44,7 @@ public class ChatMessageCustomRepositoryImpl implements ChatMessageCustomReposit
     }
 
     @Override
-    public List<ChatMessage> findLastMessagesByGoodsIds(List<Long> goodsIds) {
+    public List<ChatMessage> findLastChatMessagesByGoodsIds(List<Long> goodsIds) {
         QChatMessage chatMessage = QChatMessage.chatMessage;
         QChatMember chatMember = QChatMember.chatMember;
         QGoods goods = QGoods.goods;

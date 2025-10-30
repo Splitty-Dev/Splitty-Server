@@ -2,11 +2,11 @@ package com.chaegangjo.trade.presentation;
 
 import com.chaegangjo.dto.ApiResponse;
 import com.chaegangjo.security.oauth2.entity.CustomOAuth2User;
-import com.chaegangjo.trade.application.ChangeTradeStatusUsecase;
-import com.chaegangjo.trade.application.ConfirmTradeQuantitiesUsecase;
-import com.chaegangjo.trade.application.GetTradeQuantitiesUsecase;
-import com.chaegangjo.trade.application.IsJoinTradeUsecase;
-import com.chaegangjo.trade.application.JoinTradeUsecase;
+import com.chaegangjo.trade.application.ChangeTradeStatusUseCase;
+import com.chaegangjo.trade.application.ConfirmTradeQuantitiesUseCase;
+import com.chaegangjo.trade.application.GetTradeQuantitiesUseCase;
+import com.chaegangjo.trade.application.IsJoinTradeUseCase;
+import com.chaegangjo.trade.application.JoinTradeUseCase;
 import com.chaegangjo.trade.dto.ChangeTradeStatusRequest;
 import com.chaegangjo.trade.dto.ConfirmTradeQuantityRequest;
 import com.chaegangjo.trade.dto.GetTradeQuantitiesResponse;
@@ -32,11 +32,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/trade")
 public class TradeController {
 
-    private final JoinTradeUsecase joinTradeUsecase;
-    private final IsJoinTradeUsecase isJoinTradeUsecase;
-    private final ChangeTradeStatusUsecase changeTradeStatusUsecase;
-    private final ConfirmTradeQuantitiesUsecase confirmTradeQuantitiesUsecase;
-    private final GetTradeQuantitiesUsecase getTradeQuantitiesUsecase;
+    private final JoinTradeUseCase joinTradeUsecase;
+    private final IsJoinTradeUseCase isJoinTradeUsecase;
+    private final ChangeTradeStatusUseCase changeTradeStatusUsecase;
+    private final ConfirmTradeQuantitiesUseCase confirmTradeQuantitiesUsecase;
+    private final GetTradeQuantitiesUseCase getTradeQuantitiesUsecase;
 
     @Operation(summary = "거래 참여")
     @PostMapping

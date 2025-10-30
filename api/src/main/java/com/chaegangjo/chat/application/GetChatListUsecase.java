@@ -20,14 +20,14 @@ public class GetChatListUsecase {
     private final ChatMemberService chatMemberService;
 
     public List<ChatInfo> execute(Long memberId) {
-        List<ChatMember> chatMembers = chatMemberService.findChatMembersByMemberId(memberId);
+        List<ChatMember> chatMembers = chatMemberService.findAllByMemberId(memberId);
         List<Goods> goods = chatMembers.stream()
                 .map(ChatMember::getGoods)
                 .toList();
         List<Long> goodsId = goods.stream()
                 .map(Goods::getId)
                 .toList();
-        List<ChatMessage> lastMessages = chatMessageService.getLastMessages(goodsId); //goodsId, lastMessage
+        List<ChatMessage> lastMessages = chatMessageService.getLastChatMessages(goodsId); //goodsId, lastMessage
 
         List<ChatInfo> data = goods.stream()
                 .map(g -> {

@@ -29,7 +29,7 @@ public class GetMemberGoodsUseCase {
     }
 
     public CursorPageResponse<List<GoodsInfo>> sold(Long sellerId, TradeStatus status, Long cursorId, LocalDateTime cursorCreatedAt) {
-        Slice<Goods> goods = goodsService.findSoldGoodsByCursor(
+        Slice<Goods> goods = goodsService.getSoldGoodsByCursor(
                 new IdCreatedAtCursorPage(GOODS_PAGE_SIZE, cursorId, cursorCreatedAt), sellerId, status);
 
         return getListCursorPageResponse(goods);

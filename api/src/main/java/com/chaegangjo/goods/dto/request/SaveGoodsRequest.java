@@ -3,6 +3,7 @@ package com.chaegangjo.goods.dto.request;
 import com.chaegangjo.goods.domain.Category;
 import com.chaegangjo.goods.domain.Goods;
 import com.chaegangjo.member.domain.Member;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -40,6 +41,7 @@ public record SaveGoodsRequest(
                 .build();
     }
 
+    @Hidden
     public int getMyQuantity() {
         return totalQuantity - leftQuantity;
     }

@@ -6,6 +6,9 @@ import com.chaegangjo.dto.CursorPageResponse;
 import com.chaegangjo.goods.domain.Goods;
 import com.chaegangjo.goods.dto.GoodsInfo;
 import com.chaegangjo.goods.service.GoodsService;
+import com.chaegangjo.member.domain.Member;
+import com.chaegangjo.member.service.MemberService;
+import com.chaegangjo.member.service.SearchHistoryService;
 import com.chaegangjo.paging.IdCreatedAtCursorPage;
 import com.chaegangjo.paging.IdCreatedAtNextCursor;
 import java.time.LocalDateTime;
@@ -18,10 +21,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class SearchGoodsUseCase {
 
+    private final MemberService memberService;
     private final GoodsService goodsService;
+    private final SearchHistoryService searchHistoryService;
     
-    public CursorPageResponse<List<GoodsInfo>> execute(String keyword, Long cursorId, LocalDateTime cursorCreatedAt) {
-        Slice<Goods> goods = goodsService.getAllByKeyword(
+    public CursorPageResponse<List<GoodsInfo>> execute(Long memberId, String keyword, Long cursorId, LocalDateTime cursorCreatedAt) {
+        Member member = memberService.getMemberById(memberId);
+        searchHistoryService.saveSearchHistory(member, keyword);
+
+        Slice<Goods> goods = goodsService.findAllByKeywordAndCursor(
                 new IdCreatedAtCursorPage(GOODS_PAGE_SIZE, cursorId, cursorCreatedAt), keyword);
 
         List<Goods> content = goods.getContent();

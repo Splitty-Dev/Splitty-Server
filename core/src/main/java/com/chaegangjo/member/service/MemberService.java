@@ -1,5 +1,7 @@
 package com.chaegangjo.member.service;
 
+import static com.chaegangjo.exception.errorcode.MemberErrorCode.MEMBER_NOT_FOUND;
+
 import com.chaegangjo.exception.MemberException;
 import com.chaegangjo.member.domain.Member;
 import com.chaegangjo.member.repository.MemberRepository;
@@ -12,8 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import static com.chaegangjo.exception.errorcode.MemberErrorCode.MEMBER_NOT_FOUND;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -48,13 +48,13 @@ public class MemberService {
                 addressType,
                 appKey);
 
-        Member member = findMemberById(id);
+        Member member = getMemberById(id);
         member.setNeighName(reverseGeocoding.addressInfo().adminDong());
 
         return member;
     }
 
-    public Member findMemberById(Long memberId) {
+    public Member getMemberById(Long memberId) {
         return findById(memberId);
     }
 

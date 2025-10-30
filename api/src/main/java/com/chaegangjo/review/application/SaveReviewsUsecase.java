@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Component
-public class SaveReviewsUsecase {
+public class SaveReviewsUseCase {
 
     private final MemberService memberService;
     private final ChatMemberService chatMemberService;
@@ -22,11 +22,11 @@ public class SaveReviewsUsecase {
 
     @Transactional
     public void execute(SaveReviewsRequest request, Long reviewerId) {
-        ChatMember reviewer = chatMemberService.findChatMember(request.goodsId(), reviewerId);
+        ChatMember reviewer = chatMemberService.findChatMemberByGoodsIdAndMemberId(request.goodsId(), reviewerId);
         //TODO: 리뷰 작성 권한 검증, 중복 작성 방지, 자기 자신 리뷰 작성 방지, 참여 회원 여부 검증
         List<Review> reviews = request.reviews().stream()
                         .map(review -> {
-                            Member reviewee = memberService.findMemberById(review.getRevieweeId());
+                            Member reviewee = memberService.getMemberById(review.getRevieweeId());
                             reviewee.calculateRating(review.getRating());
                             return Review.builder()
                                     .reviewer(reviewer)

@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Component
-public class JoinTradeUsecase {
+public class JoinTradeUseCase {
 
     private final GoodsService goodsService;
     private final ChatMemberService chatMemberService;
@@ -39,7 +39,7 @@ public class JoinTradeUsecase {
             throw new TradeException(INSUFFICIENT_STOCK);
         }
 
-        Member buyer = memberService.findMemberById(buyerId);
+        Member buyer = memberService.getMemberById(buyerId);
         if (chatMemberService.existsChatMemberByGoodsAndMember(goods, buyer)) {
             throw new TradeException(ALREADY_JOINED);
         }

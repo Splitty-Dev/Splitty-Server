@@ -1,5 +1,7 @@
 package com.chaegangjo.goods.service;
 
+import static com.chaegangjo.exception.errorcode.GoodsErrorCode.CATEGORY_NOT_FOUND;
+
 import com.chaegangjo.exception.GoodsException;
 import com.chaegangjo.goods.domain.Category;
 import com.chaegangjo.goods.repository.CategoryRepository;
@@ -7,8 +9,6 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import static com.chaegangjo.exception.errorcode.GoodsErrorCode.CATEGORY_NOT_FOUND;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -22,7 +22,7 @@ public class CategoryService {
                 .orElseThrow(() -> new GoodsException(CATEGORY_NOT_FOUND));
     }
 
-    public List<Category> getCategories() {
+    public List<Category> findAll() {
         return categoryRepository.findAll();
     }
 }

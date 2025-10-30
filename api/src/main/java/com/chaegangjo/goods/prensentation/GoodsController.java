@@ -75,8 +75,8 @@ public class GoodsController {
             @Parameter(example = "20", description = "첫 요청 시 null, 이후에는 response의 nextCursor.lastId 값")
             @RequestParam(required = false) Long cursorId,
             @Parameter(example = "2025-11-12T14:51:24.999", description = "첫 요청 시 null, 이후에는 response의 nextCursor.lastCreatedAt 값")
-            @RequestParam(required = false) LocalDateTime cursorCreatedAt) {
-        return ResponseEntity.ok(
-                ApiResponse.success(searchGoodsUsecase.execute(keyword, cursorId, cursorCreatedAt)));
+            @RequestParam(required = false) LocalDateTime cursorCreatedAt,
+            @AuthenticationPrincipal CustomOAuth2User user) {
+        return ResponseEntity.ok(ApiResponse.success(searchGoodsUsecase.execute(user.getId(), keyword, cursorId, cursorCreatedAt)));
     }
 }

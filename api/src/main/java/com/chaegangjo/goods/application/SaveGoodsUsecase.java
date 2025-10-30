@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Component
-public class SaveGoodsUsecase {
+public class SaveGoodsUseCase {
 
     private final MemberService memberService;
     private final GoodsService goodsService;
@@ -28,7 +28,7 @@ public class SaveGoodsUsecase {
 
     @Transactional
     public DetailGoodsInfo execute(SaveGoodsRequest request, Long sellerId) {
-        Member seller = memberService.findMemberById(sellerId);
+        Member seller = memberService.getMemberById(sellerId);
         Category category = categoryService.findCategoryById(request.categoryId());
         Goods goods = goodsService.saveGoods(request.toEntity(seller, category));
         chatMemberService.saveChatMember(goods, seller, request.getMyQuantity());

@@ -11,14 +11,14 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class SaveWishListItemUsecase {
+public class SaveWishListItemUseCase {
 
     private final MemberService memberService;
     private final GoodsService goodsService;
     private final WishListService wishListService;
 
     public void execute(Long memberId, SaveWishItemRequest request) {
-        Member member = memberService.findMemberById(memberId);
+        Member member = memberService.getMemberById(memberId);
         Goods goods = goodsService.findGoodsById(request.goodsId());
         goods.incrementTotalWishlist();
         wishListService.saveWishItem(member, goods);

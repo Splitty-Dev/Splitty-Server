@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Component
-public class ConfirmTradeQuantitiesUsecase {
+public class ConfirmTradeQuantitiesUseCase {
 
     private final GoodsService goodsService;
     private final ChatMemberService chatMemberService;
@@ -29,7 +29,7 @@ public class ConfirmTradeQuantitiesUsecase {
         Goods goods = goodsService.findGoodsById(request.goodsId());
         validateTotalQuantity(request, goods);
 
-        List<ChatMember> chatMembers = chatMemberService.findChatMembersByGoodsId(request.goodsId());
+        List<ChatMember> chatMembers = chatMemberService.findAllByGoodsId(request.goodsId());
         changeQuantities(request, chatMembers);
 
         goods.changeTradeStatus(TradeStatus.CLOSED);

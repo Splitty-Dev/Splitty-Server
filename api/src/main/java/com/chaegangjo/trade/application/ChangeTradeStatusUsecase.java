@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Component
-public class ChangeTradeStatusUsecase {
+public class ChangeTradeStatusUseCase {
 
     private final MemberService memberService;
     private final GoodsService goodsService;
@@ -20,9 +20,9 @@ public class ChangeTradeStatusUsecase {
 
     @Transactional
     public void execute(Long memberId, ChangeTradeStatusRequest request) {
-        Member member = memberService.findMemberById(memberId);
+        Member member = memberService.getMemberById(memberId);
         Goods goods = goodsService.findGoodsById(request.goodsId());
-        chatMemberService.findChatMember(goods, member);
+        chatMemberService.findChatMemberByGoodsAndMember(goods, member);
         goods.changeTradeStatus(request.tradeStatus());
     }
 }

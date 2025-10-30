@@ -11,8 +11,8 @@ import org.springframework.data.domain.Slice;
 public interface GoodsCustomRepository {
 
     Optional<Goods> findGoodsWithDetail(Long id);
-    Slice<Goods> findAllSoldByCursor(IdCreatedAtCursorPage page, Long memberId, TradeStatus tradeStatus);
-    Slice<Goods> findAllPurchasedByCursor(IdCreatedAtCursorPage page, Long buyerId, TradeStatus status);
+    Slice<Goods> findSoldGoodsByCursor(IdCreatedAtCursorPage page, Long memberId, TradeStatus tradeStatus);
+    Slice<Goods> findPurchasedGoodsByCursor(IdCreatedAtCursorPage page, Long buyerId, TradeStatus status);
     Slice<Goods> findAllByCursor(CursorPage page, List<Long> goodsId, Long categoryId);
     Slice<Goods> findAllByKeywordAndCursor(IdCreatedAtCursorPage page, String keyword);
 }

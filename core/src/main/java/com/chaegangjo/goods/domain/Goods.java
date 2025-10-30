@@ -99,7 +99,7 @@ public class Goods extends BaseEntity {
 
     public void joinTrade(int quantity) {
         this.leftQuantity -= quantity;
-        this.currParticipants -= 1;
+        this.currParticipants += 1;
     }
 
     public boolean isOpened() {

@@ -10,14 +10,14 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class DeleteWishListItemUsecase {
+public class DeleteWishListItemUseCase {
 
     private final GoodsService goodsService;
     private final WishListService wishListService;
     private final MemberService memberService;
 
     public void execute(Long memberId, Long goodsId) {
-        Member member = memberService.findMemberById(memberId);
+        Member member = memberService.getMemberById(memberId);
         Goods goods = goodsService.findGoodsById(goodsId);
         goods.decrementTotalWishlist();
         wishListService.deleteWishItem(member, goods);

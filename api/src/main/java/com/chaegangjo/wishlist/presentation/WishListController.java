@@ -4,11 +4,11 @@ import com.chaegangjo.chat.dto.request.SaveWishItemRequest;
 import com.chaegangjo.dto.ApiResponse;
 import com.chaegangjo.dto.CursorPageResponse;
 import com.chaegangjo.goods.dto.GoodsInfo;
-import com.chaegangjo.wishlist.application.ExistsInWishListUsecase;
-import com.chaegangjo.wishlist.application.GetWishListUsecase;
+import com.chaegangjo.wishlist.application.ExistsInWishListUseCase;
+import com.chaegangjo.wishlist.application.GetWishListUseCase;
 import com.chaegangjo.security.oauth2.entity.CustomOAuth2User;
-import com.chaegangjo.wishlist.application.DeleteWishListItemUsecase;
-import com.chaegangjo.wishlist.application.SaveWishListItemUsecase;
+import com.chaegangjo.wishlist.application.DeleteWishListItemUseCase;
+import com.chaegangjo.wishlist.application.SaveWishListItemUseCase;
 import com.chaegangjo.wishlist.dto.response.ExistsInWishListResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -27,10 +27,10 @@ import java.util.List;
 @RequestMapping("/api/v1/wishlist")
 public class WishListController {
 
-    private final GetWishListUsecase getWishListUsecase;
-    private final SaveWishListItemUsecase saveWishListItemUsecase;
-    private final DeleteWishListItemUsecase deleteWishListItemUsecase;
-    private final ExistsInWishListUsecase existsInWishListUsecase;
+    private final GetWishListUseCase getWishListUsecase;
+    private final SaveWishListItemUseCase saveWishListItemUsecase;
+    private final DeleteWishListItemUseCase deleteWishListItemUsecase;
+    private final ExistsInWishListUseCase existsInWishListUsecase;
 
     @Operation(summary = "나의 관심 상품 조회")
     @GetMapping

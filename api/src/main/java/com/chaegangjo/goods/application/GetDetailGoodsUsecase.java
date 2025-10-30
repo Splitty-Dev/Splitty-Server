@@ -9,13 +9,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Component
-public class GetDetailGoodsUsecase {
+public class GetDetailGoodsUseCase {
 
     private final GoodsService goodsService;
 
     @Transactional
     public DetailGoodsInfo execute(Long goodsId) {
-        Goods goods = goodsService.findGoodsWishDetail(goodsId);
+        Goods goods = goodsService.findGoodsWithDetail(goodsId);
         //TODO: 조회수 중복 증가 방지 로직, 동시성 문제 처리
         goods.incrementViewCount();
         return DetailGoodsInfo.from(goods);

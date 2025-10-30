@@ -11,14 +11,14 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class ExistsInWishListUsecase {
+public class ExistsInWishListUseCase {
 
     private final MemberService memberService;
     private final GoodsService goodsService;
     private final WishListService wishListService;
 
     public ExistsInWishListResponse execute(Long memberId, Long goodsId) {
-        Member member = memberService.findMemberById(memberId);
+        Member member = memberService.getMemberById(memberId);
         Goods goods = goodsService.findGoodsById(goodsId);
         boolean isInWishList = wishListService.existsWishItem(member, goods);
         return new ExistsInWishListResponse(isInWishList);

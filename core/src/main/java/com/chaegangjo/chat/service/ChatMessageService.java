@@ -1,13 +1,10 @@
 package com.chaegangjo.chat.service;
 
-import static com.chaegangjo.paging.PageProperties.CHAT_MESSAGE_PAGE_SIZE;
-
-import com.chaegangjo.paging.IdCreatedAtCursorPage;
+import com.chaegangjo.chat.domain.ChatMember;
 import com.chaegangjo.chat.domain.ChatMessage;
 import com.chaegangjo.chat.domain.MessageType;
-import com.chaegangjo.chat.domain.ChatMember;
 import com.chaegangjo.chat.repository.ChatMessageRepository;
-import java.time.LocalDateTime;
+import com.chaegangjo.paging.IdCreatedAtCursorPage;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
@@ -33,12 +30,11 @@ public class ChatMessageService {
         return chatMessageRepository.save(chatMessage);
     }
 
-    public Slice<ChatMessage> getChatMessages(Long goodsId, Long cursorId, LocalDateTime createdAt) {
-        return chatMessageRepository.findAllByCursor(
-                new IdCreatedAtCursorPage(CHAT_MESSAGE_PAGE_SIZE, cursorId, createdAt), goodsId);
+    public Slice<ChatMessage> findAllByGoodsIdAndCursor(Long goodsId, IdCreatedAtCursorPage cursorPage) {
+        return chatMessageRepository.findAllByCursor(cursorPage, goodsId);
     }
 
-    public List<ChatMessage> getLastMessages(List<Long> goodsIds) {
-        return chatMessageRepository.findLastMessagesByGoodsIds(goodsIds);
+    public List<ChatMessage> getLastChatMessages(List<Long> goodsIds) {
+        return chatMessageRepository.findLastChatMessagesByGoodsIds(goodsIds);
     }
 }

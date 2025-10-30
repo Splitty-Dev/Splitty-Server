@@ -42,7 +42,7 @@ public class GoodsCustomRepositoryImpl implements GoodsCustomRepository {
     }
 
     @Override
-    public Slice<Goods> findAllPurchasedByCursor(IdCreatedAtCursorPage page, Long sellerId, TradeStatus status) {
+    public Slice<Goods> findPurchasedGoodsByCursor(IdCreatedAtCursorPage page, Long sellerId, TradeStatus status) {
         QMember member = QMember.member;
         QGoods goods = QGoods.goods;
 
@@ -118,7 +118,7 @@ public class GoodsCustomRepositoryImpl implements GoodsCustomRepository {
     }
 
     @Override
-    public Slice<Goods> findAllSoldByCursor(IdCreatedAtCursorPage page, Long buyerId, TradeStatus status) {
+    public Slice<Goods> findSoldGoodsByCursor(IdCreatedAtCursorPage page, Long buyerId, TradeStatus status) {
         QGoods goods = QGoods.goods;
         QChatMember chatMember = QChatMember.chatMember;
 

@@ -29,29 +29,29 @@ public class GoodsService {
 
     private final static int RESTRICT_DISTANCE = 3000000;
 
-    public Slice<Goods> getAll(CursorPage cursorPage, Long memberId, Long categoryId) {
+    public Slice<Goods> findAllByCursor(CursorPage cursorPage, Long memberId, Long categoryId) {
         List<Long> nearByIds = redisUtil.getNearByIds(memberId, RESTRICT_DISTANCE);
         nearByIds.sort(Comparator.reverseOrder());
         return goodsRepository.findAllByCursor(cursorPage, nearByIds, categoryId);
     }
 
-    public Slice<Goods> getAllByKeyword(IdCreatedAtCursorPage page, String keyword) {
+    public Slice<Goods> findAllByKeywordAndCursor(IdCreatedAtCursorPage page, String keyword) {
         return goodsRepository.findAllByKeywordAndCursor(page, keyword);
     }
 
-    public Slice<Goods> getAllSold(IdCreatedAtCursorPage page, Long sellerId, TradeStatus status) {
-        return goodsRepository.findAllSoldByCursor(page, sellerId, status);
+    public Slice<Goods> getSoldGoodsByCursor(IdCreatedAtCursorPage page, Long sellerId, TradeStatus status) {
+        return goodsRepository.findSoldGoodsByCursor(page, sellerId, status);
     }
 
-    public Slice<Goods> getAllPurchased(IdCreatedAtCursorPage page, Long buyerId, TradeStatus status) {
-        return goodsRepository.findAllPurchasedByCursor(page, buyerId, status);
+    public Slice<Goods> findPurchasedGoodsByCursor(IdCreatedAtCursorPage page, Long buyerId, TradeStatus status) {
+        return goodsRepository.findPurchasedGoodsByCursor(page, buyerId, status);
     }
 
     public Goods findGoodsById(Long goodsId) {
         return goodsRepository.findById(goodsId).orElseThrow(() -> new GoodsException(GOODS_NOT_FOUND));
     }
 
-    public Goods findGoodsWishDetail(Long goodsId) {
+    public Goods findGoodsWithDetail(Long goodsId) {
         return goodsRepository.findGoodsWithDetail(goodsId).orElseThrow(() -> new GoodsException(GOODS_NOT_FOUND));
     }
 

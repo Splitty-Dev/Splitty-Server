@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class IsJoinTradeUsecase {
+public class IsJoinTradeUseCase {
 
     private final ChatMemberService chatMemberService;
 
