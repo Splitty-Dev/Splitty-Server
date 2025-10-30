@@ -1,46 +1,29 @@
 package com.chaegangjo.goods.application;
 
-
-import static com.chaegangjo.paging.PageProperties.GOODS_PAGE_SIZE;
-
-import com.chaegangjo.dto.CursorPageResponse;
 import com.chaegangjo.goods.domain.Goods;
+import com.chaegangjo.goods.dto.DetailGoodsInfo;
 import com.chaegangjo.goods.dto.GoodsInfo;
 import com.chaegangjo.goods.service.GoodsService;
-import com.chaegangjo.member.service.MemberService;
-import com.chaegangjo.paging.CursorPage;
-import com.chaegangjo.paging.NextCursor;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Component
 public class GetGoodsUseCase {
 
     private final GoodsService goodsService;
-    private final MemberService memberService;
 
-    public CursorPageResponse<List<GoodsInfo>> execute(Long memberId, Long categoryId, Long cursorId) {
-        memberService.getMemberPoint(memberId);
-        Slice<Goods> goods = goodsService.findAllByCursor(new CursorPage(GOODS_PAGE_SIZE, cursorId), memberId, categoryId);
+    @Transactional
+    public DetailGoodsInfo detail(Long goodsId) {
+        Goods goods = goodsService.findGoodsWithDetail(goodsId);
+        //TODO: 조회수 중복 증가 방지 로직, 동시성 문제 처리
+        goods.incrementViewCount();
+        return DetailGoodsInfo.from(goods);
+    }
 
-        List<Goods> content = goods.getContent();
-        NextCursor nextCursor = null;
-        if (goods.hasNext()) {
-            Goods last = content.getLast();
-            nextCursor = new NextCursor(last.getId());
-        }
-
-        List<GoodsInfo> data = content.stream()
-                .map(GoodsInfo::from)
-                .toList();
-
-        return CursorPageResponse.<List<GoodsInfo>>builder()
-                .data(data)
-                .hasNext(goods.hasNext())
-                .nextCursor(nextCursor)
-                .build();
+    public GoodsInfo simple(Long goodsId) {
+        Goods goods = goodsService.findGoodsById(goodsId);
+        return GoodsInfo.from(goods);
     }
 }

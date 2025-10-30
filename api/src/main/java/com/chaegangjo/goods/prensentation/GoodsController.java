@@ -3,8 +3,8 @@ package com.chaegangjo.goods.prensentation;
 
 import com.chaegangjo.dto.ApiResponse;
 import com.chaegangjo.dto.CursorPageResponse;
-import com.chaegangjo.goods.application.GetDetailGoodsUseCase;
 import com.chaegangjo.goods.application.GetGoodsUseCase;
+import com.chaegangjo.goods.application.GetAllGoodsUseCase;
 import com.chaegangjo.goods.application.SaveGoodsUseCase;
 import com.chaegangjo.goods.application.SearchGoodsUseCase;
 import com.chaegangjo.goods.dto.DetailGoodsInfo;
@@ -33,8 +33,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/goods")
 public class GoodsController {
 
+    private final GetAllGoodsUseCase getAllGoodsUsecase;
     private final GetGoodsUseCase getGoodsUsecase;
-    private final GetDetailGoodsUseCase getDetailGoodsUsecase;
     private final SaveGoodsUseCase saveGoodsUsecase;
     private final SearchGoodsUseCase searchGoodsUsecase;
 
@@ -47,7 +47,7 @@ public class GoodsController {
             @RequestParam Long categoryId,
             @AuthenticationPrincipal CustomOAuth2User user) {
         return ResponseEntity.ok(
-                ApiResponse.success(getGoodsUsecase.execute(user.getId(), categoryId, cursorId))
+                ApiResponse.success(getAllGoodsUsecase.execute(user.getId(), categoryId, cursorId))
         );
     }
 
@@ -56,7 +56,15 @@ public class GoodsController {
     public ResponseEntity<ApiResponse<DetailGoodsInfo>> getGoods(
             @Parameter(example = "1")
             @PathVariable Long goodsId) {
-        return ResponseEntity.ok(ApiResponse.success(getDetailGoodsUsecase.execute(goodsId)));
+        return ResponseEntity.ok(ApiResponse.success(getGoodsUsecase.detail(goodsId)));
+    }
+
+    @Operation(summary = "[New] 상품 요약 조회", description = "채팅방/거래 수량 확정 페이지 등 상단 노출")
+    @GetMapping("/{goodsId}/summary")
+    public ResponseEntity<ApiResponse<GoodsInfo>> getSimpleGoods(
+            @Parameter(example = "1")
+            @PathVariable Long goodsId) {
+        return ResponseEntity.ok(ApiResponse.success(getGoodsUsecase.simple(goodsId)));
     }
 
     @Operation(summary = "상품 등록")
