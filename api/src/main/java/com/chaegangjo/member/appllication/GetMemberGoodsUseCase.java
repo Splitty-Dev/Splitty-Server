@@ -1,5 +1,7 @@
 package com.chaegangjo.member.appllication;
 
+import static com.chaegangjo.paging.PageProperties.GOODS_PAGE_SIZE;
+
 import com.chaegangjo.dto.CursorPageResponse;
 import com.chaegangjo.goods.domain.Goods;
 import com.chaegangjo.goods.dto.GoodsInfo;
@@ -7,14 +9,11 @@ import com.chaegangjo.goods.enums.TradeStatus;
 import com.chaegangjo.goods.service.GoodsService;
 import com.chaegangjo.paging.IdCreatedAtCursorPage;
 import com.chaegangjo.paging.IdCreatedAtNextCursor;
+import java.time.LocalDateTime;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
-import java.util.List;
-
-import static com.chaegangjo.paging.PageProperties.GOODS_PAGE_SIZE;
 
 @RequiredArgsConstructor
 @Component

@@ -63,6 +63,23 @@ public class MemberController {
         );
     }
 
+    @Operation(summary = "회원 판매내역 조회")
+    @GetMapping("/{memberId}/sales")
+    public ResponseEntity<ApiResponse<CursorPageResponse<List<GoodsInfo>>>> getMemberSales(
+            @Parameter(example = "1")
+            @PathVariable Long memberId,
+            @Parameter(example = "OPEN")
+            @RequestParam TradeStatus status,
+            @Parameter(example = "20", description = "첫 요청 시 null, 이후에는 response의 nextCursor.lastId 값")
+            @RequestParam(required = false) Long cursorId,
+            @Parameter(example = "2025-10-12T14:51:24.999", description = "첫 요청 시 null, 이후에는 response의 nextCursor.lastCreatedAt 값")
+            @RequestParam(required = false) LocalDateTime cursorCreatedAt,
+            @AuthenticationPrincipal CustomOAuth2User user) {
+        return ResponseEntity.ok(
+                ApiResponse.success(getMemberGoodsUseCase.purchased(memberId, status, cursorId, cursorCreatedAt))
+        );
+    }
+
     @Operation(summary = "나의 판매내역 조회")
     @GetMapping("/me/sales")
     public ResponseEntity<ApiResponse<CursorPageResponse<List<GoodsInfo>>>> getMySales(
