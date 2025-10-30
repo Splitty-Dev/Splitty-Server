@@ -6,8 +6,8 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @AllArgsConstructor
-public enum TradeMemberErrorCode implements BaseErrorCode {
-    TRADE_MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "TRADE-MEMBER-001", "존재하지 않는 거래회원입니다."),
+public enum ChatMemberErrorCode implements BaseErrorCode {
+    TRADE_MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "CHAT-MEMBER-001", "거래에 참여하는 회원이 아닙니다."),
     ;
 
     private final HttpStatus status;

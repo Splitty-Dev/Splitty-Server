@@ -1,11 +1,15 @@
 package com.chaegangjo.trade.presentation;
 
 import com.chaegangjo.dto.ApiResponse;
-import com.chaegangjo.goods.enums.TradeStatus;
 import com.chaegangjo.security.oauth2.entity.CustomOAuth2User;
 import com.chaegangjo.trade.application.ChangeTradeStatusUsecase;
+import com.chaegangjo.trade.application.ConfirmTradeQuantitiesUsecase;
+import com.chaegangjo.trade.application.GetTradeQuantitiesUsecase;
 import com.chaegangjo.trade.application.IsJoinTradeUsecase;
 import com.chaegangjo.trade.application.JoinTradeUsecase;
+import com.chaegangjo.trade.dto.ChangeTradeStatusRequest;
+import com.chaegangjo.trade.dto.ConfirmTradeQuantityRequest;
+import com.chaegangjo.trade.dto.GetTradeQuantitiesResponse;
 import com.chaegangjo.trade.dto.JoinTradeRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -13,7 +17,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +35,8 @@ public class TradeController {
     private final JoinTradeUsecase joinTradeUsecase;
     private final IsJoinTradeUsecase isJoinTradeUsecase;
     private final ChangeTradeStatusUsecase changeTradeStatusUsecase;
+    private final ConfirmTradeQuantitiesUsecase confirmTradeQuantitiesUsecase;
+    private final GetTradeQuantitiesUsecase getTradeQuantitiesUsecase;
 
     @Operation(summary = "거래 참여")
     @PostMapping
@@ -51,14 +59,29 @@ public class TradeController {
     }
 
     @Operation(summary = "거래 상태 변경")
-    @PatchMapping("/{goodsId}/status")
+    @PatchMapping("/change-status")
     public ResponseEntity<ApiResponse<Void>> changeTradeStatus(
-            @Parameter(example = "1")
-            @RequestParam Long goodsId,
-            @Parameter(example = "COMPLETED")
-            @RequestParam TradeStatus status,
+            @RequestBody ChangeTradeStatusRequest request,
             @AuthenticationPrincipal CustomOAuth2User user) {
-        changeTradeStatusUsecase.execute(user.getId(), goodsId, status);
+        changeTradeStatusUsecase.execute(user.getId(), request);
+        return ResponseEntity.ok(ApiResponse.success());
+    }
+
+    @Operation(summary = "거래 수량 조회")
+    @GetMapping("/{goodsId}/quantity")
+    public ResponseEntity<ApiResponse<GetTradeQuantitiesResponse>> getTradeQuantity(
+            @Parameter(example = "1")
+            @PathVariable Long goodsId
+    ) {
+        return ResponseEntity.ok(ApiResponse.success(getTradeQuantitiesUsecase.execute(goodsId)));
+    }
+
+    @Operation(summary = "거래 수량 확정")
+    @PatchMapping("/confirm-quantity")
+    public ResponseEntity<ApiResponse<Void>> confirmTradeQuantity(
+            @RequestBody ConfirmTradeQuantityRequest request,
+            @AuthenticationPrincipal CustomOAuth2User user) {
+        confirmTradeQuantitiesUsecase.execute(user.getId(), request);
         return ResponseEntity.ok(ApiResponse.success());
     }
 }

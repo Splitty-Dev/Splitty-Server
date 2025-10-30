@@ -36,4 +36,8 @@ public class ChatMember extends BaseEntity {
         this.goods = goods;
         this.quantity = quantity;
     }
+
+    public void changeQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 }

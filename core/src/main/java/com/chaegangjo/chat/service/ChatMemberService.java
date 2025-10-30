@@ -1,7 +1,7 @@
 package com.chaegangjo.chat.service;
 
-import com.chaegangjo.exception.TradeMemberException;
-import com.chaegangjo.exception.errorcode.TradeMemberErrorCode;
+import com.chaegangjo.exception.ChatMemberException;
+import com.chaegangjo.exception.errorcode.ChatMemberErrorCode;
 import com.chaegangjo.goods.domain.Goods;
 import com.chaegangjo.member.domain.Member;
 import com.chaegangjo.chat.domain.ChatMember;
@@ -20,12 +20,12 @@ public class ChatMemberService {
 
     public ChatMember findChatMember(Long goodsId, Long memberId) {
         return tradeMemberRepository.findByGoods_IdAndMember_Id(goodsId, memberId)
-                .orElseThrow(() -> new TradeMemberException(TradeMemberErrorCode.TRADE_MEMBER_NOT_FOUND));
+                .orElseThrow(() -> new ChatMemberException(ChatMemberErrorCode.TRADE_MEMBER_NOT_FOUND));
     }
 
     public ChatMember findChatMember(Goods goods, Member member) {
         return tradeMemberRepository.findByGoodsAndMember(goods, member)
-                .orElseThrow(() -> new TradeMemberException(TradeMemberErrorCode.TRADE_MEMBER_NOT_FOUND));
+                .orElseThrow(() -> new ChatMemberException(ChatMemberErrorCode.TRADE_MEMBER_NOT_FOUND));
     }
 
     public boolean existChatMember(Long goodsId, Long memberId) {
