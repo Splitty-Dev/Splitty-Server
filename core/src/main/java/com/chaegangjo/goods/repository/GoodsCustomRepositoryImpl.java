@@ -9,6 +9,7 @@ import com.chaegangjo.member.domain.QMember;
 import com.chaegangjo.paging.CursorPage;
 import com.chaegangjo.paging.IdCreatedAtCursorPage;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -41,7 +42,7 @@ public class GoodsCustomRepositoryImpl implements GoodsCustomRepository {
     }
 
     @Override
-    public Slice<Goods> findPurchasedGoodsByCursor(IdCreatedAtCursorPage page, Long sellerId, TradeStatus status) {
+    public Slice<Goods> findAllPurchasedByCursor(IdCreatedAtCursorPage page, Long sellerId, TradeStatus status) {
         QMember member = QMember.member;
         QGoods goods = QGoods.goods;
 
@@ -63,7 +64,7 @@ public class GoodsCustomRepositoryImpl implements GoodsCustomRepository {
     }
 
     @Override
-    public Slice<Goods> findGoodsByCursor(CursorPage page, List<Long> goodsIds, Long categoryId) {
+    public Slice<Goods> findAllByCursor(CursorPage page, List<Long> goodsIds, Long categoryId) {
         QGoods goods = QGoods.goods;
 
         List<Goods> fetch = queryFactory.selectFrom(goods)
@@ -82,12 +83,42 @@ public class GoodsCustomRepositoryImpl implements GoodsCustomRepository {
         return new SliceImpl<>(fetch, PageRequest.of(0, page.getSize()), hasNext);
     }
 
+    @Override
+    public Slice<Goods> findAllByKeywordAndCursor(IdCreatedAtCursorPage page, String keyword) {
+        QGoods goods = QGoods.goods;
+
+        List<Goods> fetch = queryFactory.selectFrom(goods)
+                .where(
+                        containsKeyword(keyword, goods),
+                        cursorId(page.getCursorId(), goods)
+                )
+                .orderBy(goods.createdAt.desc(), goods.id.desc())
+                .limit(page.getSize() + 1)
+                .fetch();
+
+        boolean hasNext = fetch.size() > page.getSize();
+        if (hasNext) fetch.getLast();
+
+        return new SliceImpl<>(fetch, PageRequest.of(0, page.getSize()), hasNext);
+    }
+
     private static BooleanExpression inGoodsIds(List<Long> goodsIds, QGoods goods) {
+        if (goodsIds == null || goodsIds.isEmpty()) {
+            return Expressions.FALSE;
+        }
         return goods.id.in(goodsIds);
     }
 
+    private BooleanExpression containsKeyword(String keyword, QGoods goods) {
+        if (keyword == null || keyword.isBlank()) {
+            return Expressions.FALSE;
+        }
+        return goods.name.containsIgnoreCase(keyword)
+                .or(goods.description.containsIgnoreCase(keyword));
+    }
+
     @Override
-    public Slice<Goods> findSoldGoodsByCursor(IdCreatedAtCursorPage page, Long buyerId, TradeStatus status) {
+    public Slice<Goods> findAllSoldByCursor(IdCreatedAtCursorPage page, Long buyerId, TradeStatus status) {
         QGoods goods = QGoods.goods;
         QChatMember chatMember = QChatMember.chatMember;
 
