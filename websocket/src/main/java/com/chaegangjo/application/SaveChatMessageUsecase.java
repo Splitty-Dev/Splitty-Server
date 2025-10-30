@@ -15,10 +15,10 @@ public class SaveChatMessageUsecase {
     private final ChatMessageService chatMessageService;
     private final TradeMemberService tradeMemberService;
 
-    public StompChatMessageResponse execute(Long senderId, Long tradeId, String message) {
-        TradeMember tradeMember = tradeMemberService.findTradeMember(tradeId, senderId);
+    public StompChatMessageResponse execute(Long senderId, Long goodsId, String message) {
+        TradeMember tradeMember = tradeMemberService.findTradeMember(goodsId, senderId);
         ChatMessage chatMessage = chatMessageService.saveChatMessage(tradeMember, message);
 
-        return StompChatMessageResponse.of(chatMessage, tradeId, senderId, tradeMember.getUsername());
+        return StompChatMessageResponse.of(chatMessage, goodsId, senderId, tradeMember.getUsername());
     }
 }

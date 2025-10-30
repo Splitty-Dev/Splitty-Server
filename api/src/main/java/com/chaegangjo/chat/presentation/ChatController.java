@@ -40,16 +40,16 @@ public class ChatController {
     }
 
     @Operation(summary = "채팅 메시지 조회")
-    @GetMapping("/{tradeId}")
+    @GetMapping("/{goodsId}")
     public ResponseEntity<ApiResponse<CursorPageResponse<ChatMessagesInfo>>> getChatMessages(
             @Parameter(example = "1")
-            @PathVariable Long tradeId,
+            @PathVariable Long goodsId,
             @Parameter(example = "10", description = "첫 요청 시 null, 이후에는 response의 nextCursor.lastId 값")
             @RequestParam(required = false) Long cursorId,
             @Parameter(example = "2025-10-12T14:51:24.999", description = "첫 요청 시 null, 이후에는 response의 nextCursor.lastCreatedAt 값")
             @RequestParam(required = false) LocalDateTime cursorCreatedAt
             ) {
 
-        return ResponseEntity.ok(ApiResponse.success(getChatMessagesUsecase.execute(tradeId, cursorId, cursorCreatedAt)));
+        return ResponseEntity.ok(ApiResponse.success(getChatMessagesUsecase.execute(goodsId, cursorId, cursorCreatedAt)));
     }
 }

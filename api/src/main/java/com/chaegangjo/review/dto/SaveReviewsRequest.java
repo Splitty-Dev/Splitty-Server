@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 public record SaveReviewsRequest (
         @Schema(example = "1")
-        Long tradeId, List<SaveReviewInfo> reviews) {
+        Long goodsId, List<SaveReviewInfo> reviews) {
 
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @Getter

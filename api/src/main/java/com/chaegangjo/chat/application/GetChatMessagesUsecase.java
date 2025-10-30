@@ -23,12 +23,12 @@ public class GetChatMessagesUsecase {
     private final TradeMemberService tradeMemberService;
     private final ChatMessageService chatMessageService;
 
-    public CursorPageResponse<ChatMessagesInfo> execute(Long tradeId, Long cursorId, LocalDateTime createdAt) {
-        List<TradeMember> tradeMembers = tradeMemberService.findTradeMembersByTradeId(tradeId);
+    public CursorPageResponse<ChatMessagesInfo> execute(Long goodsId, Long cursorId, LocalDateTime createdAt) {
+        List<TradeMember> tradeMembers = tradeMemberService.findTradeMembersByGoodsId(goodsId);
         List<ChatMemberInfo> members = tradeMembers.stream()
                 .map(ChatMemberInfo::from).toList();
 
-        Slice<ChatMessage> chatMessages = chatMessageService.getChatMessages(tradeId, cursorId, createdAt);
+        Slice<ChatMessage> chatMessages = chatMessageService.getChatMessages(goodsId, cursorId, createdAt);
         List<ChatMessageInfo> messages = chatMessages.getContent().stream()
                 .map(ChatMessageInfo::from).toList();
 

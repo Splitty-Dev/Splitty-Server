@@ -18,13 +18,13 @@ public class StompChatController {
 
     private final SaveChatMessageUsecase saveChatMessageUsecase;
 
-    @MessageMapping("/trade.{tradeId}/chat") //client->server 주소: /pub/trade.{tradeId}/chat
-    @SendTo("/sub/trade.{tradeId}/chat") //server->client 주소: /sub/trade.{tradeId}/chat
+    @MessageMapping("/goods.{goodsId}/chat") //client->server 주소: /pub/goods.{goodsId}/chat
+    @SendTo("/sub/goods.{goodsId}/chat") //server->client 주소: /sub/trade.{goodsId}/chat
     public StompChatMessageResponse send(StompChatMessageRequest request,
                                          Principal principal,
-                                         @DestinationVariable("tradeId") Long tradeId) {
+                                         @DestinationVariable("goodsId") Long goodsId) {
 
         Long senderId = Long.parseLong(principal.getName());
-        return saveChatMessageUsecase.execute(senderId, tradeId, request.message());
+        return saveChatMessageUsecase.execute(senderId, goodsId, request.message());
     }
 }

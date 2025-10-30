@@ -1,14 +1,13 @@
 package com.chaegangjo.chat.application;
 
 import com.chaegangjo.chat.dto.ChatInfo;
+import com.chaegangjo.goods.domain.Goods;
 import com.chaegangjo.trade.domain.ChatMessage;
-import com.chaegangjo.trade.domain.Trade;
 import com.chaegangjo.trade.domain.TradeMember;
 import com.chaegangjo.trade.service.ChatMessageService;
 import com.chaegangjo.trade.service.TradeMemberService;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -22,18 +21,21 @@ public class GetChatListUsecase {
 
     public List<ChatInfo> execute(Long memberId) {
         List<TradeMember> tradeMembers = tradeMemberService.findTradeMembersByMemberId(memberId);
-        List<Trade> trades = tradeMembers.stream()
-                .map(TradeMember::getTrade)
+        List<Goods> goods = tradeMembers.stream()
+                .map(TradeMember::getGoods)
                 .toList();
-        List<Long> tradeIds = trades.stream()
-                .map(Trade::getId)
+        List<Long> goodsId = goods.stream()
+                .map(Goods::getId)
                 .toList();
-        Map<Long, ChatMessage> lastMessages = chatMessageService.getLastMessages(tradeIds); //tradeId, lastMessage
+        List<ChatMessage> lastMessages = chatMessageService.getLastMessages(goodsId); //goodsId, lastMessage
 
-        List<ChatInfo> data = trades.stream()
-                .map(trade -> {
-                    ChatMessage lastMessage = lastMessages.get(trade.getId());
-                    return ChatInfo.of(trade, lastMessage);
+        List<ChatInfo> data = goods.stream()
+                .map(g -> {
+                    ChatMessage lastMessage = lastMessages.stream()
+                            .filter(m -> m.getTradeMember().getGoods().getId().equals(g.getId()))
+                            .findFirst()
+                            .orElse(null);
+                    return ChatInfo.of(g, lastMessage);
                 })
                 .collect(Collectors.toList());
 

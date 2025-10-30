@@ -2,7 +2,6 @@ package com.chaegangjo.trade.repository;
 
 import com.chaegangjo.goods.domain.QGoods;
 import com.chaegangjo.member.domain.QMember;
-import com.chaegangjo.trade.domain.QTrade;
 import com.chaegangjo.trade.domain.QTradeMember;
 import com.chaegangjo.trade.domain.TradeMember;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -18,13 +17,13 @@ public class TradeMemberCustomRepositoryImpl implements TradeMemberCustomReposit
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<TradeMember> findAllByTradeId(Long tradeId) {
+    public List<TradeMember> findAllByGoodsId(Long goodsId) {
         QMember member = QMember.member;
         QTradeMember tradeMember = QTradeMember.tradeMember;
 
         return queryFactory.selectFrom(tradeMember)
                 .join(tradeMember.member, member).fetchJoin()
-                .where(eqTradeId(tradeId, tradeMember))
+                .where(eqGoodsId(goodsId, tradeMember))
                 .orderBy(tradeMember.member.id.asc())
                 .fetch();
     }
@@ -32,22 +31,20 @@ public class TradeMemberCustomRepositoryImpl implements TradeMemberCustomReposit
     @Override
     public List<TradeMember> findAllByMemberId(Long memberId) {
         QMember member = QMember.member;
-        QTrade trade = QTrade.trade;
         QGoods goods = QGoods.goods;
         QTradeMember tradeMember = QTradeMember.tradeMember;
 
         return queryFactory.selectFrom(tradeMember)
                 .join(tradeMember.member, member).fetchJoin()
-                .join(tradeMember.trade, trade).fetchJoin()
-                .join(trade.goods, goods).fetchJoin()
+                .join(tradeMember.goods, goods).fetchJoin()
                 .where(eqMemberId(memberId, tradeMember))
-                .orderBy(tradeMember.trade.id.desc())
+                .orderBy(tradeMember.goods.id.desc())
                 .fetch();
     }
 
-    private BooleanExpression eqTradeId(Long tradeId, QTradeMember tradeMember) {
-        if (tradeId == null) return null;
-        return tradeMember.trade.id.eq(tradeId);
+    private BooleanExpression eqGoodsId(Long goodsId, QTradeMember tradeMember) {
+        if (goodsId == null) return null;
+        return tradeMember.goods.id.eq(goodsId);
     }
 
     private BooleanExpression eqMemberId(Long memberId, QTradeMember tradeMember) {

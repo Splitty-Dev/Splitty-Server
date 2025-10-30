@@ -2,11 +2,9 @@ package com.chaegangjo.chat.dto;
 
 import com.chaegangjo.goods.domain.Goods;
 import com.chaegangjo.trade.domain.ChatMessage;
-import com.chaegangjo.trade.domain.Trade;
 import java.time.LocalDateTime;
 
 public record ChatInfo(
-        Long tradeId,
         Long goodsId,
         String name,
         String lastMessage,
@@ -15,12 +13,10 @@ public record ChatInfo(
         String imageName
 ) {
 
-    public static ChatInfo of(Trade trade, ChatMessage message) {
-        Goods goods = trade.getGoods();
+    public static ChatInfo of(Goods goods, ChatMessage message) {
 
         if (message == null) {
             return new ChatInfo(
-                    trade.getId(),
                     goods.getId(),
                     goods.getName(),
                     null,
@@ -30,7 +26,6 @@ public record ChatInfo(
             );
         }
         return new ChatInfo(
-                trade.getId(),
                 goods.getId(),
                 goods.getName(),
                 message.getMessage(),

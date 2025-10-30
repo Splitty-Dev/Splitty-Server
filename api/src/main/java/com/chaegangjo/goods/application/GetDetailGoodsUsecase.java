@@ -12,7 +12,6 @@ public class GetDetailGoodsUsecase {
     private final GoodsService goodsService;
 
     public DetailGoodsInfo execute(Long goodsId) {
-
         return DetailGoodsInfo.from(goodsService.findGoodsWishDetail(goodsId));
     }
 }

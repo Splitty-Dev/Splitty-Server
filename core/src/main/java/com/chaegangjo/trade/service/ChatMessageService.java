@@ -9,7 +9,6 @@ import com.chaegangjo.trade.domain.TradeMember;
 import com.chaegangjo.trade.repository.ChatMessageRepository;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
@@ -34,12 +33,12 @@ public class ChatMessageService {
         return chatMessageRepository.save(chatMessage);
     }
 
-    public Slice<ChatMessage> getChatMessages(Long tradeId, Long cursorId, LocalDateTime createdAt) {
+    public Slice<ChatMessage> getChatMessages(Long goodsId, Long cursorId, LocalDateTime createdAt) {
         return chatMessageRepository.findAllByCursor(
-                new IdCreatedAtCursorPage(CHAT_MESSAGE_PAGE_SIZE, cursorId, createdAt), tradeId);
+                new IdCreatedAtCursorPage(CHAT_MESSAGE_PAGE_SIZE, cursorId, createdAt), goodsId);
     }
 
-    public Map<Long, ChatMessage> getLastMessages(List<Long> tradeIds) {
-        return chatMessageRepository.findLastMessagesByTradeIds(tradeIds);
+    public List<ChatMessage> getLastMessages(List<Long> goodsIds) {
+        return chatMessageRepository.findLastMessagesByGoodsIds(goodsIds);
     }
 }

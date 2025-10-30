@@ -10,9 +10,7 @@ import com.chaegangjo.goods.service.GoodsImageService;
 import com.chaegangjo.goods.service.GoodsService;
 import com.chaegangjo.member.domain.Member;
 import com.chaegangjo.member.service.MemberService;
-import com.chaegangjo.trade.domain.Trade;
 import com.chaegangjo.trade.service.TradeMemberService;
-import com.chaegangjo.trade.service.TradeService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -26,7 +24,6 @@ public class SaveGoodsUsecase {
     private final GoodsService goodsService;
     private final GoodsImageService goodsImageService;
     private final CategoryService categoryService;
-    private final TradeService tradeService;
     private final TradeMemberService tradeMemberService;
 
     @Transactional
@@ -34,8 +31,7 @@ public class SaveGoodsUsecase {
         Member seller = memberService.findMemberById(sellerId);
         Category category = categoryService.findCategoryById(request.categoryId());
         Goods goods = goodsService.saveGoods(request.toEntity(seller, category));
-        Trade trade = tradeService.saveTrade(new Trade(goods));
-        tradeMemberService.saveTradeMember(trade, seller, request.getMyQuantity());
+        tradeMemberService.saveTradeMember(goods, seller, request.getMyQuantity());
         List<GoodsImage> goodsImages = goodsImageService.saveGoodsImages(goods, request.imageNames());
         return DetailGoodsInfo.of(goods, goodsImages);
     }

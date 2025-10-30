@@ -1,6 +1,7 @@
 package com.chaegangjo.trade.domain;
 
 import com.chaegangjo.entity.BaseEntity;
+import com.chaegangjo.goods.domain.Goods;
 import com.chaegangjo.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -23,16 +24,16 @@ public class TradeMember extends BaseEntity {
     private String username;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "trade_id")
-    private Trade trade;
+    @JoinColumn(name = "goods_id")
+    private Goods goods;
 
     @Column(nullable = false)
     private int quantity;
 
-    public TradeMember(Trade trade, Member member, int quantity) {
+    public TradeMember(Goods goods, Member member, int quantity) {
         this.member = member;
         this.username = member.getUsername();
-        this.trade = trade;
+        this.goods = goods;
         this.quantity = quantity;
     }
 }

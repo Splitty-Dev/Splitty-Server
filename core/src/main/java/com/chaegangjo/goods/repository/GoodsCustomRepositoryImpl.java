@@ -7,7 +7,6 @@ import com.chaegangjo.goods.enums.TradeStatus;
 import com.chaegangjo.member.domain.QMember;
 import com.chaegangjo.paging.CursorPage;
 import com.chaegangjo.paging.IdCreatedAtCursorPage;
-import com.chaegangjo.trade.domain.QTrade;
 import com.chaegangjo.trade.domain.QTradeMember;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -90,12 +89,10 @@ public class GoodsCustomRepositoryImpl implements GoodsCustomRepository {
     @Override
     public Slice<Goods> findSoldGoodsByCursor(IdCreatedAtCursorPage page, Long buyerId, TradeStatus status) {
         QGoods goods = QGoods.goods;
-        QTrade trade = QTrade.trade;
         QTradeMember tradeMember = QTradeMember.tradeMember;
 
         List<Goods> fetch = queryFactory.selectFrom(goods)
-                .join(trade).on(trade.goods.eq(goods))
-                .join(tradeMember).on(tradeMember.trade.eq(trade))
+                .join(tradeMember).on(tradeMember.goods.eq(goods))
                 .where(
                         eqBuyerId(buyerId, tradeMember),
                         eqStatus(status, goods),
