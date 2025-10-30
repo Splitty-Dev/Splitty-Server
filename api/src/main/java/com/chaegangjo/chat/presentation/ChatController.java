@@ -1,5 +1,6 @@
 package com.chaegangjo.chat.presentation;
 
+import com.chaegangjo.chat.enums.TradeRole;
 import com.chaegangjo.chat.application.GetChatListUsecase;
 import com.chaegangjo.chat.application.GetChatMessagesUsecase;
 import com.chaegangjo.chat.dto.ChatInfo;
@@ -30,13 +31,14 @@ public class ChatController {
     private final GetChatMessagesUsecase getChatMessagesUsecase;
     private final GetChatListUsecase getChatListUsecase;
 
-    @Operation(summary = "채팅 목록 조회")
+    @Operation(summary = "[Updated] 채팅 목록 조회", description = "채팅 목록 구매/판매 필터링 가능하게 변경")
     @GetMapping
     public ResponseEntity<ApiResponse<List<ChatInfo>>> getChatList(
+            @RequestParam TradeRole role,
             @AuthenticationPrincipal
             CustomOAuth2User user
     ) {
-        return ResponseEntity.ok(ApiResponse.success(getChatListUsecase.execute(user.getId())));
+        return ResponseEntity.ok(ApiResponse.success(getChatListUsecase.execute(user.getId(), role)));
     }
 
     @Operation(summary = "채팅 메시지 조회")

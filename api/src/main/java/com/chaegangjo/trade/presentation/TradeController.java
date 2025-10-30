@@ -10,6 +10,7 @@ import com.chaegangjo.trade.application.JoinTradeUseCase;
 import com.chaegangjo.trade.dto.ChangeTradeStatusRequest;
 import com.chaegangjo.trade.dto.ConfirmTradeQuantityRequest;
 import com.chaegangjo.trade.dto.GetTradeQuantitiesResponse;
+import com.chaegangjo.trade.dto.IsJoinedTradeResponse;
 import com.chaegangjo.trade.dto.JoinTradeRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

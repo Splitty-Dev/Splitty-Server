@@ -2,7 +2,7 @@ package com.chaegangjo.chat.service;
 
 import com.chaegangjo.chat.domain.ChatMember;
 import com.chaegangjo.chat.domain.ChatMessage;
-import com.chaegangjo.chat.domain.MessageType;
+import com.chaegangjo.chat.enums.MessageType;
 import com.chaegangjo.chat.repository.ChatMessageRepository;
 import com.chaegangjo.paging.IdCreatedAtCursorPage;
 import java.util.List;

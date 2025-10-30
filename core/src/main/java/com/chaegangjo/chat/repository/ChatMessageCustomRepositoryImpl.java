@@ -5,7 +5,7 @@ import com.chaegangjo.chat.domain.QChatMessage;
 import com.chaegangjo.goods.domain.QGoods;
 import com.chaegangjo.paging.IdCreatedAtCursorPage;
 import com.chaegangjo.chat.domain.ChatMessage;
-import com.chaegangjo.chat.domain.MessageType;
+import com.chaegangjo.chat.enums.MessageType;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.time.LocalDateTime;

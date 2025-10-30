@@ -1,5 +1,8 @@
 package com.chaegangjo.goods.application;
 
+import static com.chaegangjo.chat.enums.TradeRole.SELLER;
+
+import com.chaegangjo.chat.service.ChatMemberService;
 import com.chaegangjo.goods.domain.Category;
 import com.chaegangjo.goods.domain.Goods;
 import com.chaegangjo.goods.domain.GoodsImage;
@@ -10,7 +13,6 @@ import com.chaegangjo.goods.service.GoodsImageService;
 import com.chaegangjo.goods.service.GoodsService;
 import com.chaegangjo.member.domain.Member;
 import com.chaegangjo.member.service.MemberService;
-import com.chaegangjo.chat.service.ChatMemberService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.geo.Point;
@@ -33,7 +35,7 @@ public class SaveGoodsUseCase {
         Point memberPoint = memberService.getMemberPoint(sellerId);
         Category category = categoryService.findCategoryById(request.categoryId());
         Goods goods = goodsService.saveGoods(request.toEntity(seller, category), memberPoint);
-        chatMemberService.saveChatMember(goods, seller, request.getMyQuantity());
+        chatMemberService.saveChatMember(goods, seller, request.getMyQuantity(), SELLER);
         List<GoodsImage> goodsImages = goodsImageService.saveGoodsImages(goods, request.imageNames().subList(1, request.imageNames().size()));
 
         return DetailGoodsInfo.of(goods, goodsImages);

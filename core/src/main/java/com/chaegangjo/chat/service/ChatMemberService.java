@@ -1,6 +1,7 @@
 package com.chaegangjo.chat.service;
 
 import com.chaegangjo.chat.domain.ChatMember;
+import com.chaegangjo.chat.enums.TradeRole;
 import com.chaegangjo.chat.repository.ChatMemberRepository;
 import com.chaegangjo.exception.ChatMemberException;
 import com.chaegangjo.exception.errorcode.ChatMemberErrorCode;
@@ -32,8 +33,8 @@ public class ChatMemberService {
         return tradeMemberRepository.findAllByGoodsId(goodsId);
     }
 
-    public List<ChatMember> findAllByMemberId(Long memberId) {
-        return tradeMemberRepository.findAllByMemberId(memberId);
+    public List<ChatMember> findAllByMemberIdAndTradeRole(Long memberId, TradeRole role) {
+        return tradeMemberRepository.findAllByMemberIdAndTradeRole(memberId, role);
     }
 
     public boolean existChatMember(Long goodsId, Long memberId) {
@@ -41,8 +42,8 @@ public class ChatMemberService {
     }
 
     @Transactional
-    public ChatMember saveChatMember(Goods goods, Member buyer, int quantity) {
-        return tradeMemberRepository.save(new ChatMember(goods, buyer, quantity));
+    public ChatMember saveChatMember(Goods goods, Member buyer, int quantity, TradeRole role) {
+        return tradeMemberRepository.save(new ChatMember(goods, buyer, quantity, role));
     }
 
     public boolean existsChatMemberByGoodsAndMember(Goods goods, Member member) {

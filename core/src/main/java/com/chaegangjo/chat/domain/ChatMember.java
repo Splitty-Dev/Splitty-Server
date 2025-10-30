@@ -1,5 +1,6 @@
 package com.chaegangjo.chat.domain;
 
+import com.chaegangjo.chat.enums.TradeRole;
 import com.chaegangjo.entity.BaseEntity;
 import com.chaegangjo.goods.domain.Goods;
 import com.chaegangjo.member.domain.Member;
@@ -30,11 +31,16 @@ public class ChatMember extends BaseEntity {
     @Column(nullable = false)
     private int quantity;
 
-    public ChatMember(Goods goods, Member member, int quantity) {
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private TradeRole tradeRole = TradeRole.BUYER;
+
+    public ChatMember(Goods goods, Member member, int quantity, TradeRole tradeRole) {
         this.member = member;
         this.username = member.getUsername();
         this.goods = goods;
         this.quantity = quantity;
+        this.tradeRole = tradeRole;
     }
 
     public void changeQuantity(int quantity) {

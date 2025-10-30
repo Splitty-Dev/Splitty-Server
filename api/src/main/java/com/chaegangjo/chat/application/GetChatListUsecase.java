@@ -1,6 +1,7 @@
 package com.chaegangjo.chat.application;
 
 import com.chaegangjo.chat.dto.ChatInfo;
+import com.chaegangjo.chat.enums.TradeRole;
 import com.chaegangjo.goods.domain.Goods;
 import com.chaegangjo.chat.domain.ChatMember;
 import com.chaegangjo.chat.domain.ChatMessage;
@@ -19,8 +20,8 @@ public class GetChatListUsecase {
     private final ChatMessageService chatMessageService;
     private final ChatMemberService chatMemberService;
 
-    public List<ChatInfo> execute(Long memberId) {
-        List<ChatMember> chatMembers = chatMemberService.findAllByMemberId(memberId);
+    public List<ChatInfo> execute(Long memberId, TradeRole role) {
+        List<ChatMember> chatMembers = chatMemberService.findAllByMemberIdAndTradeRole(memberId, role);
         List<Goods> goods = chatMembers.stream()
                 .map(ChatMember::getGoods)
                 .toList();

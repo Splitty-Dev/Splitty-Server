@@ -2,7 +2,7 @@ package com.chaegangjo.chat.dto;
 
 import com.chaegangjo.chat.domain.ChatMember;
 import com.chaegangjo.chat.domain.ChatMessage;
-import com.chaegangjo.chat.domain.MessageType;
+import com.chaegangjo.chat.enums.MessageType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 

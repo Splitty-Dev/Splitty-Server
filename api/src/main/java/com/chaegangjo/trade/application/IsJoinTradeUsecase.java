@@ -1,6 +1,6 @@
 package com.chaegangjo.trade.application;
 
-import com.chaegangjo.trade.presentation.IsJoinedTradeResponse;
+import com.chaegangjo.trade.dto.IsJoinedTradeResponse;
 import com.chaegangjo.chat.service.ChatMemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
