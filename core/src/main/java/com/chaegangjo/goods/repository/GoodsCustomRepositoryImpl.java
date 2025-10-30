@@ -64,13 +64,12 @@ public class GoodsCustomRepositoryImpl implements GoodsCustomRepository {
     }
 
     @Override
-    public Slice<Goods> findAllByCursor(CursorPage page, List<Long> goodsIds, Long categoryId) {
+    public Slice<Goods> findAllByCursor(CursorPage page, List<Long> goodsIds) {
         QGoods goods = QGoods.goods;
 
         List<Goods> fetch = queryFactory.selectFrom(goods)
                 .where(
                         inGoodsIds(goodsIds, goods),
-                        eqCategory(categoryId, goods),
                         cursorId(page.getCursorId(), goods)
                 )
                 .orderBy(goods.createdAt.desc(), goods.id.desc())

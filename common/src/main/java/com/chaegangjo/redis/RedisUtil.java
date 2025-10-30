@@ -47,9 +47,15 @@ public class RedisUtil {
         geoOperations.add(key, point, String.valueOf(id));
     }
 
-    public void saveLocation(String key, Long id, Point point) {
+    public void saveMemberLocation(Long id, Point point) {
         GeoOperations<String, Object> geoOperations = redisTemplate.opsForGeo();
-        geoOperations.add(key, point, String.valueOf(id));
+        geoOperations.add(MEMBER_KEY, point, String.valueOf(id));
+    }
+
+    public void saveGoodsLocation(Long goodsId, Long categoryId, Point point) {
+        GeoOperations<String, Object> geoOperations = redisTemplate.opsForGeo();
+        String value = goodsId + ":" + categoryId;
+        geoOperations.add(GOODS_KEY, point, value);
     }
 
     public List<Long> getNearByIds(Long memberId, int restrictDistance) {
@@ -79,10 +85,14 @@ public class RedisUtil {
         for (GeoResult<RedisGeoCommands.GeoLocation<Object>> result : results) {
             RedisGeoCommands.GeoLocation<Object> location = result.getContent();
 
-            Long id = Long.valueOf(location.getName().toString());
-//            double distance = result.getDistance().getValue();
+            String[] value = location.getName().toString().split(":");
+            Long goodsId = Long.parseLong(value[0]);
+            Long categoryId = Long.parseLong(value[1]);
+            if (!categoryId.equals(selectedCategoryId)) {
+                continue;
+            }
 
-            nearByIds.add(id);
+            nearByIds.add(goodsId);
         }
 
         return nearByIds;
