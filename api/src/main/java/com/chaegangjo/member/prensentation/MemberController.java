@@ -3,11 +3,13 @@ package com.chaegangjo.member.prensentation;
 
 import com.chaegangjo.dto.ApiResponse;
 import com.chaegangjo.dto.CursorPageResponse;
+import com.chaegangjo.member.appllication.GetMySearchHistoriesUseCase;
 import com.chaegangjo.goods.dto.GoodsInfo;
 import com.chaegangjo.goods.enums.TradeStatus;
 import com.chaegangjo.member.appllication.*;
+import com.chaegangjo.member.dto.SearchHistoryInfo;
 import com.chaegangjo.member.dto.request.SetNeighborhoodRequest;
-import com.chaegangjo.member.dto.response.MemberInfo;
+import com.chaegangjo.member.dto.MemberInfo;
 import com.chaegangjo.security.oauth2.entity.CustomOAuth2User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -29,6 +31,7 @@ public class MemberController {
     private final GetMemberInfoUseCase getMemberInfoUseCase;
     private final SetNeighborhoodUsecase setNeighborhoodUsecase;
     private final GetMemberGoodsUseCase getMemberGoodsUseCase;
+    private final GetMySearchHistoriesUseCase getMySearchHistoriesUseCase;
 
     @Operation(summary = "회원 정보 조회")
 //    @PreAuthorize("#id == principal.id")
@@ -107,6 +110,15 @@ public class MemberController {
             @AuthenticationPrincipal CustomOAuth2User user) {
         return ResponseEntity.ok(
                 ApiResponse.success(getMemberGoodsUseCase.sold(user.getId(), status, cursorId, cursorCreatedAt))
+        );
+    }
+
+    @Operation(summary = "나의 검색 기록 조회")
+    @GetMapping("/me/search")
+    public ResponseEntity<ApiResponse<List<SearchHistoryInfo>>> getMySearchHistories(
+            @AuthenticationPrincipal CustomOAuth2User user) {
+        return ResponseEntity.ok(
+                ApiResponse.success(getMySearchHistoriesUseCase.execute(user.getId()))
         );
     }
 }
