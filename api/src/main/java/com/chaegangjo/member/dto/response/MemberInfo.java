@@ -21,7 +21,7 @@ public record MemberInfo(
         return new MemberInfo(
                 member.getId(),
                 member.getUsername(),
-                member.getRating(),
+                Math.round(member.getRating() * 10) / 10f,
                 member.getNeighName(),
                 member.getProfileImageUrl()
         );
