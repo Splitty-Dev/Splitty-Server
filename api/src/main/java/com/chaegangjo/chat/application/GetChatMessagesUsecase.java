@@ -24,7 +24,7 @@ public class GetChatMessagesUsecase {
     private final ChatMessageService chatMessageService;
 
     public CursorPageResponse<ChatMessagesInfo> execute(Long tradeId, Long cursorId, LocalDateTime createdAt) {
-        List<TradeMember> tradeMembers = tradeMemberService.findMembersByTradeId(tradeId);
+        List<TradeMember> tradeMembers = tradeMemberService.findTradeMembersByTradeId(tradeId);
         List<ChatMemberInfo> members = tradeMembers.stream()
                 .map(ChatMemberInfo::from).toList();
 

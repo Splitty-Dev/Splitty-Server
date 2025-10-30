@@ -7,4 +7,5 @@ import java.util.List;
 public interface TradeMemberCustomRepository {
 
     List<TradeMember> findAllByTradeId(Long tradeId);
+    List<TradeMember> findAllByMemberId(Long memberId);
 }

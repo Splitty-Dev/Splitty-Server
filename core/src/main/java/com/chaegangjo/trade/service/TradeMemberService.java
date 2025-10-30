@@ -28,8 +28,12 @@ public class TradeMemberService {
         return tradeMemberRepository.existsByTrade_Goods_IdAndMember_Id(goodsId, memberId);
     }
 
-    public List<TradeMember> findMembersByTradeId(Long tradeId) {
+    public List<TradeMember> findTradeMembersByTradeId(Long tradeId) {
         return tradeMemberRepository.findAllByTradeId(tradeId);
+    }
+
+    public List<TradeMember> findTradeMembersByMemberId(Long memberId) {
+        return tradeMemberRepository.findAllByMemberId(memberId);
     }
 
     @Transactional

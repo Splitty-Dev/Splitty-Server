@@ -1,17 +1,25 @@
 package com.chaegangjo.chat.presentation;
 
+import com.chaegangjo.chat.application.GetChatListUsecase;
 import com.chaegangjo.chat.application.GetChatMessagesUsecase;
+import com.chaegangjo.chat.dto.ChatInfo;
 import com.chaegangjo.chat.dto.ChatMessagesInfo;
 import com.chaegangjo.dto.ApiResponse;
 import com.chaegangjo.dto.CursorPageResponse;
+import com.chaegangjo.security.oauth2.entity.CustomOAuth2User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.time.LocalDateTime;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "채팅", description = "채팅 관련 API")
 @RequiredArgsConstructor
@@ -20,6 +28,16 @@ import java.time.LocalDateTime;
 public class ChatController {
 
     private final GetChatMessagesUsecase getChatMessagesUsecase;
+    private final GetChatListUsecase getChatListUsecase;
+
+    @Operation(summary = "채팅 목록 조회")
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<ChatInfo>>> getChatList(
+            @AuthenticationPrincipal
+            CustomOAuth2User user
+    ) {
+        return ResponseEntity.ok(ApiResponse.success(getChatListUsecase.execute(user.getId())));
+    }
 
     @Operation(summary = "채팅 메시지 조회")
     @GetMapping("/{tradeId}")
