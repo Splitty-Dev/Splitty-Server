@@ -18,8 +18,13 @@ public class ChatMemberService {
 
     private final ChatMemberRepository tradeMemberRepository;
 
-    public ChatMember findChatMember(Long goods, Long memberId) {
-        return tradeMemberRepository.findByGoods_IdAndMember_Id(goods, memberId)
+    public ChatMember findChatMember(Long goodsId, Long memberId) {
+        return tradeMemberRepository.findByGoods_IdAndMember_Id(goodsId, memberId)
+                .orElseThrow(() -> new TradeMemberException(TradeMemberErrorCode.TRADE_MEMBER_NOT_FOUND));
+    }
+
+    public ChatMember findChatMember(Goods goods, Member member) {
+        return tradeMemberRepository.findByGoodsAndMember(goods, member)
                 .orElseThrow(() -> new TradeMemberException(TradeMemberErrorCode.TRADE_MEMBER_NOT_FOUND));
     }
 

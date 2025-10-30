@@ -124,4 +124,8 @@ public class Goods extends BaseEntity {
     public void incrementViewCount() {
         this.viewCount++;
     }
+
+    public void changeTradeStatus(TradeStatus status) {
+        this.status = status;
+    }
 }
