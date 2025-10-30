@@ -64,12 +64,13 @@ public class GoodsCustomRepositoryImpl implements GoodsCustomRepository {
     }
 
     @Override
-    public Slice<Goods> findAllByCursor(CursorPage page, List<Long> goodsIds) {
+    public Slice<Goods> findAllByCursor(CursorPage page, List<Long> goodsIds, List<TradeStatus> statuses) {
         QGoods goods = QGoods.goods;
 
         List<Goods> fetch = queryFactory.selectFrom(goods)
                 .where(
                         inGoodsIds(goodsIds, goods),
+                        inStatuses(statuses, goods),
                         cursorId(page.getCursorId(), goods)
                 )
                 .orderBy(goods.createdAt.desc(), goods.id.desc())
@@ -140,6 +141,10 @@ public class GoodsCustomRepositoryImpl implements GoodsCustomRepository {
 
     private static BooleanExpression eqCategory(Long categoryId, QGoods goods) {
         return (categoryId != null && categoryId != 0) ? goods.category.id.eq(categoryId) : null;
+    }
+
+    private static BooleanExpression inStatuses(List<TradeStatus> statuses, QGoods goods) {
+        return (statuses != null && !statuses.isEmpty()) ? goods.status.in(statuses) : null;
     }
 
     private BooleanExpression eqStatus(TradeStatus status, QGoods goods) {

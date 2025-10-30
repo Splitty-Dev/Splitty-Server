@@ -36,7 +36,8 @@ public class GoodsService {
             nearByIds = redisUtil.getNearByIds(memberId, RESTRICT_DISTANCE, categoryId);
         }
         nearByIds.sort(Comparator.reverseOrder());
-        return goodsRepository.findAllByCursor(cursorPage, nearByIds);
+        List<TradeStatus> statuses = List.of(TradeStatus.OPEN, TradeStatus.CLOSED);
+        return goodsRepository.findAllByCursor(cursorPage, nearByIds, statuses);
     }
 
     public Slice<Goods> findAllByKeywordAndCursor(IdCreatedAtCursorPage page, String keyword) {
