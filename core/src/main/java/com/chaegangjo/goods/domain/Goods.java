@@ -120,4 +120,8 @@ public class Goods extends BaseEntity {
             this.totalWishlist--;
         }
     }
+
+    public void incrementViewCount() {
+        this.viewCount++;
+    }
 }
