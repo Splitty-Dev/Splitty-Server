@@ -34,7 +34,7 @@ public class SaveGoodsUseCase {
         Category category = categoryService.findCategoryById(request.categoryId());
         Goods goods = goodsService.saveGoods(request.toEntity(seller, category), memberPoint);
         chatMemberService.saveChatMember(goods, seller, request.getMyQuantity());
-        List<GoodsImage> goodsImages = goodsImageService.saveGoodsImages(goods, request.imageNames());
+        List<GoodsImage> goodsImages = goodsImageService.saveGoodsImages(goods, request.imageNames().subList(1, request.imageNames().size()));
 
         return DetailGoodsInfo.of(goods, goodsImages);
     }
