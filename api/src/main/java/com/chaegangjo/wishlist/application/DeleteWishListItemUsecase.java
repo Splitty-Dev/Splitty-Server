@@ -17,7 +17,7 @@ public class DeleteWishListItemUseCase {
     private final MemberService memberService;
 
     public void execute(Long memberId, Long goodsId) {
-        Member member = memberService.getMemberById(memberId);
+        Member member = memberService.findMemberById(memberId);
         Goods goods = goodsService.findGoodsById(goodsId);
         goods.decrementTotalWishlist();
         wishListService.deleteWishItem(member, goods);

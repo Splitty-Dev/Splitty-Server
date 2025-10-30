@@ -12,6 +12,7 @@ import com.chaegangjo.redis.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,7 +40,7 @@ public class MemberService {
 
     @Transactional
     public Member saveMemberLocation(Long id, double latitude, double longitude) {
-        redisUtil.saveLocation(RedisProperties.MEMBER_KEY, id, latitude, longitude);
+        redisUtil.saveMemberLocation(id, new Point(longitude, latitude));
 
         //T Map Reverse Geocoding API 호출
         TMapReverseGeocoding reverseGeocoding = tMapOpenFeign.reverseGeocoding(
@@ -48,13 +49,24 @@ public class MemberService {
                 addressType,
                 appKey);
 
-        Member member = getMemberById(id);
-        member.setNeighName(reverseGeocoding.addressInfo().adminDong());
+        Member member = findMemberById(id);
+        String adminDong = reverseGeocoding.addressInfo().adminDong();
+        member.setLocation(adminDong, latitude, longitude);
 
         return member;
     }
 
-    public Member getMemberById(Long memberId) {
+    public Point getMemberPoint(Long memberId) {
+        Point memberPoint = redisUtil.getPoint(RedisProperties.MEMBER_KEY, memberId);
+        if (memberPoint == null) {
+            Member member = findMemberById(memberId);
+            memberPoint = new Point(member.getLongitude(), member.getLatitude());
+            redisUtil.saveMemberLocation(member.getId(), memberPoint);
+        }
+        return memberPoint;
+    }
+
+    public Member findMemberById(Long memberId) {
         return findById(memberId);
     }
 

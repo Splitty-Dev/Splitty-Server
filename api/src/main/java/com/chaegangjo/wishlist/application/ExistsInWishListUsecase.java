@@ -18,7 +18,7 @@ public class ExistsInWishListUseCase {
     private final WishListService wishListService;
 
     public ExistsInWishListResponse execute(Long memberId, Long goodsId) {
-        Member member = memberService.getMemberById(memberId);
+        Member member = memberService.findMemberById(memberId);
         Goods goods = goodsService.findGoodsById(goodsId);
         boolean isInWishList = wishListService.existsWishItem(member, goods);
         return new ExistsInWishListResponse(isInWishList);

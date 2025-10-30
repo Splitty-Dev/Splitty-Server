@@ -7,6 +7,7 @@ import com.chaegangjo.dto.CursorPageResponse;
 import com.chaegangjo.goods.domain.Goods;
 import com.chaegangjo.goods.dto.GoodsInfo;
 import com.chaegangjo.goods.service.GoodsService;
+import com.chaegangjo.member.service.MemberService;
 import com.chaegangjo.paging.CursorPage;
 import com.chaegangjo.paging.NextCursor;
 import java.util.List;
@@ -19,8 +20,10 @@ import org.springframework.stereotype.Component;
 public class GetGoodsUseCase {
 
     private final GoodsService goodsService;
+    private final MemberService memberService;
 
     public CursorPageResponse<List<GoodsInfo>> execute(Long memberId, Long categoryId, Long cursorId) {
+        memberService.getMemberPoint(memberId);
         Slice<Goods> goods = goodsService.findAllByCursor(new CursorPage(GOODS_PAGE_SIZE, cursorId), memberId, categoryId);
 
         List<Goods> content = goods.getContent();

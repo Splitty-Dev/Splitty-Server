@@ -26,7 +26,7 @@ public class SaveReviewsUseCase {
         //TODO: 리뷰 작성 권한 검증, 중복 작성 방지, 자기 자신 리뷰 작성 방지, 참여 회원 여부 검증
         List<Review> reviews = request.reviews().stream()
                         .map(review -> {
-                            Member reviewee = memberService.getMemberById(review.getRevieweeId());
+                            Member reviewee = memberService.findMemberById(review.getRevieweeId());
                             reviewee.calculateRating(review.getRating());
                             return Review.builder()
                                     .reviewer(reviewer)

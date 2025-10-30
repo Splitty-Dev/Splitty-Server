@@ -14,7 +14,7 @@ public class GetMemberInfoUseCase {
 
     public MemberInfo execute(Long memberId) {
 
-        return MemberInfo.from(memberService.getMemberById(memberId));
+        return MemberInfo.from(memberService.findMemberById(memberId));
     }
 
     public MemberInfo execute(String email) {

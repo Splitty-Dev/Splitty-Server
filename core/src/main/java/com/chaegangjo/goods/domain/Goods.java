@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.data.geo.Point;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -32,6 +33,10 @@ public class Goods extends BaseEntity {
 
     @Column(nullable = false, length = 20)
     private String neighName;
+
+    private double latitude;
+
+    private double longitude;
 
     @Column(nullable = false)
     private String name;
@@ -127,5 +132,10 @@ public class Goods extends BaseEntity {
 
     public void changeTradeStatus(TradeStatus status) {
         this.status = status;
+    }
+
+    public void setLocation(Point point) {
+        this.longitude = point.getX();
+        this.latitude = point.getY();
     }
 }

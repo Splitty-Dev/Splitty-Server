@@ -26,7 +26,7 @@ public class SearchGoodsUseCase {
     private final SearchHistoryService searchHistoryService;
     
     public CursorPageResponse<List<GoodsInfo>> execute(Long memberId, String keyword, Long cursorId, LocalDateTime cursorCreatedAt) {
-        Member member = memberService.getMemberById(memberId);
+        Member member = memberService.findMemberById(memberId);
         searchHistoryService.saveSearchHistory(member, keyword);
 
         Slice<Goods> goods = goodsService.findAllByKeywordAndCursor(

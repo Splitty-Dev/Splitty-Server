@@ -13,6 +13,6 @@ public interface GoodsCustomRepository {
     Optional<Goods> findGoodsWithDetail(Long id);
     Slice<Goods> findSoldGoodsByCursor(IdCreatedAtCursorPage page, Long memberId, TradeStatus tradeStatus);
     Slice<Goods> findPurchasedGoodsByCursor(IdCreatedAtCursorPage page, Long buyerId, TradeStatus status);
-    Slice<Goods> findAllByCursor(CursorPage page, List<Long> goodsId, Long categoryId);
+    Slice<Goods> findAllByCursor(CursorPage page, List<Long> goodsId);
     Slice<Goods> findAllByKeywordAndCursor(IdCreatedAtCursorPage page, String keyword);
 }

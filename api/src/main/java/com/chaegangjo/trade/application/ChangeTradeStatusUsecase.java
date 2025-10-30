@@ -20,7 +20,7 @@ public class ChangeTradeStatusUseCase {
 
     @Transactional
     public void execute(Long memberId, ChangeTradeStatusRequest request) {
-        Member member = memberService.getMemberById(memberId);
+        Member member = memberService.findMemberById(memberId);
         Goods goods = goodsService.findGoodsById(request.goodsId());
         chatMemberService.findChatMemberByGoodsAndMember(goods, member);
         goods.changeTradeStatus(request.tradeStatus());

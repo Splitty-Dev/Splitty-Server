@@ -9,7 +9,6 @@ import com.chaegangjo.goods.enums.TradeStatus;
 import com.chaegangjo.goods.repository.GoodsRepository;
 import com.chaegangjo.paging.CursorPage;
 import com.chaegangjo.paging.IdCreatedAtCursorPage;
-import com.chaegangjo.redis.RedisProperties;
 import com.chaegangjo.redis.RedisUtil;
 import java.util.Comparator;
 import java.util.List;
@@ -30,9 +29,14 @@ public class GoodsService {
     private final static int RESTRICT_DISTANCE = 3000000;
 
     public Slice<Goods> findAllByCursor(CursorPage cursorPage, Long memberId, Long categoryId) {
-        List<Long> nearByIds = redisUtil.getNearByIds(memberId, RESTRICT_DISTANCE);
+        List<Long> nearByIds;
+        if (categoryId == null || categoryId == 0L) {
+            nearByIds = redisUtil.getNearByIds(memberId, RESTRICT_DISTANCE);
+        } else {
+            nearByIds = redisUtil.getNearByIds(memberId, RESTRICT_DISTANCE, categoryId);
+        }
         nearByIds.sort(Comparator.reverseOrder());
-        return goodsRepository.findAllByCursor(cursorPage, nearByIds, categoryId);
+        return goodsRepository.findAllByCursor(cursorPage, nearByIds);
     }
 
     public Slice<Goods> findAllByKeywordAndCursor(IdCreatedAtCursorPage page, String keyword) {
@@ -55,10 +59,15 @@ public class GoodsService {
         return goodsRepository.findGoodsWithDetail(goodsId).orElseThrow(() -> new GoodsException(GOODS_NOT_FOUND));
     }
 
-    public Goods saveGoods(Goods goods) {
-        Point memberPoint = redisUtil.getPoint(RedisProperties.MEMBER_KEY, goods.getSeller().getId());
+    @Transactional
+    public Goods saveGoods(Goods goods, Point memberPoint) {
+        goods.setLocation(memberPoint);
         Goods newGoods = goodsRepository.save(goods);
-        redisUtil.saveLocation(RedisProperties.GOODS_KEY, newGoods.getId(), memberPoint);
+        saveGoodsLocation(goods, memberPoint, newGoods);
         return newGoods;
+    }
+
+    private void saveGoodsLocation(Goods goods, Point memberPoint, Goods newGoods) {
+        redisUtil.saveGoodsLocation(newGoods.getId(), goods.getCategory().getId(), memberPoint);
     }
 }

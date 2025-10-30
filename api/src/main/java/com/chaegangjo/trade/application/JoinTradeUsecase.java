@@ -39,7 +39,7 @@ public class JoinTradeUseCase {
             throw new TradeException(INSUFFICIENT_STOCK);
         }
 
-        Member buyer = memberService.getMemberById(buyerId);
+        Member buyer = memberService.findMemberById(buyerId);
         if (chatMemberService.existsChatMemberByGoodsAndMember(goods, buyer)) {
             throw new TradeException(ALREADY_JOINED);
         }

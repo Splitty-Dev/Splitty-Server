@@ -13,6 +13,7 @@ import com.chaegangjo.member.service.MemberService;
 import com.chaegangjo.chat.service.ChatMemberService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,11 +29,13 @@ public class SaveGoodsUseCase {
 
     @Transactional
     public DetailGoodsInfo execute(SaveGoodsRequest request, Long sellerId) {
-        Member seller = memberService.getMemberById(sellerId);
+        Member seller = memberService.findMemberById(sellerId);
+        Point memberPoint = memberService.getMemberPoint(sellerId);
         Category category = categoryService.findCategoryById(request.categoryId());
-        Goods goods = goodsService.saveGoods(request.toEntity(seller, category));
+        Goods goods = goodsService.saveGoods(request.toEntity(seller, category), memberPoint);
         chatMemberService.saveChatMember(goods, seller, request.getMyQuantity());
         List<GoodsImage> goodsImages = goodsImageService.saveGoodsImages(goods, request.imageNames());
+
         return DetailGoodsInfo.of(goods, goodsImages);
     }
 }

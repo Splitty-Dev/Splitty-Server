@@ -49,6 +49,10 @@ public class Member extends BaseEntity {
     @Column(length = 20)
     private String neighName;
 
+    private double latitude;
+
+    private double longitude;
+
     private String profileImageUrl;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
@@ -66,8 +70,10 @@ public class Member extends BaseEntity {
         this.username = RandomUsername.getRandomUsername();
     }
 
-    public void setNeighName(String neighName) {
-        this.neighName = neighName;
+    public void setLocation(String adminDong, double latitude, double longitude) {
+        this.neighName = adminDong;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public void calculateRating(float newRating) {
