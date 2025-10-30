@@ -113,7 +113,7 @@ public class MemberController {
         );
     }
 
-    @Operation(summary = "나의 검색 기록 조회")
+    @Operation(summary = "[New] 나의 검색 기록 조회")
     @GetMapping("/me/search")
     public ResponseEntity<ApiResponse<List<SearchHistoryInfo>>> getMySearchHistories(
             @AuthenticationPrincipal CustomOAuth2User user) {

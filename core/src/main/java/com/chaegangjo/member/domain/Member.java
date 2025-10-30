@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.data.geo.Point;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -49,9 +50,9 @@ public class Member extends BaseEntity {
     @Column(length = 20)
     private String neighName;
 
-    private double latitude;
+    private Double latitude;
 
-    private double longitude;
+    private Double longitude;
 
     private String profileImageUrl;
 
@@ -70,10 +71,15 @@ public class Member extends BaseEntity {
         this.username = RandomUsername.getRandomUsername();
     }
 
-    public void setLocation(String adminDong, double latitude, double longitude) {
+    public void setLocation(String adminDong, Point point) {
         this.neighName = adminDong;
-        this.latitude = latitude;
-        this.longitude = longitude;
+        this.latitude = point.getY();
+        this.longitude = point.getX();
+    }
+
+    public void setLocation(Point point) {
+        this.latitude = point.getY();
+        this.longitude = point.getX();
     }
 
     public void calculateRating(float newRating) {

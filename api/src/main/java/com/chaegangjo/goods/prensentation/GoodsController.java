@@ -67,7 +67,7 @@ public class GoodsController {
         return ResponseEntity.ok(ApiResponse.success(saveGoodsUsecase.execute(request, user.getId())));
     }
 
-    @Operation(summary = "상품 검색 조회(제목/내용 기반)")
+    @Operation(summary = "[New] 상품 검색 조회(제목/내용 기반)")
     @GetMapping("/search")
     public ResponseEntity<ApiResponse<CursorPageResponse<List<GoodsInfo>>>> searchGoods(
             @Parameter(example = "생수", description = "검색어")

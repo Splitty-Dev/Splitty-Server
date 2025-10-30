@@ -99,7 +99,7 @@ public class RedisUtil {
     }
 
     private GeoResults<GeoLocation<Object>> getGeoResults(Long memberId, int restrictDistance) {
-        Point memberPoint = getPoint(MEMBER_KEY, memberId);
+        Point memberPoint = getPoint(MEMBER_KEY, String.valueOf(memberId));
         if (memberPoint == null) {
             throw new MemberException(MemberErrorCode.MEMBER_LOCATION_NOT_FOUND);
         }
@@ -118,8 +118,8 @@ public class RedisUtil {
         return results;
     }
 
-    public Point getPoint(String key, Long id) {
+    public Point getPoint(String key, String id) {
         GeoOperations<String, Object> geoOperations = redisTemplate.opsForGeo();
-        return geoOperations.position(key, id.toString()).get(0);
+        return geoOperations.position(key, id).get(0);
     }
 }

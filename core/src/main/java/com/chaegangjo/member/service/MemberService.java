@@ -1,13 +1,14 @@
 package com.chaegangjo.member.service;
 
+import static com.chaegangjo.exception.errorcode.MemberErrorCode.MEMBER_LOCATION_NOT_FOUND;
 import static com.chaegangjo.exception.errorcode.MemberErrorCode.MEMBER_NOT_FOUND;
+import static com.chaegangjo.redis.RedisProperties.MEMBER_KEY;
 
 import com.chaegangjo.exception.MemberException;
 import com.chaegangjo.member.domain.Member;
 import com.chaegangjo.member.repository.MemberRepository;
 import com.chaegangjo.openfeign.api.TMapOpenFeign;
 import com.chaegangjo.openfeign.dto.TMapReverseGeocoding;
-import com.chaegangjo.redis.RedisProperties;
 import com.chaegangjo.redis.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +41,8 @@ public class MemberService {
 
     @Transactional
     public Member saveMemberLocation(Long id, double latitude, double longitude) {
-        redisUtil.saveMemberLocation(id, new Point(longitude, latitude));
+        Point point = new Point(longitude, latitude);
+        redisUtil.saveMemberLocation(id, point);
 
         //T Map Reverse Geocoding API 호출
         TMapReverseGeocoding reverseGeocoding = tMapOpenFeign.reverseGeocoding(
@@ -51,17 +53,21 @@ public class MemberService {
 
         Member member = findMemberById(id);
         String adminDong = reverseGeocoding.addressInfo().adminDong();
-        member.setLocation(adminDong, latitude, longitude);
+        member.setLocation(adminDong, point);
 
         return member;
     }
 
     public Point getMemberPoint(Long memberId) {
-        Point memberPoint = redisUtil.getPoint(RedisProperties.MEMBER_KEY, memberId);
+        Point memberPoint = redisUtil.getPoint(MEMBER_KEY, String.valueOf(memberId));
         if (memberPoint == null) {
             Member member = findMemberById(memberId);
-            memberPoint = new Point(member.getLongitude(), member.getLatitude());
-            redisUtil.saveMemberLocation(member.getId(), memberPoint);
+            Double longitude = member.getLongitude();
+            Double latitude = member.getLatitude();
+            if (longitude == null || latitude == null) {
+                throw new MemberException(MEMBER_LOCATION_NOT_FOUND);
+            }
+            redisUtil.saveMemberLocation(member.getId(), new Point(longitude, latitude));
         }
         return memberPoint;
     }

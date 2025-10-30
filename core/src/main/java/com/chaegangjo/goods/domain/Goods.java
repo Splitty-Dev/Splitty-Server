@@ -34,9 +34,9 @@ public class Goods extends BaseEntity {
     @Column(nullable = false, length = 20)
     private String neighName;
 
-    private double latitude;
+    private Double latitude;
 
-    private double longitude;
+    private Double longitude;
 
     @Column(nullable = false)
     private String name;
