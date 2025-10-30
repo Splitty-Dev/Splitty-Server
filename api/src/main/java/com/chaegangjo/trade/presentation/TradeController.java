@@ -4,7 +4,7 @@ import com.chaegangjo.dto.ApiResponse;
 import com.chaegangjo.security.oauth2.entity.CustomOAuth2User;
 import com.chaegangjo.trade.application.IsJoinTradeUsecase;
 import com.chaegangjo.trade.application.JoinTradeUsecase;
-import com.chaegangjo.trade.dto.request.JoinTradeRequest;
+import com.chaegangjo.trade.dto.JoinTradeRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;

@@ -1,6 +1,6 @@
-package com.chaegangjo.trade.repository;
+package com.chaegangjo.chat.repository;
 
-import com.chaegangjo.trade.domain.ChatMessage;
+import com.chaegangjo.chat.domain.ChatMessage;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long>, ChatMessageCustomRepository {

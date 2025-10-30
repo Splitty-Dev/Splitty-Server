@@ -2,10 +2,10 @@ package com.chaegangjo.chat.application;
 
 import com.chaegangjo.chat.dto.ChatInfo;
 import com.chaegangjo.goods.domain.Goods;
-import com.chaegangjo.trade.domain.ChatMessage;
-import com.chaegangjo.trade.domain.TradeMember;
-import com.chaegangjo.trade.service.ChatMessageService;
-import com.chaegangjo.trade.service.TradeMemberService;
+import com.chaegangjo.chat.domain.ChatMember;
+import com.chaegangjo.chat.domain.ChatMessage;
+import com.chaegangjo.chat.service.ChatMessageService;
+import com.chaegangjo.chat.service.ChatMemberService;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,12 +17,12 @@ import org.springframework.stereotype.Component;
 public class GetChatListUsecase {
 
     private final ChatMessageService chatMessageService;
-    private final TradeMemberService tradeMemberService;
+    private final ChatMemberService chatMemberService;
 
     public List<ChatInfo> execute(Long memberId) {
-        List<TradeMember> tradeMembers = tradeMemberService.findTradeMembersByMemberId(memberId);
-        List<Goods> goods = tradeMembers.stream()
-                .map(TradeMember::getGoods)
+        List<ChatMember> chatMembers = chatMemberService.findChatMembersByMemberId(memberId);
+        List<Goods> goods = chatMembers.stream()
+                .map(ChatMember::getGoods)
                 .toList();
         List<Long> goodsId = goods.stream()
                 .map(Goods::getId)
@@ -32,7 +32,7 @@ public class GetChatListUsecase {
         List<ChatInfo> data = goods.stream()
                 .map(g -> {
                     ChatMessage lastMessage = lastMessages.stream()
-                            .filter(m -> m.getTradeMember().getGoods().getId().equals(g.getId()))
+                            .filter(m -> m.getChatMember().getGoods().getId().equals(g.getId()))
                             .findFirst()
                             .orElse(null);
                     return ChatInfo.of(g, lastMessage);

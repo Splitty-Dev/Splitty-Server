@@ -10,7 +10,7 @@ import com.chaegangjo.goods.service.GoodsImageService;
 import com.chaegangjo.goods.service.GoodsService;
 import com.chaegangjo.member.domain.Member;
 import com.chaegangjo.member.service.MemberService;
-import com.chaegangjo.trade.service.TradeMemberService;
+import com.chaegangjo.chat.service.ChatMemberService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -24,14 +24,14 @@ public class SaveGoodsUsecase {
     private final GoodsService goodsService;
     private final GoodsImageService goodsImageService;
     private final CategoryService categoryService;
-    private final TradeMemberService tradeMemberService;
+    private final ChatMemberService chatMemberService;
 
     @Transactional
     public DetailGoodsInfo execute(SaveGoodsRequest request, Long sellerId) {
         Member seller = memberService.findMemberById(sellerId);
         Category category = categoryService.findCategoryById(request.categoryId());
         Goods goods = goodsService.saveGoods(request.toEntity(seller, category));
-        tradeMemberService.saveTradeMember(goods, seller, request.getMyQuantity());
+        chatMemberService.saveChatMember(goods, seller, request.getMyQuantity());
         List<GoodsImage> goodsImages = goodsImageService.saveGoodsImages(goods, request.imageNames());
         return DetailGoodsInfo.of(goods, goodsImages);
     }

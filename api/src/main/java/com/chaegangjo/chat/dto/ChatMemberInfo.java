@@ -1,7 +1,7 @@
 package com.chaegangjo.chat.dto;
 
 import com.chaegangjo.member.domain.Member;
-import com.chaegangjo.trade.domain.TradeMember;
+import com.chaegangjo.chat.domain.ChatMember;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
@@ -18,8 +18,8 @@ public record ChatMemberInfo(Long id,
         this.profileImageUrl = profileImageUrl;
     }
 
-    public static ChatMemberInfo from(TradeMember tradeMember) {
-        Member member = tradeMember.getMember();
+    public static ChatMemberInfo from(ChatMember chatMember) {
+        Member member = chatMember.getMember();
         return ChatMemberInfo.builder()
                 .id(member.getId())
                 .username(member.getUsername())

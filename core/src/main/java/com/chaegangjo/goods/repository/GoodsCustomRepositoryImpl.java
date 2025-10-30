@@ -1,5 +1,6 @@
 package com.chaegangjo.goods.repository;
 
+import com.chaegangjo.chat.domain.QChatMember;
 import com.chaegangjo.goods.domain.Goods;
 import com.chaegangjo.goods.domain.QCategory;
 import com.chaegangjo.goods.domain.QGoods;
@@ -7,7 +8,6 @@ import com.chaegangjo.goods.enums.TradeStatus;
 import com.chaegangjo.member.domain.QMember;
 import com.chaegangjo.paging.CursorPage;
 import com.chaegangjo.paging.IdCreatedAtCursorPage;
-import com.chaegangjo.trade.domain.QTradeMember;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.time.LocalDateTime;
@@ -89,12 +89,12 @@ public class GoodsCustomRepositoryImpl implements GoodsCustomRepository {
     @Override
     public Slice<Goods> findSoldGoodsByCursor(IdCreatedAtCursorPage page, Long buyerId, TradeStatus status) {
         QGoods goods = QGoods.goods;
-        QTradeMember tradeMember = QTradeMember.tradeMember;
+        QChatMember chatMember = QChatMember.chatMember;
 
         List<Goods> fetch = queryFactory.selectFrom(goods)
-                .join(tradeMember).on(tradeMember.goods.eq(goods))
+                .join(chatMember).on(chatMember.goods.eq(goods))
                 .where(
-                        eqBuyerId(buyerId, tradeMember),
+                        eqBuyerId(buyerId, chatMember),
                         eqStatus(status, goods),
                         createdAtAndCursorId(page.getCursorCreatedAt(), page.getCursorId(), goods)
                 )
@@ -120,8 +120,8 @@ public class GoodsCustomRepositoryImpl implements GoodsCustomRepository {
         return (sellerId != null) ? goods.seller.id.eq(sellerId) : null;
     }
 
-    private BooleanExpression eqBuyerId(Long buyerId, QTradeMember tradeMember) {
-        return (buyerId != null) ? tradeMember.member.id.eq(buyerId) : null;
+    private BooleanExpression eqBuyerId(Long buyerId, QChatMember chatMember) {
+        return (buyerId != null) ? chatMember.member.id.eq(buyerId) : null;
     }
 
     private BooleanExpression cursorId(Long cursorId, QGoods goods) {

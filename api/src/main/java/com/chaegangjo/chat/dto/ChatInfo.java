@@ -1,7 +1,7 @@
 package com.chaegangjo.chat.dto;
 
 import com.chaegangjo.goods.domain.Goods;
-import com.chaegangjo.trade.domain.ChatMessage;
+import com.chaegangjo.chat.domain.ChatMessage;
 import java.time.LocalDateTime;
 
 public record ChatInfo(

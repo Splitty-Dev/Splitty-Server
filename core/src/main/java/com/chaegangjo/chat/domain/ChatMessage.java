@@ -1,4 +1,4 @@
-package com.chaegangjo.trade.domain;
+package com.chaegangjo.chat.domain;
 
 import com.chaegangjo.entity.BaseCreatedEntity;
 import jakarta.persistence.*;
@@ -19,19 +19,19 @@ public class ChatMessage extends BaseCreatedEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trade_member_id")
-    private TradeMember tradeMember;
+    private ChatMember chatMember;
 
     @Enumerated(EnumType.STRING)
     private MessageType type = MessageType.TEXT;
 
-    public ChatMessage(TradeMember tradeMember, String message) {
+    public ChatMessage(ChatMember chatMember, String message) {
         this.message = message;
-        this.tradeMember = tradeMember;
+        this.chatMember = chatMember;
     }
 
-    public ChatMessage(TradeMember tradeMember, MessageType type) {
+    public ChatMessage(ChatMember chatMember, MessageType type) {
         this.message = null;
-        this.tradeMember = tradeMember;
+        this.chatMember = chatMember;
         this.type = type;
     }
 }

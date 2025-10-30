@@ -1,4 +1,4 @@
-package com.chaegangjo.trade.dto.request;
+package com.chaegangjo.trade.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 

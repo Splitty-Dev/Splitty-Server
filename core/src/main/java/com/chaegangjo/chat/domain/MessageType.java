@@ -1,4 +1,4 @@
-package com.chaegangjo.trade.domain;
+package com.chaegangjo.chat.domain;
 
 import lombok.AccessLevel;
 import lombok.Getter;

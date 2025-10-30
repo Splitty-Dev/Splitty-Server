@@ -1,12 +1,12 @@
-package com.chaegangjo.trade.service;
+package com.chaegangjo.chat.service;
 
 import static com.chaegangjo.paging.PageProperties.CHAT_MESSAGE_PAGE_SIZE;
 
 import com.chaegangjo.paging.IdCreatedAtCursorPage;
-import com.chaegangjo.trade.domain.ChatMessage;
-import com.chaegangjo.trade.domain.MessageType;
-import com.chaegangjo.trade.domain.TradeMember;
-import com.chaegangjo.trade.repository.ChatMessageRepository;
+import com.chaegangjo.chat.domain.ChatMessage;
+import com.chaegangjo.chat.domain.MessageType;
+import com.chaegangjo.chat.domain.ChatMember;
+import com.chaegangjo.chat.repository.ChatMessageRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -22,14 +22,14 @@ public class ChatMessageService {
     private final ChatMessageRepository chatMessageRepository;
 
     @Transactional
-    public ChatMessage saveChatMessage(TradeMember tradeMember, String message) {
-        ChatMessage chatMessage = new ChatMessage(tradeMember, message);
+    public ChatMessage saveChatMessage(ChatMember chatMember, String message) {
+        ChatMessage chatMessage = new ChatMessage(chatMember, message);
         return chatMessageRepository.save(chatMessage);
     }
 
     @Transactional
-    public ChatMessage saveChatMessage(TradeMember tradeMember, MessageType messageType) {
-        ChatMessage chatMessage = new ChatMessage(tradeMember, messageType);
+    public ChatMessage saveChatMessage(ChatMember chatMember, MessageType messageType) {
+        ChatMessage chatMessage = new ChatMessage(chatMember, messageType);
         return chatMessageRepository.save(chatMessage);
     }
 

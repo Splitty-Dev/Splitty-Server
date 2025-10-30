@@ -1,10 +1,10 @@
 package com.chaegangjo.application;
 
 import com.chaegangjo.dto.StompChatMessageResponse;
-import com.chaegangjo.trade.domain.ChatMessage;
-import com.chaegangjo.trade.domain.TradeMember;
-import com.chaegangjo.trade.service.ChatMessageService;
-import com.chaegangjo.trade.service.TradeMemberService;
+import com.chaegangjo.chat.domain.ChatMessage;
+import com.chaegangjo.chat.domain.ChatMember;
+import com.chaegangjo.chat.service.ChatMessageService;
+import com.chaegangjo.chat.service.ChatMemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -13,12 +13,12 @@ import org.springframework.stereotype.Component;
 public class SaveChatMessageUsecase {
 
     private final ChatMessageService chatMessageService;
-    private final TradeMemberService tradeMemberService;
+    private final ChatMemberService chatMemberService;
 
     public StompChatMessageResponse execute(Long senderId, Long goodsId, String message) {
-        TradeMember tradeMember = tradeMemberService.findTradeMember(goodsId, senderId);
-        ChatMessage chatMessage = chatMessageService.saveChatMessage(tradeMember, message);
+        ChatMember chatMember = chatMemberService.findChatMember(goodsId, senderId);
+        ChatMessage chatMessage = chatMessageService.saveChatMessage(chatMember, message);
 
-        return StompChatMessageResponse.of(chatMessage, goodsId, senderId, tradeMember.getUsername());
+        return StompChatMessageResponse.of(chatMessage, goodsId, senderId, chatMember.getUsername());
     }
 }

@@ -1,11 +1,11 @@
-package com.chaegangjo.trade.repository;
+package com.chaegangjo.chat.repository;
 
+import com.chaegangjo.chat.domain.QChatMember;
+import com.chaegangjo.chat.domain.QChatMessage;
 import com.chaegangjo.goods.domain.QGoods;
 import com.chaegangjo.paging.IdCreatedAtCursorPage;
-import com.chaegangjo.trade.domain.ChatMessage;
-import com.chaegangjo.trade.domain.MessageType;
-import com.chaegangjo.trade.domain.QChatMessage;
-import com.chaegangjo.trade.domain.QTradeMember;
+import com.chaegangjo.chat.domain.ChatMessage;
+import com.chaegangjo.chat.domain.MessageType;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.time.LocalDateTime;
@@ -25,10 +25,10 @@ public class ChatMessageCustomRepositoryImpl implements ChatMessageCustomReposit
     @Override
     public Slice<ChatMessage> findAllByCursor(IdCreatedAtCursorPage page, Long goodsId) {
         QChatMessage chatMessage = QChatMessage.chatMessage;
-        QTradeMember tradeMember = QTradeMember.tradeMember;
+        QChatMember chatMember = QChatMember.chatMember;
 
         List<ChatMessage> chatMessages = queryFactory.selectFrom(chatMessage)
-                .join(chatMessage.tradeMember, tradeMember).fetchJoin()
+                .join(chatMessage.chatMember, chatMember).fetchJoin()
                 .where(
                         eqGoodsId(goodsId, chatMessage),
                         createdAtAndCursorId(page.getCursorCreatedAt(), page.getCursorId(), chatMessage)
@@ -46,28 +46,28 @@ public class ChatMessageCustomRepositoryImpl implements ChatMessageCustomReposit
     @Override
     public List<ChatMessage> findLastMessagesByGoodsIds(List<Long> goodsIds) {
         QChatMessage chatMessage = QChatMessage.chatMessage;
-        QTradeMember tradeMember = QTradeMember.tradeMember;
+        QChatMember chatMember = QChatMember.chatMember;
         QGoods goods = QGoods.goods;
 
         List<Long> lastIds = queryFactory
                 .select(chatMessage.id.max())
                 .from(chatMessage)
-                .where(chatMessage.tradeMember.goods.id.in(goodsIds),
+                .where(chatMessage.chatMember.goods.id.in(goodsIds),
                         chatMessage.type.eq(MessageType.TEXT))
-                .groupBy(chatMessage.tradeMember.goods.id)
+                .groupBy(chatMessage.chatMember.goods.id)
                 .fetch();
 
         return queryFactory
                 .selectFrom(chatMessage)
-                .join(chatMessage.tradeMember, tradeMember).fetchJoin()
-                .join(tradeMember.goods, goods).fetchJoin()
+                .join(chatMessage.chatMember, chatMember).fetchJoin()
+                .join(chatMember.goods, goods).fetchJoin()
                 .where(chatMessage.id.in(lastIds))
                 .fetch();
     }
 
     private BooleanExpression eqGoodsId(Long goodsId, QChatMessage chatMessage) {
         if (goodsId == null) return null;
-        return chatMessage.tradeMember.goods.id.eq(goodsId);
+        return chatMessage.chatMember.goods.id.eq(goodsId);
     }
 
     private BooleanExpression createdAtAndCursorId(LocalDateTime cursorCreatedAt, Long cursorId, QChatMessage chatMessage) {

@@ -1,7 +1,7 @@
 package com.chaegangjo.trade.application;
 
 import com.chaegangjo.trade.presentation.IsJoinedTradeResponse;
-import com.chaegangjo.trade.service.TradeMemberService;
+import com.chaegangjo.chat.service.ChatMemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class IsJoinTradeUsecase {
 
-    private final TradeMemberService tradeMemberService;
+    private final ChatMemberService chatMemberService;
 
     public IsJoinedTradeResponse execute(Long memberId, Long goodsId) {
-        return new IsJoinedTradeResponse(tradeMemberService.existTradeMember(goodsId, memberId));
+        return new IsJoinedTradeResponse(chatMemberService.existChatMember(goodsId, memberId));
     }
 }

@@ -1,4 +1,4 @@
-package com.chaegangjo.trade.domain;
+package com.chaegangjo.chat.domain;
 
 import com.chaegangjo.entity.BaseEntity;
 import com.chaegangjo.goods.domain.Goods;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class TradeMember extends BaseEntity {
+public class ChatMember extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,7 +30,7 @@ public class TradeMember extends BaseEntity {
     @Column(nullable = false)
     private int quantity;
 
-    public TradeMember(Goods goods, Member member, int quantity) {
+    public ChatMember(Goods goods, Member member, int quantity) {
         this.member = member;
         this.username = member.getUsername();
         this.goods = goods;

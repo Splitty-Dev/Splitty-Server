@@ -1,7 +1,7 @@
-package com.chaegangjo.trade.repository;
+package com.chaegangjo.chat.repository;
 
 import com.chaegangjo.paging.IdCreatedAtCursorPage;
-import com.chaegangjo.trade.domain.ChatMessage;
+import com.chaegangjo.chat.domain.ChatMessage;
 import java.util.List;
 import org.springframework.data.domain.Slice;
 
