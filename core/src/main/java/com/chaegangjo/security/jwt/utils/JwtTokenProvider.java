@@ -35,7 +35,15 @@ public class JwtTokenProvider {
 		this.secretKey = Keys.hmacShaKeyFor(decoded);
 	}
 
-	public String extractToken(HttpServletRequest request) {
+	public String extractTokenFromHeader(HttpServletRequest request) {
+		String header = request.getHeader(JwtProperties.AUTHORIZATION_HEADER);
+		if (header == null || !header.startsWith(JwtProperties.TOKEN_PREFIX)) {
+			return null;
+		}
+		return header.split(" ")[1];
+	}
+
+	public String extractTokenFromCookie(HttpServletRequest request) {
 		String token = null;
 		Cookie[] cookies = request.getCookies();
 		if (cookies != null) {
