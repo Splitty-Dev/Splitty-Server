@@ -45,6 +45,15 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.failure(e.getErrorCode()));
     }
 
+    @ExceptionHandler(FirebaseException.class)
+    public ResponseEntity<ApiResponse<Void>> handleException(FirebaseException e) {
+        log.warn("[!] Firebase Exception: {}", e);
+
+        return ResponseEntity.status(e.getErrorCode().getStatus())
+                .body(ApiResponse.failure(e.getErrorCode()));
+    }
+
+
     @ExceptionHandler(ChatMemberException.class)
     public ResponseEntity<ApiResponse<Void>> handleException(ChatMemberException e) {
         log.warn("[!] Chat Member Exception: {}", e);
