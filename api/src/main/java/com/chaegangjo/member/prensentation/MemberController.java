@@ -65,7 +65,7 @@ public class MemberController {
             @AuthenticationPrincipal CustomOAuth2User user) {
 
         return ResponseEntity.ok(
-                ApiResponse.success(getMemberInfoUseCase.execute(user.getEmail()))
+                ApiResponse.success(getMemberInfoUseCase.execute(user.getId()))
         );
     }
 
