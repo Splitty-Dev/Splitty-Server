@@ -134,6 +134,11 @@ public class Goods extends BaseEntity {
         this.status = status;
     }
 
+    public void closeTrade() {
+        this.status = TradeStatus.CLOSED;
+        this.leftQuantity = 0;
+    }
+
     public void setLocation(Point point) {
         this.longitude = point.getX();
         this.latitude = point.getY();

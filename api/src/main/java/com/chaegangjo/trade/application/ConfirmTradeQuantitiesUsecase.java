@@ -7,7 +7,6 @@ import com.chaegangjo.exception.TradeException;
 import com.chaegangjo.exception.errorcode.ChatMemberErrorCode;
 import com.chaegangjo.exception.errorcode.TradeErrorCode;
 import com.chaegangjo.goods.domain.Goods;
-import com.chaegangjo.goods.enums.TradeStatus;
 import com.chaegangjo.goods.service.GoodsService;
 import com.chaegangjo.trade.dto.ConfirmTradeQuantityRequest;
 import com.chaegangjo.trade.dto.ConfirmTradeQuantityRequest.ConfirmTradeQuantityInfo;
@@ -32,7 +31,7 @@ public class ConfirmTradeQuantitiesUseCase {
         List<ChatMember> chatMembers = chatMemberService.findAllByGoodsId(request.goodsId());
         changeQuantities(request, chatMembers);
 
-        goods.changeTradeStatus(TradeStatus.CLOSED);
+        goods.closeTrade();
     }
 
     private static void changeQuantities(ConfirmTradeQuantityRequest request, List<ChatMember> chatMembers) {
