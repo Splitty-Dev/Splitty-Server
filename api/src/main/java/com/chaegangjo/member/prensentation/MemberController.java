@@ -7,10 +7,12 @@ import com.chaegangjo.goods.dto.GoodsInfo;
 import com.chaegangjo.goods.enums.TradeStatus;
 import com.chaegangjo.member.appllication.GetMemberGoodsUseCase;
 import com.chaegangjo.member.appllication.GetMemberInfoUseCase;
+import com.chaegangjo.member.appllication.GetMyNotificationHistoriesUseCase;
 import com.chaegangjo.member.appllication.GetMySearchHistoriesUseCase;
 import com.chaegangjo.member.appllication.SaveMyFcmTokenUseCase;
 import com.chaegangjo.member.appllication.SetNeighborhoodUsecase;
 import com.chaegangjo.member.dto.MemberInfo;
+import com.chaegangjo.member.dto.NotificationHistoryInfo;
 import com.chaegangjo.member.dto.SearchHistoryInfo;
 import com.chaegangjo.member.dto.request.SaveMyFcmTokenRequest;
 import com.chaegangjo.member.dto.request.SetNeighborhoodRequest;
@@ -43,6 +45,7 @@ public class MemberController {
     private final GetMemberGoodsUseCase getMemberGoodsUseCase;
     private final GetMySearchHistoriesUseCase getMySearchHistoriesUseCase;
     private final SaveMyFcmTokenUseCase saveMyFcmTokenUseCase;
+    private final GetMyNotificationHistoriesUseCase getMyNotificationHistoriesUseCase;
 
     @Operation(summary = "회원 정보 조회")
 //    @PreAuthorize("#id == principal.id")
@@ -140,5 +143,16 @@ public class MemberController {
             @AuthenticationPrincipal CustomOAuth2User user) {
         saveMyFcmTokenUseCase.execute(user.getId(), request.token());
         return ResponseEntity.ok(ApiResponse.success());
+    }
+
+    @Operation(summary = "[New] 나의 알림 기록 조회")
+    @GetMapping("/me/notifications")
+    public ResponseEntity<ApiResponse<CursorPageResponse<List<NotificationHistoryInfo>>>> getMyNotificationHistories(
+            @Parameter(example = "20", description = "첫 요청 시 null, 이후에는 response의 nextCursor.lastId 값")
+            @RequestParam(required = false) Long cursorId,
+            @Parameter(example = "2025-10-12T14:51:24.999", description = "첫 요청 시 null, 이후에는 response의 nextCursor.lastCreatedAt 값")
+            @RequestParam(required = false) LocalDateTime cursorCreatedAt,
+            @AuthenticationPrincipal CustomOAuth2User user) {
+        return ResponseEntity.ok (ApiResponse.success(getMyNotificationHistoriesUseCase.execute(user.getId(), cursorId, cursorCreatedAt)));
     }
 }
