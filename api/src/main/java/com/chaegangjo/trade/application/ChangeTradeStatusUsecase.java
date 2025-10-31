@@ -8,7 +8,10 @@ import com.chaegangjo.goods.domain.Goods;
 import com.chaegangjo.goods.enums.TradeStatus;
 import com.chaegangjo.goods.service.GoodsService;
 import com.chaegangjo.member.domain.Member;
+import com.chaegangjo.member.domain.Notification;
 import com.chaegangjo.member.service.MemberService;
+import com.chaegangjo.member.service.NotificationHistoryService;
+import com.chaegangjo.member.service.NotificationService;
 import com.chaegangjo.trade.dto.ChangeTradeStatusRequest;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +26,8 @@ public class ChangeTradeStatusUseCase {
     private final GoodsService goodsService;
     private final ChatMemberService chatMemberService;
     private final FcmService fcmService;
+    private final NotificationService notificationService;
+    private final NotificationHistoryService notificationHistoryService;
 
     @Transactional
     public void execute(Long memberId, ChangeTradeStatusRequest request) {
@@ -31,7 +36,7 @@ public class ChangeTradeStatusUseCase {
         chatMemberService.findChatMemberByGoodsAndMember(goods, member);
         goods.changeTradeStatus(request.tradeStatus());
 
-        //모집완료/거래완료 알림 전송
+        //모집완료/거래완료 알림 전송 및 알림 기록 저장
         FcmMessageTemplate template;
         if (request.tradeStatus() == TradeStatus.COMPLETED) {
             template = FcmMessageTemplate.TRADE_COMPLETED;
@@ -41,8 +46,15 @@ public class ChangeTradeStatusUseCase {
             return;
         }
 
+        Notification notification = notificationService.saveNotification(template, goods.getMainImageName());
+
         List<ChatMember> chatMembers = chatMemberService.findAllByGoodsId(request.goodsId());
-        List<Long> memberIds = chatMembers.stream().map(cm -> cm.getMember().getId()).toList();
+        List<Long> memberIds = chatMembers.stream().map(cm -> {
+            Member participant = cm.getMember();
+            notificationHistoryService.saveNotificationHistory(participant, notification);
+            return participant.getId();
+        }).toList();
+
         fcmService.sendGoodsMessages(memberIds, goods.getName(), template);
     }
 }

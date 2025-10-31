@@ -12,10 +12,14 @@ import com.chaegangjo.chat.service.ChatMemberService;
 import com.chaegangjo.chat.service.ChatMessageService;
 import com.chaegangjo.exception.TradeException;
 import com.chaegangjo.fcm.FcmService;
+import com.chaegangjo.firebase.FcmMessageTemplate;
 import com.chaegangjo.goods.domain.Goods;
 import com.chaegangjo.goods.service.GoodsService;
 import com.chaegangjo.member.domain.Member;
+import com.chaegangjo.member.domain.Notification;
 import com.chaegangjo.member.service.MemberService;
+import com.chaegangjo.member.service.NotificationHistoryService;
+import com.chaegangjo.member.service.NotificationService;
 import com.chaegangjo.trade.dto.JoinTradeRequest;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +35,8 @@ public class JoinTradeUseCase {
     private final ChatMessageService chatMessageService;
     private final MemberService memberService;
     private final FcmService fcmService;
+    private final NotificationService notificationService;
+    private final NotificationHistoryService notificationHistoryService;
 
     @Transactional
     public void execute(JoinTradeRequest request, Long buyerId) {
@@ -49,12 +55,19 @@ public class JoinTradeUseCase {
             throw new TradeException(ALREADY_JOINED);
         }
         ChatMember chatMember = chatMemberService.saveChatMember(goods, buyer, request.quantity(), BUYER);
-
         chatMessageService.saveChatMessage(chatMember, MessageType.ENTER); //채팅방 입장 메시지 저장
 
-        //거래 참여 알림 전송
+        //거래 참여 알림 전송 및 알림 기록 저장
+        FcmMessageTemplate template = NEW_PARTICIPANT;
+        Notification notification = notificationService.saveNotification(template, goods.getMainImageName());
+
         List<ChatMember> chatMembers = chatMemberService.findAllByGoodsId(request.goodsId());
-        List<Long> memberIds = chatMembers.stream().map(cm -> cm.getMember().getId()).toList();
-        fcmService.sendGoodsMessages(memberIds, goods.getName(), NEW_PARTICIPANT);
+        List<Long> memberIds = chatMembers.stream().map(cm -> {
+            Member participant = cm.getMember();
+            notificationHistoryService.saveNotificationHistory(participant, notification);
+            return participant.getId();
+        }).toList();
+
+        fcmService.sendGoodsMessages(memberIds, goods.getName(), template);
     }
 }
