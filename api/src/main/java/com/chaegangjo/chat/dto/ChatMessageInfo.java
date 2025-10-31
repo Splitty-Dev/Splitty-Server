@@ -28,7 +28,7 @@ public record ChatMessageInfo(Long id,
 
     public static ChatMessageInfo from(ChatMessage chatMessage) {
         ChatMember chatMember = chatMessage.getChatMember();
-        Long senderId = chatMember.getId();
+        Long senderId = chatMember.getMember().getId();
         String message = chatMessage.getMessage();
         if (chatMessage.getType() == MessageType.ENTER || chatMessage.getType() == MessageType.LEAVE) {
             message = chatMember.getUsername() + chatMessage.getType().getMessage();
