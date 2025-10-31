@@ -20,7 +20,7 @@ public class ReviewService {
         reviewRepository.saveAll(reviews);
     }
 
-    public Slice<Review> getReviews(IdCreatedAtCursorPage cursorPage, Long revieweeId) {
+    public Slice<Review> findAllByCursor(IdCreatedAtCursorPage cursorPage, Long revieweeId) {
         return reviewRepository.findAllByCursor(cursorPage, revieweeId);
     }
 }

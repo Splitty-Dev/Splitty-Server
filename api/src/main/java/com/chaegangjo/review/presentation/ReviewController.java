@@ -2,8 +2,8 @@ package com.chaegangjo.review.presentation;
 
 import com.chaegangjo.dto.ApiResponse;
 import com.chaegangjo.dto.CursorPageResponse;
-import com.chaegangjo.review.application.GetReviewsUsecase;
-import com.chaegangjo.review.application.SaveReviewsUsecase;
+import com.chaegangjo.review.application.GetReviewsUseCase;
+import com.chaegangjo.review.application.SaveReviewsUseCase;
 import com.chaegangjo.review.dto.ReviewInfo;
 import com.chaegangjo.review.dto.SaveReviewsRequest;
 import com.chaegangjo.security.oauth2.entity.CustomOAuth2User;
@@ -28,8 +28,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/review")
 public class ReviewController {
 
-    private final SaveReviewsUsecase saveReviewsUsecase;
-    private final GetReviewsUsecase getReviewsUsecase;
+    private final SaveReviewsUseCase saveReviewsUsecase;
+    private final GetReviewsUseCase getReviewsUsecase;
 
     @Operation(summary = "리뷰 등록")
     @PostMapping

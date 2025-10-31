@@ -8,16 +8,14 @@ import com.chaegangjo.security.oauth2.dto.OAuth2UserImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import java.io.IOException;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -39,20 +37,20 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         TokenInfo tokenInfo = jwtTokenProvider.issueAccessToken(member.getEmail(), member.getId());
 
-        ResponseCookie cookie = ResponseCookie.from("accessToken", tokenInfo.accessToken())
-                .maxAge(jwtProperties.getAccessExpirationTime())
-                .path("/")
-                .sameSite("None")
-                .secure(true) // SameSite=None일 때는 Secure 필수
-                .build();
+//        ResponseCookie cookie = ResponseCookie.from("accessToken", tokenInfo.accessToken())
+//                .maxAge(jwtProperties.getAccessExpirationTime())
+//                .path("/")
+//                .sameSite("None")
+//                .secure(true) // SameSite=None일 때는 Secure 필수
+//                .build();
 
         String fullRedirectUrl = UriComponentsBuilder
                 .fromUriString(redirectUrl)
-//                .queryParam("accessToken", tokenResponse.accessToken())
+                .queryParam("accessToken", tokenInfo.accessToken())
                 .build()
                 .toUriString();
 
-        response.addHeader("Set-Cookie", cookie.toString());
+//        response.addHeader("Set-Cookie", cookie.toString());
         response.sendRedirect(fullRedirectUrl);
     }
 }

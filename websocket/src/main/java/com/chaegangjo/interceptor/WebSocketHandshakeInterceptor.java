@@ -1,12 +1,18 @@
 //package com.chaegangjo.interceptor;
 //
+//import com.chaegangjo.exception.CustomJwtException;
 //import com.chaegangjo.security.jwt.utils.JwtTokenAuthenticator;
 //import com.chaegangjo.security.jwt.utils.JwtTokenProvider;
+//import io.jsonwebtoken.Claims;
+//import jakarta.servlet.http.HttpServletRequest;
 //import java.util.Map;
 //import lombok.RequiredArgsConstructor;
 //import lombok.extern.slf4j.Slf4j;
 //import org.springframework.http.server.ServerHttpRequest;
 //import org.springframework.http.server.ServerHttpResponse;
+//import org.springframework.http.server.ServletServerHttpRequest;
+//import org.springframework.security.core.Authentication;
+//import org.springframework.security.core.context.SecurityContextHolder;
 //import org.springframework.stereotype.Component;
 //import org.springframework.web.socket.WebSocketHandler;
 //import org.springframework.web.socket.server.HandshakeInterceptor;

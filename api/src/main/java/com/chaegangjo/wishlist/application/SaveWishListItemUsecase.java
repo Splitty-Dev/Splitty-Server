@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class SaveWishListItemUsecase {
+public class SaveWishListItemUseCase {
 
     private final MemberService memberService;
     private final GoodsService goodsService;

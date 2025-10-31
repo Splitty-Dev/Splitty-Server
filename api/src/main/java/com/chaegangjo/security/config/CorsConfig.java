@@ -1,6 +1,7 @@
 package com.chaegangjo.security.config;
 
 
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -9,12 +10,9 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CorsConfig implements WebMvcConfigurer {
-
+    private static  final String CLIENT = "splitty-client-app.vercel.app/";
     private static final String SERVER = "splitty.store";
 
     public static CorsConfigurationSource apiConfigurationSource() {
@@ -23,6 +21,7 @@ public class CorsConfig implements WebMvcConfigurer {
         configuration.setAllowedOrigins(List.of(
                 "http://localhost:3000",
                 "http://localhost:8080",
+                "https://" + CLIENT,
                 "https://" + SERVER,
                 "http://" + SERVER,
                 "https://jiangxy.github.io/" //stomp test

@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.data.geo.Point;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -32,6 +33,10 @@ public class Goods extends BaseEntity {
 
     @Column(nullable = false, length = 20)
     private String neighName;
+
+    private Double latitude;
+
+    private Double longitude;
 
     @Column(nullable = false)
     private String name;
@@ -99,7 +104,7 @@ public class Goods extends BaseEntity {
 
     public void joinTrade(int quantity) {
         this.leftQuantity -= quantity;
-        this.currParticipants -= 1;
+        this.currParticipants += 1;
     }
 
     public boolean isOpened() {
@@ -119,5 +124,23 @@ public class Goods extends BaseEntity {
         if (this.totalWishlist > 0) {
             this.totalWishlist--;
         }
+    }
+
+    public void incrementViewCount() {
+        this.viewCount++;
+    }
+
+    public void changeTradeStatus(TradeStatus status) {
+        this.status = status;
+    }
+
+    public void closeTrade() {
+        this.status = TradeStatus.CLOSED;
+        this.leftQuantity = 0;
+    }
+
+    public void setLocation(Point point) {
+        this.longitude = point.getX();
+        this.latitude = point.getY();
     }
 }

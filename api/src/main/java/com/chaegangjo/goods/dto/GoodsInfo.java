@@ -28,7 +28,9 @@ public record GoodsInfo(
         @Schema(example = "1")
         Long sellerId,
         @Schema(description = "거래 상태", example = "OPEN")
-        TradeStatus status
+        TradeStatus status,
+        @Schema(example = "15")
+        int totalWishlist
 ) {
 
     public static GoodsInfo from(Goods goods) {
@@ -43,7 +45,8 @@ public record GoodsInfo(
                 S3Utils.S3_BUCKET_URL_PREFIX,
                 goods.getMainImageName(),
                 goods.getSeller().getId(),
-                goods.getStatus()
+                goods.getStatus(),
+                goods.getTotalWishlist()
         );
     }
 }

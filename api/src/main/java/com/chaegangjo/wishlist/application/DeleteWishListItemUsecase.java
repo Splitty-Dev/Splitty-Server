@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class DeleteWishListItemUsecase {
+public class DeleteWishListItemUseCase {
 
     private final GoodsService goodsService;
     private final WishListService wishListService;

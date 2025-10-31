@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.data.geo.Point;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -49,7 +50,13 @@ public class Member extends BaseEntity {
     @Column(length = 20)
     private String neighName;
 
+    private Double latitude;
+
+    private Double longitude;
+
     private String profileImageUrl;
+
+    private String fcmToken;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<WishList> wishLists = new ArrayList<>();
@@ -66,8 +73,15 @@ public class Member extends BaseEntity {
         this.username = RandomUsername.getRandomUsername();
     }
 
-    public void setNeighName(String neighName) {
-        this.neighName = neighName;
+    public void setLocation(String adminDong, Point point) {
+        this.neighName = adminDong;
+        this.latitude = point.getY();
+        this.longitude = point.getX();
+    }
+
+    public void setLocation(Point point) {
+        this.latitude = point.getY();
+        this.longitude = point.getX();
     }
 
     public void calculateRating(float newRating) {
@@ -75,5 +89,9 @@ public class Member extends BaseEntity {
         totalRating += newRating;
         reviewCount += 1;
         rating = totalRating / reviewCount;
+    }
+
+    public void setFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
     }
 }

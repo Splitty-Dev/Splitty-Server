@@ -21,7 +21,7 @@ public class WishListService {
 
     private final WishListRepository wishListRepository;
 
-    public Slice<WishList> getWishListByCursor(IdCreatedAtCursorPage cursorPage, Long memberId) {
+    public Slice<WishList> findAllByCursor(IdCreatedAtCursorPage cursorPage, Long memberId) {
         return wishListRepository.findAllByCursor(cursorPage, memberId);
     }
 

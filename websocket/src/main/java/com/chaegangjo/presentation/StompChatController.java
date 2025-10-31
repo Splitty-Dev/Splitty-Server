@@ -3,6 +3,8 @@ package com.chaegangjo.presentation;
 import com.chaegangjo.application.SaveChatMessageUsecase;
 import com.chaegangjo.dto.StompChatMessageRequest;
 import com.chaegangjo.dto.StompChatMessageResponse;
+import com.chaegangjo.security.jwt.utils.JwtTokenAuthenticator;
+import com.chaegangjo.security.jwt.utils.JwtTokenProvider;
 import java.security.Principal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,14 +19,16 @@ import org.springframework.stereotype.Controller;
 public class StompChatController {
 
     private final SaveChatMessageUsecase saveChatMessageUsecase;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtTokenAuthenticator jwtTokenAuthenticator;
 
-    @MessageMapping("/trade.{tradeId}/chat") //client->server 주소: /pub/trade.{tradeId}/chat
-    @SendTo("/sub/trade.{tradeId}/chat") //server->client 주소: /sub/trade.{tradeId}/chat
+    @MessageMapping("/goods.{goodsId}/chat") //client->server 주소: /pub/goods.{goodsId}/chat
+    @SendTo("/sub/goods.{goodsId}/chat") //server->client 주소: /sub/goods.{goodsId}/chat
     public StompChatMessageResponse send(StompChatMessageRequest request,
                                          Principal principal,
-                                         @DestinationVariable("tradeId") Long tradeId) {
+                                         @DestinationVariable("goodsId") Long goodsId) {
 
         Long senderId = Long.parseLong(principal.getName());
-        return saveChatMessageUsecase.execute(senderId, tradeId, request.message());
+        return saveChatMessageUsecase.execute(senderId, goodsId, request.message());
     }
 }

@@ -13,3 +13,5 @@ Thumbs.db
 docker-compose.yml
 
 application-*.yml
+
+splitty-firebase-account.json

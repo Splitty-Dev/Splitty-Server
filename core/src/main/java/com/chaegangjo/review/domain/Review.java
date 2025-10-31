@@ -2,7 +2,7 @@ package com.chaegangjo.review.domain;
 
 import com.chaegangjo.entity.BaseCreatedEntity;
 import com.chaegangjo.member.domain.Member;
-import com.chaegangjo.trade.domain.TradeMember;
+import com.chaegangjo.chat.domain.ChatMember;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -23,7 +23,7 @@ public class Review extends BaseCreatedEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reviewer_id")
-    private TradeMember reviewer;
+    private ChatMember reviewer;
 
     @Column(columnDefinition = "TEXT")
     private String content;
@@ -32,7 +32,7 @@ public class Review extends BaseCreatedEntity {
     private float rating;
 
     @Builder
-    public Review(Member reviewee, TradeMember reviewer, String content, float rating) {
+    public Review(Member reviewee, ChatMember reviewer, String content, float rating) {
         this.reviewee = reviewee;
         this.reviewer = reviewer;
         this.content = content;

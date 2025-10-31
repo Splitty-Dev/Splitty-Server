@@ -1,7 +1,7 @@
 package com.chaegangjo.member.appllication;
 
 
-import com.chaegangjo.member.dto.response.MemberInfo;
+import com.chaegangjo.member.dto.MemberInfo;
 import com.chaegangjo.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

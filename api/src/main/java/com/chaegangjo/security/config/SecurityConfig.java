@@ -41,7 +41,7 @@ public class SecurityConfig {
             "/oauth2/authorization/**",
             "/login/oauth2/code/**",
             "/api/v1/images/**",
-//            "/ws-connect/**",
+            "/ws-connect/**",
     };
 
     @Bean

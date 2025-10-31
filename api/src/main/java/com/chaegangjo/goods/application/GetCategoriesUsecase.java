@@ -8,12 +8,12 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class GetCategoriesUsecase {
+public class GetCategoriesUseCase {
 
     private final CategoryService categoryService;
 
     public List<CategoryInfo> execute() {
-        return categoryService.getCategories().stream()
+        return categoryService.findAll().stream()
                 .map(CategoryInfo::from)
                 .toList();
     }

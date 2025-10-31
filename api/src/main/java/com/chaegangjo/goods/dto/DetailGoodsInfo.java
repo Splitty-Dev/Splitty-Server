@@ -4,7 +4,7 @@ package com.chaegangjo.goods.dto;
 import com.chaegangjo.goods.domain.Goods;
 import com.chaegangjo.goods.domain.GoodsImage;
 import com.chaegangjo.goods.enums.TradeStatus;
-import com.chaegangjo.member.dto.response.MemberInfo;
+import com.chaegangjo.member.dto.MemberInfo;
 import com.chaegangjo.utils.S3Utils;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;

@@ -1,5 +1,7 @@
 package com.chaegangjo.goods.repository;
 
+import com.chaegangjo.chat.domain.QChatMember;
+import com.chaegangjo.chat.enums.TradeRole;
 import com.chaegangjo.goods.domain.Goods;
 import com.chaegangjo.goods.domain.QCategory;
 import com.chaegangjo.goods.domain.QGoods;
@@ -7,9 +9,8 @@ import com.chaegangjo.goods.enums.TradeStatus;
 import com.chaegangjo.member.domain.QMember;
 import com.chaegangjo.paging.CursorPage;
 import com.chaegangjo.paging.IdCreatedAtCursorPage;
-import com.chaegangjo.trade.domain.QTrade;
-import com.chaegangjo.trade.domain.QTradeMember;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -42,6 +43,60 @@ public class GoodsCustomRepositoryImpl implements GoodsCustomRepository {
     }
 
     @Override
+    public Slice<Goods> findAllByCursor(CursorPage page, List<Long> goodsIds, List<TradeStatus> statuses) {
+        QGoods goods = QGoods.goods;
+
+        List<Goods> fetch = queryFactory.selectFrom(goods)
+                .where(
+                        inGoodsIds(goodsIds, goods),
+                        inStatuses(statuses, goods),
+                        cursorId(page.getCursorId(), goods)
+                )
+                .orderBy(goods.createdAt.desc(), goods.id.desc())
+                .limit(page.getSize() + 1)
+                .fetch();
+
+        boolean hasNext = fetch.size() > page.getSize();
+        if (hasNext) fetch.removeLast();
+
+        return new SliceImpl<>(fetch, PageRequest.of(0, page.getSize()), hasNext);
+    }
+
+    @Override
+    public Slice<Goods> findAllByKeywordAndCursor(IdCreatedAtCursorPage page, String keyword) {
+        QGoods goods = QGoods.goods;
+
+        List<Goods> fetch = queryFactory.selectFrom(goods)
+                .where(
+                        containsKeyword(keyword, goods),
+                        cursorId(page.getCursorId(), goods)
+                )
+                .orderBy(goods.createdAt.desc(), goods.id.desc())
+                .limit(page.getSize() + 1)
+                .fetch();
+
+        boolean hasNext = fetch.size() > page.getSize();
+        if (hasNext) fetch.removeLast();
+
+        return new SliceImpl<>(fetch, PageRequest.of(0, page.getSize()), hasNext);
+    }
+
+    private static BooleanExpression inGoodsIds(List<Long> goodsIds, QGoods goods) {
+        if (goodsIds == null || goodsIds.isEmpty()) {
+            return Expressions.FALSE;
+        }
+        return goods.id.in(goodsIds);
+    }
+
+    private BooleanExpression containsKeyword(String keyword, QGoods goods) {
+        if (keyword == null || keyword.isBlank()) {
+            return Expressions.FALSE;
+        }
+        return goods.name.containsIgnoreCase(keyword)
+                .or(goods.description.containsIgnoreCase(keyword));
+    }
+
+    @Override
     public Slice<Goods> findPurchasedGoodsByCursor(IdCreatedAtCursorPage page, Long sellerId, TradeStatus status) {
         QMember member = QMember.member;
         QGoods goods = QGoods.goods;
@@ -58,46 +113,21 @@ public class GoodsCustomRepositoryImpl implements GoodsCustomRepository {
                 .fetch();
 
         boolean hasNext = fetch.size() > page.getSize();
-        if (hasNext) fetch.getLast();
+        if (hasNext) fetch.removeLast();
 
         return new SliceImpl<>(fetch, PageRequest.of(0, page.getSize()), hasNext);
-    }
-
-    @Override
-    public Slice<Goods> findGoodsByCursor(CursorPage page, List<Long> goodsIds, Long categoryId) {
-        QGoods goods = QGoods.goods;
-
-        List<Goods> fetch = queryFactory.selectFrom(goods)
-                .where(
-                        inGoodsIds(goodsIds, goods),
-                        eqCategory(categoryId, goods),
-                        cursorId(page.getCursorId(), goods)
-                )
-                .orderBy(goods.createdAt.desc(), goods.id.desc())
-                .limit(page.getSize() + 1)
-                .fetch();
-
-        boolean hasNext = fetch.size() > page.getSize();
-        if (hasNext) fetch.getLast();
-
-        return new SliceImpl<>(fetch, PageRequest.of(0, page.getSize()), hasNext);
-    }
-
-    private static BooleanExpression inGoodsIds(List<Long> goodsIds, QGoods goods) {
-        return goods.id.in(goodsIds);
     }
 
     @Override
     public Slice<Goods> findSoldGoodsByCursor(IdCreatedAtCursorPage page, Long buyerId, TradeStatus status) {
         QGoods goods = QGoods.goods;
-        QTrade trade = QTrade.trade;
-        QTradeMember tradeMember = QTradeMember.tradeMember;
+        QChatMember chatMember = QChatMember.chatMember;
 
         List<Goods> fetch = queryFactory.selectFrom(goods)
-                .join(trade).on(trade.goods.eq(goods))
-                .join(tradeMember).on(tradeMember.trade.eq(trade))
+                .join(chatMember).on(chatMember.goods.eq(goods))
                 .where(
-                        eqBuyerId(buyerId, tradeMember),
+                        eqTradeRole(TradeRole.BUYER, chatMember),
+                        eqBuyerId(buyerId, chatMember),
                         eqStatus(status, goods),
                         createdAtAndCursorId(page.getCursorCreatedAt(), page.getCursorId(), goods)
                 )
@@ -106,13 +136,21 @@ public class GoodsCustomRepositoryImpl implements GoodsCustomRepository {
                 .fetch();
 
         boolean hasNext = fetch.size() > page.getSize();
-        if (hasNext) fetch.getLast();
+        if (hasNext) fetch.removeLast();
 
         return new SliceImpl<>(fetch, PageRequest.of(0, page.getSize()), hasNext);
     }
 
+    private static BooleanExpression eqTradeRole(TradeRole role, QChatMember chatMember) {
+        return (role != null) ? chatMember.tradeRole.eq(role) : null;
+    }
+
     private static BooleanExpression eqCategory(Long categoryId, QGoods goods) {
         return (categoryId != null && categoryId != 0) ? goods.category.id.eq(categoryId) : null;
+    }
+
+    private static BooleanExpression inStatuses(List<TradeStatus> statuses, QGoods goods) {
+        return (statuses != null && !statuses.isEmpty()) ? goods.status.in(statuses) : null;
     }
 
     private BooleanExpression eqStatus(TradeStatus status, QGoods goods) {
@@ -123,8 +161,8 @@ public class GoodsCustomRepositoryImpl implements GoodsCustomRepository {
         return (sellerId != null) ? goods.seller.id.eq(sellerId) : null;
     }
 
-    private BooleanExpression eqBuyerId(Long buyerId, QTradeMember tradeMember) {
-        return (buyerId != null) ? tradeMember.member.id.eq(buyerId) : null;
+    private BooleanExpression eqBuyerId(Long buyerId, QChatMember chatMember) {
+        return (buyerId != null) ? chatMember.member.id.eq(buyerId) : null;
     }
 
     private BooleanExpression cursorId(Long cursorId, QGoods goods) {

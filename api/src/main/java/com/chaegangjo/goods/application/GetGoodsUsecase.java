@@ -1,60 +1,29 @@
 package com.chaegangjo.goods.application;
 
-
-import static com.chaegangjo.paging.PageProperties.GOODS_PAGE_SIZE;
-
-import com.chaegangjo.dto.CursorPageResponse;
 import com.chaegangjo.goods.domain.Goods;
+import com.chaegangjo.goods.dto.DetailGoodsInfo;
 import com.chaegangjo.goods.dto.GoodsInfo;
 import com.chaegangjo.goods.service.GoodsService;
-import com.chaegangjo.paging.CursorPage;
-import com.chaegangjo.paging.NextCursor;
-import com.chaegangjo.paging.PageProperties;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Component
-public class GetGoodsUsecase {
+public class GetGoodsUseCase {
 
     private final GoodsService goodsService;
 
-    public CursorPageResponse<List<GoodsInfo>> execute(Long memberId, Long categoryId, Long cursorId) {
-        Slice<Goods> goods = goodsService.findGoodsByCursor(new CursorPage(GOODS_PAGE_SIZE, cursorId), memberId, categoryId);
-
-        List<Goods> content = goods.getContent();
-        NextCursor nextCursor = null;
-        if (goods.hasNext()) {
-            Goods last = content.getLast();
-            nextCursor = new NextCursor(last.getId());
-        }
-
-        List<GoodsInfo> data = content.stream()
-                .map(GoodsInfo::from)
-                .toList();
-
-        return CursorPageResponse.<List<GoodsInfo>>builder()
-                .data(data)
-                .hasNext(goods.hasNext())
-                .nextCursor(nextCursor)
-                .build();
+    @Transactional
+    public DetailGoodsInfo detail(Long goodsId) {
+        Goods goods = goodsService.findGoodsWithDetail(goodsId);
+        //TODO: 조회수 중복 증가 방지 로직, 동시성 문제 처리
+        goods.incrementViewCount();
+        return DetailGoodsInfo.from(goods);
     }
 
-//            if (goods.isEmpty()) {
-//        return CursorPageResponse.<List<GoodsInfo>>builder()
-//                .data(Collections.EMPTY_LIST)
-//                .build();
-//            }
-//        Goods last = goods.getLast();
-//        List<GoodsInfo> data = goods.stream().map(GoodsInfo::from)
-//                .toList();
-//
-//        boolean hasNext = false;
-//        NextCursor nextCursor = null;
-//        if (goods.size() == GOODS_PAGE_SIZE) {
-//            hasNext = true;
-//            nextCursor = new NextCursor(last.getId());
-//        }
+    public GoodsInfo simple(Long goodsId) {
+        Goods goods = goodsService.findGoodsById(goodsId);
+        return GoodsInfo.from(goods);
+    }
 }
