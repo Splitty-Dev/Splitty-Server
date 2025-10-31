@@ -1,6 +1,7 @@
 package com.chaegangjo.goods.repository;
 
 import com.chaegangjo.chat.domain.QChatMember;
+import com.chaegangjo.chat.enums.TradeRole;
 import com.chaegangjo.goods.domain.Goods;
 import com.chaegangjo.goods.domain.QCategory;
 import com.chaegangjo.goods.domain.QGoods;
@@ -42,28 +43,6 @@ public class GoodsCustomRepositoryImpl implements GoodsCustomRepository {
     }
 
     @Override
-    public Slice<Goods> findPurchasedGoodsByCursor(IdCreatedAtCursorPage page, Long sellerId, TradeStatus status) {
-        QMember member = QMember.member;
-        QGoods goods = QGoods.goods;
-
-        List<Goods> fetch = queryFactory.selectFrom(goods)
-                .join(goods.seller, member).fetchJoin()
-                .where(
-                        eqSellerId(sellerId, goods),
-                        eqStatus(status, goods),
-                        createdAtAndCursorId(page.getCursorCreatedAt(), page.getCursorId(), goods)
-                )
-                .orderBy(goods.createdAt.desc(), goods.id.desc())
-                .limit(page.getSize() + 1)
-                .fetch();
-
-        boolean hasNext = fetch.size() > page.getSize();
-        if (hasNext) fetch.getLast();
-
-        return new SliceImpl<>(fetch, PageRequest.of(0, page.getSize()), hasNext);
-    }
-
-    @Override
     public Slice<Goods> findAllByCursor(CursorPage page, List<Long> goodsIds, List<TradeStatus> statuses) {
         QGoods goods = QGoods.goods;
 
@@ -78,7 +57,7 @@ public class GoodsCustomRepositoryImpl implements GoodsCustomRepository {
                 .fetch();
 
         boolean hasNext = fetch.size() > page.getSize();
-        if (hasNext) fetch.getLast();
+        if (hasNext) fetch.removeLast();
 
         return new SliceImpl<>(fetch, PageRequest.of(0, page.getSize()), hasNext);
     }
@@ -97,7 +76,7 @@ public class GoodsCustomRepositoryImpl implements GoodsCustomRepository {
                 .fetch();
 
         boolean hasNext = fetch.size() > page.getSize();
-        if (hasNext) fetch.getLast();
+        if (hasNext) fetch.removeLast();
 
         return new SliceImpl<>(fetch, PageRequest.of(0, page.getSize()), hasNext);
     }
@@ -118,6 +97,28 @@ public class GoodsCustomRepositoryImpl implements GoodsCustomRepository {
     }
 
     @Override
+    public Slice<Goods> findPurchasedGoodsByCursor(IdCreatedAtCursorPage page, Long sellerId, TradeStatus status) {
+        QMember member = QMember.member;
+        QGoods goods = QGoods.goods;
+
+        List<Goods> fetch = queryFactory.selectFrom(goods)
+                .join(goods.seller, member).fetchJoin()
+                .where(
+                        eqSellerId(sellerId, goods),
+                        eqStatus(status, goods),
+                        createdAtAndCursorId(page.getCursorCreatedAt(), page.getCursorId(), goods)
+                )
+                .orderBy(goods.createdAt.desc(), goods.id.desc())
+                .limit(page.getSize() + 1)
+                .fetch();
+
+        boolean hasNext = fetch.size() > page.getSize();
+        if (hasNext) fetch.removeLast();
+
+        return new SliceImpl<>(fetch, PageRequest.of(0, page.getSize()), hasNext);
+    }
+
+    @Override
     public Slice<Goods> findSoldGoodsByCursor(IdCreatedAtCursorPage page, Long buyerId, TradeStatus status) {
         QGoods goods = QGoods.goods;
         QChatMember chatMember = QChatMember.chatMember;
@@ -125,6 +126,7 @@ public class GoodsCustomRepositoryImpl implements GoodsCustomRepository {
         List<Goods> fetch = queryFactory.selectFrom(goods)
                 .join(chatMember).on(chatMember.goods.eq(goods))
                 .where(
+                        eqTradeRole(TradeRole.BUYER, chatMember),
                         eqBuyerId(buyerId, chatMember),
                         eqStatus(status, goods),
                         createdAtAndCursorId(page.getCursorCreatedAt(), page.getCursorId(), goods)
@@ -134,9 +136,13 @@ public class GoodsCustomRepositoryImpl implements GoodsCustomRepository {
                 .fetch();
 
         boolean hasNext = fetch.size() > page.getSize();
-        if (hasNext) fetch.getLast();
+        if (hasNext) fetch.removeLast();
 
         return new SliceImpl<>(fetch, PageRequest.of(0, page.getSize()), hasNext);
+    }
+
+    private static BooleanExpression eqTradeRole(TradeRole role, QChatMember chatMember) {
+        return (role != null) ? chatMember.tradeRole.eq(role) : null;
     }
 
     private static BooleanExpression eqCategory(Long categoryId, QGoods goods) {

@@ -44,7 +44,7 @@ public class GoodsService {
         return goodsRepository.findAllByKeywordAndCursor(page, keyword);
     }
 
-    public Slice<Goods> getSoldGoodsByCursor(IdCreatedAtCursorPage page, Long sellerId, TradeStatus status) {
+    public Slice<Goods> findSoldGoodsByCursor(IdCreatedAtCursorPage page, Long sellerId, TradeStatus status) {
         return goodsRepository.findSoldGoodsByCursor(page, sellerId, status);
     }
 
