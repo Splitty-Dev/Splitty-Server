@@ -24,7 +24,9 @@ public class SaveChatMessageUsecase {
 
         //채팅 알림 전송
         List<ChatMember> chatMembers = chatMemberService.findAllByGoodsId(goodsId);
-        List<Long> memberIds = chatMembers.stream().map(cm -> cm.getMember().getId()).toList();
+        List<Long> memberIds = chatMembers.stream()
+                .filter(cm -> !cm.getMember().getId().equals(senderId))
+                .map(cm -> cm.getMember().getId()).toList();
         fcmService.sendChatMessages(memberIds, chatMember.getUsername(), message);
 
         return StompChatMessageResponse.of(chatMessage, goodsId, senderId, chatMember.getUsername());

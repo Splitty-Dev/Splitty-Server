@@ -62,10 +62,12 @@ public class JoinTradeUseCase {
         Notification notification = notificationService.saveNotification(template, goods.getMainImageName());
 
         List<ChatMember> chatMembers = chatMemberService.findAllByGoodsId(request.goodsId());
-        List<Long> memberIds = chatMembers.stream().map(cm -> {
-            Member participant = cm.getMember();
-            notificationHistoryService.saveNotificationHistory(participant, notification);
-            return participant.getId();
+        List<Long> memberIds = chatMembers.stream()
+                .filter(cm -> !cm.getMember().getId().equals(buyerId))
+                .map(cm -> {
+                    Member participant = cm.getMember();
+                    notificationHistoryService.saveNotificationHistory(participant, notification);
+                    return participant.getId();
         }).toList();
 
         fcmService.sendGoodsMessages(memberIds, goods.getName(), template);
