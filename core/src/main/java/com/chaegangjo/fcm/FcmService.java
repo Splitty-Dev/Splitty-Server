@@ -50,6 +50,12 @@ public class FcmService {
         });
     }
 
+    public void sendChatMessages(List<Long> memberIds, String senderUsername, String content) {
+        memberIds.forEach(memberId -> {
+            sendMessage(memberId, senderUsername, content);
+        });
+    }
+
     private String getTradeMessageTitle(String name, String message) {
         return "'" + name + "' " + message;
     }
