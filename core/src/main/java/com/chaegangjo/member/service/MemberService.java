@@ -2,6 +2,7 @@ package com.chaegangjo.member.service;
 
 import static com.chaegangjo.exception.errorcode.MemberErrorCode.MEMBER_LOCATION_NOT_FOUND;
 import static com.chaegangjo.exception.errorcode.MemberErrorCode.MEMBER_NOT_FOUND;
+import static com.chaegangjo.firebase.FirebaseProperties.FCM_REDIS_KEY;
 import static com.chaegangjo.redis.RedisProperties.MEMBER_KEY;
 
 import com.chaegangjo.exception.MemberException;
@@ -10,6 +11,7 @@ import com.chaegangjo.member.repository.MemberRepository;
 import com.chaegangjo.openfeign.api.TMapOpenFeign;
 import com.chaegangjo.openfeign.dto.TMapReverseGeocoding;
 import com.chaegangjo.redis.RedisUtil;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -79,5 +81,37 @@ public class MemberService {
     private Member findById(Long memberId) {
         return memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberException(MEMBER_NOT_FOUND));
+    }
+
+    public void saveMyFcmToken(Long memberId, String fcmToken) {
+        Member member = findById(memberId);
+        member.setFcmToken(fcmToken);
+        String key = FCM_REDIS_KEY + memberId;
+        redisUtil.saveValue(key, fcmToken);
+    }
+
+    public String getOrRetrieveFcmToken(Long memberId) { //redis에 저장된 fcm token이 없다면 db에서 조회
+        String key = FCM_REDIS_KEY + memberId;
+        String token;
+        Optional<Object> value = redisUtil.getValue(key);
+        if (value.isEmpty()) {
+            Member member = findMemberById(memberId);
+            token = member.getFcmToken();
+            if (token == null || token.isBlank()) {
+                log.warn("[*] FCM 존재하지 않습니다. memberId: {}", memberId);
+                return "";
+            }
+            redisUtil.saveValue(key, token);
+        } else {
+            token = (String) value.get();
+        }
+
+        return token;
+    }
+
+    public String getFcmToken(Long memberId) {
+        String key = FCM_REDIS_KEY + memberId;
+        Optional<Object> value = redisUtil.getValue(key);
+        return value.orElse("").toString();
     }
 }

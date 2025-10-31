@@ -7,6 +7,7 @@ import com.chaegangjo.exception.MemberException;
 import com.chaegangjo.exception.errorcode.MemberErrorCode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.geo.Distance;
@@ -30,8 +31,13 @@ public class RedisUtil {
     public void saveValue(String key, Object value, Long time, TimeUnit timeUnit) {
         redisTemplate.opsForValue().set(key, value, time, timeUnit);
     }
-    public Object getValue(String key) {
-        return redisTemplate.opsForValue().get(key);
+
+    public void saveValue(String key, Object value) {
+        redisTemplate.opsForValue().set(key, value);
+    }
+
+    public Optional<Object> getValue(String key) {
+        return Optional.ofNullable(redisTemplate.opsForValue().get(key));
     }
 
     public boolean hasKey(String key) {
