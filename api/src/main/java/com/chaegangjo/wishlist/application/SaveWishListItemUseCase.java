@@ -3,6 +3,8 @@ package com.chaegangjo.wishlist.application;
 import com.chaegangjo.chat.dto.request.SaveWishItemRequest;
 import com.chaegangjo.goods.domain.Goods;
 import com.chaegangjo.goods.service.GoodsService;
+import com.chaegangjo.logger.UserAction;
+import com.chaegangjo.logger.UserActionLogger;
 import com.chaegangjo.member.domain.Member;
 import com.chaegangjo.member.service.MemberService;
 import com.chaegangjo.wishlist.service.WishListService;
@@ -16,11 +18,14 @@ public class SaveWishListItemUseCase {
     private final MemberService memberService;
     private final GoodsService goodsService;
     private final WishListService wishListService;
+    private final UserActionLogger userActionLogger;
 
     public void execute(Long memberId, SaveWishItemRequest request) {
         Member member = memberService.findMemberById(memberId);
         Goods goods = goodsService.findGoodsById(request.goodsId());
         goods.incrementTotalWishlist();
+        //로그 전송
+        userActionLogger.logAction(memberId, UserAction.LIKE, request.goodsId());
         wishListService.saveWishItem(member, goods);
     }
 }

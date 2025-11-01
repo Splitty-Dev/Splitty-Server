@@ -1,30 +1,33 @@
 package com.chaegangjo.s3;
 
+import static com.chaegangjo.exception.errorcode.S3ErrorCode.IMAGE_FILE_UPLOAD_FAIL;
+
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.chaegangjo.exception.S3Exception;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import static com.chaegangjo.exception.errorcode.S3ErrorCode.FILE_UPLOAD_FAIL;
-
-@RequiredArgsConstructor
 @Service
-public class AmazonS3Service {
+public class DefaultAmazonS3Service {
 
     private final AmazonS3Client amazonS3Client;
 
-    @Value("${cloud.aws.s3.bucket}")
+    @Value("${cloud.aws.default-bucket.s3.bucket}")
     private String bucketName;
+
+    public DefaultAmazonS3Service(@Qualifier("defaultAmazonS3Client")
+                                  AmazonS3Client amazonS3Client) {
+        this.amazonS3Client = amazonS3Client;
+    }
 
     public String uploadImage(MultipartFile multipartFile) {
         if (multipartFile == null
@@ -41,7 +44,7 @@ public class AmazonS3Service {
             InputStream inputStream = multipartFile.getInputStream();
             amazonS3Client.putObject(new PutObjectRequest(bucketName, fileName, inputStream, objectMetadata));
         } catch (IOException e) {
-            throw new S3Exception(FILE_UPLOAD_FAIL);
+            throw new S3Exception(IMAGE_FILE_UPLOAD_FAIL);
         }
 
         return fileName;

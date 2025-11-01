@@ -55,8 +55,10 @@ public class GoodsController {
     @GetMapping("/{goodsId}")
     public ResponseEntity<ApiResponse<DetailGoodsInfo>> getGoods(
             @Parameter(example = "1")
-            @PathVariable Long goodsId) {
-        return ResponseEntity.ok(ApiResponse.success(getGoodsUsecase.detail(goodsId)));
+            @PathVariable Long goodsId,
+            @AuthenticationPrincipal CustomOAuth2User user
+    ) {
+        return ResponseEntity.ok(ApiResponse.success(getGoodsUsecase.detail(user.getId(), goodsId)));
     }
 
     @Operation(summary = "상품 요약 조회", description = "채팅방/거래 수량 확정 페이지 등 상단 노출")

@@ -15,6 +15,8 @@ import com.chaegangjo.fcm.FcmService;
 import com.chaegangjo.firebase.FcmMessageTemplate;
 import com.chaegangjo.goods.domain.Goods;
 import com.chaegangjo.goods.service.GoodsService;
+import com.chaegangjo.logger.UserAction;
+import com.chaegangjo.logger.UserActionLogger;
 import com.chaegangjo.member.domain.Member;
 import com.chaegangjo.member.domain.Notification;
 import com.chaegangjo.member.service.MemberService;
@@ -37,6 +39,7 @@ public class JoinTradeUseCase {
     private final FcmService fcmService;
     private final NotificationService notificationService;
     private final NotificationHistoryService notificationHistoryService;
+    private final UserActionLogger userActionLogger;
 
     @Transactional
     public void execute(JoinTradeRequest request, Long buyerId) {
@@ -71,5 +74,8 @@ public class JoinTradeUseCase {
         }).toList();
 
         fcmService.sendGoodsMessages(memberIds, goods, template);
+
+        //로그 전송
+        userActionLogger.logAction(buyerId, UserAction.ENTER, request.goodsId());
     }
 }

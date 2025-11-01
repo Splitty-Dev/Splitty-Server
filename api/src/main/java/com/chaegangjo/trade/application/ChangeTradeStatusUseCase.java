@@ -1,12 +1,16 @@
 package com.chaegangjo.trade.application;
 
+import static com.chaegangjo.logger.UserAction.PURCHASE;
+
 import com.chaegangjo.chat.domain.ChatMember;
+import com.chaegangjo.chat.enums.TradeRole;
 import com.chaegangjo.chat.service.ChatMemberService;
 import com.chaegangjo.fcm.FcmService;
 import com.chaegangjo.firebase.FcmMessageTemplate;
 import com.chaegangjo.goods.domain.Goods;
 import com.chaegangjo.goods.enums.TradeStatus;
 import com.chaegangjo.goods.service.GoodsService;
+import com.chaegangjo.logger.UserActionLogger;
 import com.chaegangjo.member.domain.Member;
 import com.chaegangjo.member.domain.Notification;
 import com.chaegangjo.member.service.MemberService;
@@ -28,6 +32,7 @@ public class ChangeTradeStatusUseCase {
     private final FcmService fcmService;
     private final NotificationService notificationService;
     private final NotificationHistoryService notificationHistoryService;
+    private final UserActionLogger userActionLogger;
 
     @Transactional
     public void execute(Long memberId, ChangeTradeStatusRequest request) {
@@ -53,10 +58,17 @@ public class ChangeTradeStatusUseCase {
                 .filter(cm -> !cm.getMember().getId().equals(memberId))
                 .map(cm -> {
                     Member participant = cm.getMember();
+                    Long id = participant.getId();
                     notificationHistoryService.saveNotificationHistory(participant, notification);
-                    return participant.getId();
+                    return id;
         }).toList();
 
         fcmService.sendGoodsMessages(memberIds, goods, template);
+
+        chatMembers.forEach(cm ->{
+            if (cm.getTradeRole() == TradeRole.BUYER) {
+                userActionLogger.logAction(cm.getMember().getId(), PURCHASE, goods.getId());
+            }
+        });
     }
 }
