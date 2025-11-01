@@ -66,7 +66,7 @@ public class GetAllGoodsUseCase {
 
         NextCursor nextCursor = null;
         if (response.hasNext()) {
-            nextCursor = new NextCursor(response.items().getLast().itemId());
+            nextCursor = new NextCursor(response.items().getLast().rank()+1); //다음 rank: 마지막 rank+1
         }
 
         return CursorPageResponse.<List<GoodsInfo>>builder()
