@@ -12,9 +12,8 @@ import org.springframework.stereotype.Component;
 public class UserActionFlushScheduler {
 
     private final UserActionLogger logger;
-    private static final int FIXED_RATE = 86400000; // 24시간
 
-    @Scheduled(fixedRate = FIXED_RATE)
+    @Scheduled(cron = "0 0 0 * * ?")
     public void scheduleFlush() {
         logger.flush();
     }
