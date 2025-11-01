@@ -23,6 +23,7 @@ public class SaveReviewsUseCase {
     @Transactional
     public void execute(SaveReviewsRequest request, Long reviewerId) {
         ChatMember reviewer = chatMemberService.findChatMemberByGoodsIdAndMemberId(request.goodsId(), reviewerId);
+        reviewer.markAsReviewed();
         //TODO: 리뷰 작성 권한 검증, 중복 작성 방지, 자기 자신 리뷰 작성 방지, 참여 회원 여부 검증
         List<Review> reviews = request.reviews().stream()
                         .map(review -> {

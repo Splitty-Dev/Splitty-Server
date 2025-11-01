@@ -82,7 +82,7 @@ public class MemberController {
 
     @Operation(summary = "회원 판매내역 조회")
     @GetMapping("/{memberId}/sales")
-    public ResponseEntity<ApiResponse<CursorPageResponse<List<GoodsInfo>>>> getMemberSales(
+    public ResponseEntity<ApiResponse<CursorPageResponse<List<? extends GoodsInfo>>>> getMemberSales(
             @Parameter(example = "1")
             @PathVariable Long memberId,
             @Parameter(example = "OPEN")
@@ -99,7 +99,7 @@ public class MemberController {
 
     @Operation(summary = "나의 판매내역 조회")
     @GetMapping("/me/sales")
-    public ResponseEntity<ApiResponse<CursorPageResponse<List<GoodsInfo>>>> getMySales(
+    public ResponseEntity<ApiResponse<CursorPageResponse<List<? extends GoodsInfo>>>> getMySales(
             @Parameter(example = "OPEN")
             @RequestParam TradeStatus status,
             @Parameter(example = "20", description = "첫 요청 시 null, 이후에는 response의 nextCursor.lastId 값")
@@ -114,7 +114,7 @@ public class MemberController {
 
     @Operation(summary = "나의 구매내역 조회")
     @GetMapping("/me/purchases")
-    public ResponseEntity<ApiResponse<CursorPageResponse<List<GoodsInfo>>>> getMyPurchases(
+    public ResponseEntity<ApiResponse<CursorPageResponse<List<? extends GoodsInfo>>>> getMyPurchases(
             @Parameter(example = "OPEN")
             @RequestParam TradeStatus status,
             @Parameter(example = "20", description = "첫 요청 시 null, 이후에는 response의 nextCursor.lastId 값")

@@ -14,7 +14,7 @@ public record RecommendGoodsResponse(
     public record RankInfo(
             @JsonProperty("item_id")
             Long itemId,
-            int rank
+            Long rank
     ) {
     }
 }
