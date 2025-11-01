@@ -1,7 +1,7 @@
 package com.chaegangjo.member.domain;
 
 
-import com.chaegangjo.entity.BaseEntity;
+import com.chaegangjo.common.entity.BaseEntity;
 import com.chaegangjo.member.enums.Role;
 import com.chaegangjo.member.enums.SocialType;
 import com.chaegangjo.member.utils.RandomUsername;

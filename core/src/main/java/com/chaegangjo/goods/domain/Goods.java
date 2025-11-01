@@ -1,7 +1,7 @@
 package com.chaegangjo.goods.domain;
 
 
-import com.chaegangjo.entity.BaseEntity;
+import com.chaegangjo.common.entity.BaseEntity;
 import com.chaegangjo.goods.enums.TradeStatus;
 import com.chaegangjo.member.domain.Member;
 import jakarta.persistence.*;

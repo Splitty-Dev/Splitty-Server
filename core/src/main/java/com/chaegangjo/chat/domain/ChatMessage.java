@@ -1,7 +1,7 @@
 package com.chaegangjo.chat.domain;
 
 import com.chaegangjo.chat.enums.MessageType;
-import com.chaegangjo.entity.BaseCreatedEntity;
+import com.chaegangjo.common.entity.BaseCreatedEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

@@ -52,7 +52,11 @@ public class GetAllGoodsUseCase {
         List<GoodsInfo> data = response.items().stream()
                 .map(item -> {
                     Long itemId = item.itemId();
-                    return GoodsInfo.from(goodsService.findGoodsById(itemId));
+                    if (!goodsService.existsGoodsById(itemId)) {
+                        return null;
+                    } else {
+                        return GoodsInfo.from(goodsService.findGoodsById(itemId));
+                    }
                 }).toList();
 
         return CursorPageResponse.<List<GoodsInfo>>builder()

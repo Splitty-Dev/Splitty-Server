@@ -1,6 +1,6 @@
 package com.chaegangjo.member.domain;
 
-import com.chaegangjo.entity.BaseCreatedEntity;
+import com.chaegangjo.common.entity.BaseCreatedEntity;
 import com.chaegangjo.firebase.FcmMessageTemplate;
 import com.chaegangjo.goods.domain.Goods;
 import jakarta.persistence.CascadeType;

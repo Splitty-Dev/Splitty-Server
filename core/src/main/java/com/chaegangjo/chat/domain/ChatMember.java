@@ -1,7 +1,7 @@
 package com.chaegangjo.chat.domain;
 
 import com.chaegangjo.chat.enums.TradeRole;
-import com.chaegangjo.entity.BaseEntity;
+import com.chaegangjo.common.entity.BaseEntity;
 import com.chaegangjo.goods.domain.Goods;
 import com.chaegangjo.member.domain.Member;
 import jakarta.persistence.*;

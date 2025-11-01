@@ -1,6 +1,6 @@
 package com.chaegangjo.review.domain;
 
-import com.chaegangjo.entity.BaseCreatedEntity;
+import com.chaegangjo.common.entity.BaseCreatedEntity;
 import com.chaegangjo.member.domain.Member;
 import com.chaegangjo.chat.domain.ChatMember;
 import jakarta.persistence.*;

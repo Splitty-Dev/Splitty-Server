@@ -1,4 +1,4 @@
-package com.chaegangjo.config;
+package com.chaegangjo.firebase;
 
 import static com.chaegangjo.exception.errorcode.FirebaseErrorCode.FIREBASE_INITIALIZATION_ERROR;
 import static com.chaegangjo.firebase.FirebaseProperties.FIREBASE_SERVICE_ACCOUNT_KEY_PATH;

@@ -1,7 +1,7 @@
 package com.chaegangjo.member.domain;
 
 
-import com.chaegangjo.entity.BaseCreatedEntity;
+import com.chaegangjo.common.entity.BaseCreatedEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

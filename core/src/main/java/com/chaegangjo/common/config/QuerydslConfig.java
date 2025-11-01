@@ -1,4 +1,4 @@
-package com.chaegangjo.config;
+package com.chaegangjo.common.config;
 
 
 import com.querydsl.jpa.impl.JPAQueryFactory;

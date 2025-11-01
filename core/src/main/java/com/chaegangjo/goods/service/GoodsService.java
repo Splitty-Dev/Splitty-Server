@@ -80,4 +80,8 @@ public class GoodsService {
     private void saveGoodsLocation(Goods goods, Point memberPoint, Goods newGoods) {
         redisUtil.saveGoodsLocation(newGoods.getId(), goods.getCategory().getId(), memberPoint);
     }
+
+    public boolean existsGoodsById(Long goodsId) {
+        return goodsRepository.existsById(goodsId);
+    }
 }
