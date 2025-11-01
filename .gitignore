@@ -13,5 +13,5 @@ Thumbs.db
 docker-compose.yml
 
 application-*.yml
-
+*.sh
 splitty-firebase-account.json
