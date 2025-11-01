@@ -27,7 +27,7 @@ public class SaveChatMessageUsecase {
         List<Long> memberIds = chatMembers.stream()
                 .filter(cm -> !cm.getMember().getId().equals(senderId))
                 .map(cm -> cm.getMember().getId()).toList();
-        fcmService.sendChatMessages(memberIds, chatMember.getUsername(), message);
+        fcmService.sendChatMessages(memberIds, chatMember.getUsername(), message, goodsId);
 
         return StompChatMessageResponse.of(chatMessage, goodsId, senderId, chatMember.getUsername());
     }

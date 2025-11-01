@@ -57,6 +57,6 @@ public class ChangeTradeStatusUseCase {
                     return participant.getId();
         }).toList();
 
-        fcmService.sendGoodsMessages(memberIds, goods.getName(), template);
+        fcmService.sendGoodsMessages(memberIds, goods, template);
     }
 }
