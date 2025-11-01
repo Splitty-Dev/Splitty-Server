@@ -1,5 +1,6 @@
 package com.chaegangjo.member.dto;
 
+import com.chaegangjo.goods.domain.Goods;
 import com.chaegangjo.member.domain.Notification;
 import com.chaegangjo.member.domain.NotificationHistory;
 import com.chaegangjo.utils.S3Utils;
@@ -9,6 +10,8 @@ import java.time.LocalDateTime;
 public record NotificationHistoryInfo(
         @Schema(example = "1")
         Long id,
+        @Schema(example = "10")
+        Long goodsId,
         @Schema(example = "거래가 완료되었어요.")
         String title,
         @Schema(example = "거래가 성공적으로 완료되었어요. 후기를 남겨보세요!")
@@ -23,12 +26,14 @@ public record NotificationHistoryInfo(
 
     public static NotificationHistoryInfo from(NotificationHistory notificationHistory) {
         Notification notification = notificationHistory.getNotification();
+        Goods goods = notification.getGoods();
         return new NotificationHistoryInfo(
                 notification.getId(),
+                goods.getId(),
                 notification.getTitle(),
                 notification.getBody(),
                 S3Utils.S3_BUCKET_URL_PREFIX,
-                notification.getImageName(),
+                goods.getMainImageName(),
                 notification.getCreatedAt()
         );
     }

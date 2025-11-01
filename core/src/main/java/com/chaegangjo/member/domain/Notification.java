@@ -2,11 +2,14 @@ package com.chaegangjo.member.domain;
 
 import com.chaegangjo.entity.BaseCreatedEntity;
 import com.chaegangjo.firebase.FcmMessageTemplate;
+import com.chaegangjo.goods.domain.Goods;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,16 +29,16 @@ public class Notification extends BaseCreatedEntity {
     @Column
     private String body;
 
-    @Column
-    private String imageName;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Goods goods;
 
-    public Notification(String title, String body, String imageName) {
+    public Notification(String title, String body, Goods goods) {
         this.title = title;
         this.body = body;
-        this.imageName = imageName;
+        this.goods = goods;
     }
 
-    public static Notification of(FcmMessageTemplate template, String imageName) {
-        return new Notification(template.getTitle(), template.getBody(), imageName);
+    public static Notification of(FcmMessageTemplate template, Goods goods) {
+        return new Notification(template.getTitle(), template.getBody(), goods);
     }
 }
