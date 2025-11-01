@@ -46,7 +46,7 @@ public class ChangeTradeStatusUseCase {
             return;
         }
 
-        Notification notification = notificationService.saveNotification(template, goods.getMainImageName());
+        Notification notification = notificationService.saveNotification(template, goods);
 
         List<ChatMember> chatMembers = chatMemberService.findAllByGoodsId(request.goodsId());
         List<Long> memberIds = chatMembers.stream()
@@ -57,6 +57,6 @@ public class ChangeTradeStatusUseCase {
                     return participant.getId();
         }).toList();
 
-        fcmService.sendGoodsMessages(memberIds, goods.getName(), template);
+        fcmService.sendGoodsMessages(memberIds, goods, template);
     }
 }

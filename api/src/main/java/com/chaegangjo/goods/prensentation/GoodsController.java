@@ -59,7 +59,7 @@ public class GoodsController {
         return ResponseEntity.ok(ApiResponse.success(getGoodsUsecase.detail(goodsId)));
     }
 
-    @Operation(summary = "[New] 상품 요약 조회", description = "채팅방/거래 수량 확정 페이지 등 상단 노출")
+    @Operation(summary = "상품 요약 조회", description = "채팅방/거래 수량 확정 페이지 등 상단 노출")
     @GetMapping("/{goodsId}/summary")
     public ResponseEntity<ApiResponse<GoodsInfo>> getSimpleGoods(
             @Parameter(example = "1")
@@ -75,7 +75,7 @@ public class GoodsController {
         return ResponseEntity.ok(ApiResponse.success(saveGoodsUsecase.execute(request, user.getId())));
     }
 
-    @Operation(summary = "[New] 상품 검색 조회(제목/내용 기반)")
+    @Operation(summary = "상품 검색 조회(제목/내용 기반)")
     @GetMapping("/search")
     public ResponseEntity<ApiResponse<CursorPageResponse<List<GoodsInfo>>>> searchGoods(
             @Parameter(example = "생수", description = "검색어")

@@ -59,7 +59,7 @@ public class JoinTradeUseCase {
 
         //거래 참여 알림 전송 및 알림 기록 저장
         FcmMessageTemplate template = NEW_PARTICIPANT;
-        Notification notification = notificationService.saveNotification(template, goods.getMainImageName());
+        Notification notification = notificationService.saveNotification(template, goods);
 
         List<ChatMember> chatMembers = chatMemberService.findAllByGoodsId(request.goodsId());
         List<Long> memberIds = chatMembers.stream()
@@ -70,6 +70,6 @@ public class JoinTradeUseCase {
                     return participant.getId();
         }).toList();
 
-        fcmService.sendGoodsMessages(memberIds, goods.getName(), template);
+        fcmService.sendGoodsMessages(memberIds, goods, template);
     }
 }

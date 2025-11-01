@@ -1,8 +1,10 @@
 package com.chaegangjo.fcm;
 
+import static com.chaegangjo.firebase.FirebaseProperties.FCM_CHAT_BASE_PATH;
 import static com.chaegangjo.firebase.FirebaseProperties.FCM_REDIS_KEY;
 
 import com.chaegangjo.firebase.FcmMessageTemplate;
+import com.chaegangjo.goods.domain.Goods;
 import com.chaegangjo.redis.RedisUtil;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
@@ -21,7 +23,7 @@ public class FcmService {
 
     private final RedisUtil redisUtil;
 
-    public void sendMessage(Long memberId, String title, String content) {
+    public void sendMessage(Long memberId, String title, String content, String redirectUrl) {
         String key = FCM_REDIS_KEY + memberId;
         Optional<Object> value = redisUtil.getValue(key);
         if (value.isEmpty()) {
@@ -30,6 +32,7 @@ public class FcmService {
 
         String token = (String) value.get();
         Message message = Message.builder()
+                .putData("redirectUrl", redirectUrl)
                 .setNotification(Notification.builder()
                         .setTitle(title)
                         .setBody(content)
@@ -44,19 +47,25 @@ public class FcmService {
         }
     }
 
-    public void sendGoodsMessages(List<Long> memberIds, String goodsName, FcmMessageTemplate template) {
+    public void sendGoodsMessages(List<Long> memberIds, Goods goods, FcmMessageTemplate template) {
         memberIds.forEach(memberId -> {
-                    sendMessage(memberId, getTradeMessageTitle(goodsName, template.getTitle()), template.getBody());
+                    sendMessage(memberId,
+                            getTradeMessageTitle(goods.getName(), template.getTitle()), template.getBody(), getFullPath(template.getBashPath(), goods.getId()));
         });
     }
 
-    public void sendChatMessages(List<Long> memberIds, String senderUsername, String content) {
+    public void sendChatMessages(List<Long> memberIds, String senderUsername, String content, Long goodsId) {
         memberIds.forEach(memberId -> {
-            sendMessage(memberId, senderUsername, content);
+            sendMessage(memberId, senderUsername, content, getFullPath(FCM_CHAT_BASE_PATH, goodsId));
         });
     }
 
     private String getTradeMessageTitle(String name, String message) {
         return "'" + name + "' " + message;
+    }
+
+
+    public String getFullPath(String basePath, Long id) {
+        return basePath + id;
     }
 }
