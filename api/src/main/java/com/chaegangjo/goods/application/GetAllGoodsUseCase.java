@@ -45,9 +45,13 @@ public class GetAllGoodsUseCase {
                 .build();
     }
 
-    public CursorPageResponse<List<GoodsInfo>> executeWithRecommendation(Long memberId, Long categoryId, Long rank) { //cursorId는 rank와 같음 수정해야함
+    public CursorPageResponse<List<GoodsInfo>> executeWithRecommendation(Long memberId, Long categoryId, Long rank) { //cursorId는 rank와 같음
+        if (rank == null || rank == 0L) {
+            rank  = 1L;
+        }
+
         List<Long> nearByIds = goodsService.getNearByIds(memberId, categoryId);
-        RecommendGoodsRequest request = new RecommendGoodsRequest(memberId.toString(), GOODS_PAGE_SIZE, nearByIds);
+        RecommendGoodsRequest request = new RecommendGoodsRequest(memberId.toString(), GOODS_PAGE_SIZE, nearByIds, rank);
         RecommendGoodsResponse response = recommendationOpenFeign.recommendGoods(request);
 
         List<GoodsInfo> data = response.items().stream()
@@ -60,10 +64,15 @@ public class GetAllGoodsUseCase {
                     }
                 }).toList();
 
+        NextCursor nextCursor = null;
+        if (response.hasNext()) {
+            nextCursor = new NextCursor(response.items().getLast().itemId());
+        }
+
         return CursorPageResponse.<List<GoodsInfo>>builder()
                 .data(data)
-                .hasNext(false)
-                .nextCursor(null)
+                .hasNext(response.hasNext())
+                .nextCursor(nextCursor)
                 .build();
     }
 }

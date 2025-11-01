@@ -9,5 +9,6 @@ public record RecommendGoodsRequest(
         @JsonProperty("top_n")
         int topN,
         @JsonProperty("available_items")
-        List<Long> availableItems) {
+        List<Long> availableItems,
+        Long rank) {
 }

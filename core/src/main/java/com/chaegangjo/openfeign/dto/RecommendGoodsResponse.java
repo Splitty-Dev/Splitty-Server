@@ -6,7 +6,9 @@ import java.util.List;
 public record RecommendGoodsResponse(
         @JsonProperty("user_id")
         Long userId,
-        List<RankInfo> items
+        List<RankInfo> items,
+        @JsonProperty("has_next")
+        boolean hasNext
 ) {
 
     public record RankInfo(
