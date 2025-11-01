@@ -12,6 +12,6 @@ public class IsJoinTradeUseCase {
     private final ChatMemberService chatMemberService;
 
     public IsJoinedTradeResponse execute(Long memberId, Long goodsId) {
-        return new IsJoinedTradeResponse(chatMemberService.existChatMember(goodsId, memberId));
+        return new IsJoinedTradeResponse(chatMemberService.existActiveChatMember(goodsId, memberId));
     }
 }
