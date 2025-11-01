@@ -1,6 +1,6 @@
 package com.chaegangjo.openfeign.api;
 
-import com.chaegangjo.openfeign.dto.TMapReverseGeocoding;
+import com.chaegangjo.openfeign.dto.TMapReverseGeocodingResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface TMapOpenFeign {
 
     @GetMapping("/geo/reversegeocoding")
-    TMapReverseGeocoding reverseGeocoding(
+    TMapReverseGeocodingResponse reverseGeocoding(
             @RequestParam("version") int version,
             @RequestParam("lat") String lat,
             @RequestParam("lon") String lon,

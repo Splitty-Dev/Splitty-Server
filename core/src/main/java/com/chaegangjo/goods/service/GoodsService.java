@@ -29,15 +29,24 @@ public class GoodsService {
     private final static int RESTRICT_DISTANCE = 3000000;
 
     public Slice<Goods> findAllByCursor(CursorPage cursorPage, Long memberId, Long categoryId) {
+        List<Long> nearByIds = getNearByIds(memberId, categoryId);
+        nearByIds.sort(Comparator.reverseOrder());
+        List<TradeStatus> statuses = List.of(TradeStatus.OPEN, TradeStatus.CLOSED);
+        return goodsRepository.findAllByCursor(cursorPage, nearByIds, statuses);
+    }
+
+    public List<Long> getNearByIds(Long memberId, Long categoryId) {
         List<Long> nearByIds;
         if (categoryId == null || categoryId == 0L) {
             nearByIds = redisUtil.getNearByIds(memberId, RESTRICT_DISTANCE);
         } else {
             nearByIds = redisUtil.getNearByIds(memberId, RESTRICT_DISTANCE, categoryId);
         }
-        nearByIds.sort(Comparator.reverseOrder());
-        List<TradeStatus> statuses = List.of(TradeStatus.OPEN, TradeStatus.CLOSED);
-        return goodsRepository.findAllByCursor(cursorPage, nearByIds, statuses);
+        return nearByIds;
+    }
+
+    public List<Goods> findAllByIdIn(List<Long> goodsIds) {
+        return goodsRepository.findAllByIdIn(goodsIds);
     }
 
     public Slice<Goods> findAllByKeywordAndCursor(IdCreatedAtCursorPage page, String keyword) {

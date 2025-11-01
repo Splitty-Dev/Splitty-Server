@@ -47,7 +47,7 @@ public class GoodsController {
             @RequestParam Long categoryId,
             @AuthenticationPrincipal CustomOAuth2User user) {
         return ResponseEntity.ok(
-                ApiResponse.success(getAllGoodsUsecase.execute(user.getId(), categoryId, cursorId))
+                ApiResponse.success(getAllGoodsUsecase.executeWithRecommendation(user.getId(), categoryId, cursorId))
         );
     }
 

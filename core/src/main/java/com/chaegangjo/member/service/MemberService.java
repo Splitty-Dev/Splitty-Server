@@ -9,7 +9,7 @@ import com.chaegangjo.exception.MemberException;
 import com.chaegangjo.member.domain.Member;
 import com.chaegangjo.member.repository.MemberRepository;
 import com.chaegangjo.openfeign.api.TMapOpenFeign;
-import com.chaegangjo.openfeign.dto.TMapReverseGeocoding;
+import com.chaegangjo.openfeign.dto.TMapReverseGeocodingResponse;
 import com.chaegangjo.redis.RedisUtil;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -47,7 +47,7 @@ public class MemberService {
         redisUtil.saveMemberLocation(id, point);
 
         //T Map Reverse Geocoding API 호출
-        TMapReverseGeocoding reverseGeocoding = tMapOpenFeign.reverseGeocoding(
+        TMapReverseGeocodingResponse reverseGeocoding = tMapOpenFeign.reverseGeocoding(
                 version,
                 String.valueOf(latitude), String.valueOf(longitude),
                 addressType,

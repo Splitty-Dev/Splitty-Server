@@ -7,7 +7,9 @@ import com.chaegangjo.dto.CursorPageResponse;
 import com.chaegangjo.goods.domain.Goods;
 import com.chaegangjo.goods.dto.GoodsInfo;
 import com.chaegangjo.goods.service.GoodsService;
-import com.chaegangjo.member.service.MemberService;
+import com.chaegangjo.openfeign.api.RecommendationOpenFeign;
+import com.chaegangjo.openfeign.dto.RecommendGoodsRequest;
+import com.chaegangjo.openfeign.dto.RecommendGoodsResponse;
 import com.chaegangjo.paging.CursorPage;
 import com.chaegangjo.paging.NextCursor;
 import java.util.List;
@@ -20,10 +22,9 @@ import org.springframework.stereotype.Component;
 public class GetAllGoodsUseCase {
 
     private final GoodsService goodsService;
-    private final MemberService memberService;
+    private final RecommendationOpenFeign recommendationOpenFeign;
 
     public CursorPageResponse<List<GoodsInfo>> execute(Long memberId, Long categoryId, Long cursorId) {
-        memberService.getMemberPoint(memberId);
         Slice<Goods> goods = goodsService.findAllByCursor(new CursorPage(GOODS_PAGE_SIZE, cursorId), memberId, categoryId);
 
         List<Goods> content = goods.getContent();
@@ -41,6 +42,23 @@ public class GetAllGoodsUseCase {
                 .data(data)
                 .hasNext(goods.hasNext())
                 .nextCursor(nextCursor)
+                .build();
+    }
+
+    public CursorPageResponse<List<GoodsInfo>> executeWithRecommendation(Long memberId, Long categoryId, Long cursorId) {
+        List<Long> nearByIds = goodsService.getNearByIds(memberId, categoryId);
+        RecommendGoodsRequest request = new RecommendGoodsRequest(memberId.toString(), GOODS_PAGE_SIZE, nearByIds);
+        RecommendGoodsResponse response = recommendationOpenFeign.recommendGoods(request);
+        List<GoodsInfo> data = response.items().stream()
+                .map(item -> {
+                    Long itemId = item.itemId();
+                    return GoodsInfo.from(goodsService.findGoodsById(itemId));
+                }).toList();
+
+        return CursorPageResponse.<List<GoodsInfo>>builder()
+                .data(data)
+                .hasNext(false)
+                .nextCursor(null)
                 .build();
     }
 }
