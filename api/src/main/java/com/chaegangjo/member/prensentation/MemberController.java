@@ -96,7 +96,7 @@ public class MemberController {
             @RequestParam(required = false) LocalDateTime cursorCreatedAt,
             @AuthenticationPrincipal CustomOAuth2User user) {
         return ResponseEntity.ok(
-                ApiResponse.success(getMemberGoodsUseCase.purchased(memberId, status, cursorId, cursorCreatedAt))
+                ApiResponse.success(getMemberGoodsUseCase.sold(memberId, status, cursorId, cursorCreatedAt))
         );
     }
 
@@ -111,7 +111,7 @@ public class MemberController {
             @RequestParam(required = false) LocalDateTime cursorCreatedAt,
             @AuthenticationPrincipal CustomOAuth2User user) {
         return ResponseEntity.ok(
-                ApiResponse.success(getMemberGoodsUseCase.purchased(user.getId(), status, cursorId, cursorCreatedAt))
+                ApiResponse.success(getMemberGoodsUseCase.sold(user.getId(), status, cursorId, cursorCreatedAt))
         );
     }
 
@@ -126,7 +126,7 @@ public class MemberController {
             @RequestParam(required = false) LocalDateTime cursorCreatedAt,
             @AuthenticationPrincipal CustomOAuth2User user) {
         return ResponseEntity.ok(
-                ApiResponse.success(getMemberGoodsUseCase.sold(user.getId(), status, cursorId, cursorCreatedAt))
+                ApiResponse.success(getMemberGoodsUseCase.purchased(user.getId(), status, cursorId, cursorCreatedAt))
         );
     }
 

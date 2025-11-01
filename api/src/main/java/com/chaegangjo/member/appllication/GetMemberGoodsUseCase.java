@@ -12,7 +12,6 @@ import com.chaegangjo.goods.enums.TradeStatus;
 import com.chaegangjo.goods.service.GoodsService;
 import com.chaegangjo.paging.IdCreatedAtCursorPage;
 import com.chaegangjo.paging.IdCreatedAtNextCursor;
-import com.chaegangjo.review.service.ReviewService;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -27,10 +26,9 @@ public class GetMemberGoodsUseCase {
 
     private final GoodsService goodsService;
     private final ChatMemberService chatMemberService;
-    private final ReviewService reviewService;
 
-    public CursorPageResponse<List<? extends GoodsInfo>> purchased(Long memberId, TradeStatus status, Long cursorId, LocalDateTime cursorCreatedAt) {
-        Slice<Goods> goods = goodsService.findPurchasedGoodsByCursor(
+    public CursorPageResponse<List<? extends GoodsInfo>> sold(Long memberId, TradeStatus status, Long cursorId, LocalDateTime cursorCreatedAt) {
+        Slice<Goods> goods = goodsService.findSoldGoodsByCursor(
                 new IdCreatedAtCursorPage(GOODS_PAGE_SIZE, cursorId, cursorCreatedAt), memberId, status);
 
         if (status == TradeStatus.COMPLETED) {
@@ -40,8 +38,8 @@ public class GetMemberGoodsUseCase {
         }
     }
 
-    public CursorPageResponse<List<? extends GoodsInfo>> sold(Long memberId, TradeStatus status, Long cursorId, LocalDateTime cursorCreatedAt) {
-        Slice<Goods> goods = goodsService.findSoldGoodsByCursor(
+    public CursorPageResponse<List<? extends GoodsInfo>> purchased(Long memberId, TradeStatus status, Long cursorId, LocalDateTime cursorCreatedAt) {
+        Slice<Goods> goods = goodsService.findPurchasedGoodsByCursor(
                 new IdCreatedAtCursorPage(GOODS_PAGE_SIZE, cursorId, cursorCreatedAt), memberId, status);
 
         if (status == TradeStatus.COMPLETED) {

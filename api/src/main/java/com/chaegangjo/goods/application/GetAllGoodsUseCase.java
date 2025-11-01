@@ -51,6 +51,15 @@ public class GetAllGoodsUseCase {
         }
 
         List<Long> nearByIds = goodsService.getNearByIds(memberId, categoryId);
+
+        if (nearByIds.isEmpty()) {
+            return CursorPageResponse.<List<GoodsInfo>>builder()
+                    .data(List.of())
+                    .hasNext(false)
+                    .nextCursor(null)
+                    .build();
+        }
+
         RecommendGoodsRequest request = new RecommendGoodsRequest(memberId.toString(), GOODS_PAGE_SIZE, nearByIds, rank);
         RecommendGoodsResponse response = recommendationOpenFeign.recommendGoods(request);
 

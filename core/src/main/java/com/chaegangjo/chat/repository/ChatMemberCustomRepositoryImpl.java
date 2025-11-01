@@ -30,7 +30,20 @@ public class ChatMemberCustomRepositoryImpl implements ChatMemberCustomRepositor
     }
 
     @Override
-    public List<ChatMember> findAllByMemberIdAndTradeRole(Long memberId, TradeRole role) {
+    public List<ChatMember> findActiveAllByGoodsId(Long goodsId) {
+        QMember member = QMember.member;
+        QChatMember chatMember = QChatMember.chatMember;
+
+        return queryFactory.selectFrom(chatMember)
+                .join(chatMember.member, member).fetchJoin()
+                .where(eqGoodsId(goodsId, chatMember)
+                , chatMember.active.isTrue())
+                .orderBy(chatMember.member.id.asc())
+                .fetch();
+    }
+
+    @Override
+    public List<ChatMember> findActiveAllByMemberIdAndTradeRole(Long memberId, TradeRole role) {
         QMember member = QMember.member;
         QGoods goods = QGoods.goods;
         QChatMember chatMember = QChatMember.chatMember;
@@ -39,6 +52,7 @@ public class ChatMemberCustomRepositoryImpl implements ChatMemberCustomRepositor
                 .join(chatMember.member, member).fetchJoin()
                 .join(chatMember.goods, goods).fetchJoin()
                 .where(eqMemberId(memberId, chatMember),
+                        chatMember.active.isTrue(),
                         eqTradeRole(role, chatMember))
                 .orderBy(chatMember.goods.id.desc())
                 .fetch();

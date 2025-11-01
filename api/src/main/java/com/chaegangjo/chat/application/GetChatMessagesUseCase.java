@@ -21,13 +21,13 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Component
-public class GetChatMessagesUsecase {
+public class GetChatMessagesUseCase {
 
     private final ChatMemberService chatMemberService;
     private final ChatMessageService chatMessageService;
 
     public CursorPageResponse<ChatMessagesInfo> execute(Long goodsId, Long cursorId, LocalDateTime createdAt) {
-        List<ChatMember> chatMembers = chatMemberService.findAllByGoodsId(goodsId);
+        List<ChatMember> chatMembers = chatMemberService.findAllByGoodsId(goodsId); //활성, 비활성 거래 회원 모두 조회
         List<ChatMemberInfo> members = chatMembers.stream()
                 .map(ChatMemberInfo::from).toList();
 

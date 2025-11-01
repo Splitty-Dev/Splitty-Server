@@ -8,5 +8,6 @@ import java.util.List;
 public interface ChatMemberCustomRepository {
 
     List<ChatMember> findAllByGoodsId(Long goodsId);
-    List<ChatMember> findAllByMemberIdAndTradeRole(Long memberId, TradeRole role);
+    List<ChatMember> findActiveAllByGoodsId(Long goodsId);
+    List<ChatMember> findActiveAllByMemberIdAndTradeRole(Long memberId, TradeRole role);
 }

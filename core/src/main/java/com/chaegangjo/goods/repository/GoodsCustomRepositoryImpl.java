@@ -97,7 +97,7 @@ public class GoodsCustomRepositoryImpl implements GoodsCustomRepository {
     }
 
     @Override
-    public Slice<Goods> findPurchasedGoodsByCursor(IdCreatedAtCursorPage page, Long sellerId, TradeStatus status) {
+    public Slice<Goods> findSoldGoodsByCursor(IdCreatedAtCursorPage page, Long sellerId, TradeStatus status) {
         QMember member = QMember.member;
         QGoods goods = QGoods.goods;
 
@@ -119,7 +119,7 @@ public class GoodsCustomRepositoryImpl implements GoodsCustomRepository {
     }
 
     @Override
-    public Slice<Goods> findSoldGoodsByCursor(IdCreatedAtCursorPage page, Long buyerId, TradeStatus status) {
+    public Slice<Goods> findPurchasedGoodsByCursor(IdCreatedAtCursorPage page, Long buyerId, TradeStatus status) {
         QGoods goods = QGoods.goods;
         QChatMember chatMember = QChatMember.chatMember;
 
@@ -127,6 +127,7 @@ public class GoodsCustomRepositoryImpl implements GoodsCustomRepository {
                 .join(chatMember).on(chatMember.goods.eq(goods))
                 .where(
                         eqTradeRole(TradeRole.BUYER, chatMember),
+                        chatMember.active.isTrue(),
                         eqBuyerId(buyerId, chatMember),
                         eqStatus(status, goods),
                         createdAtAndCursorId(page.getCursorCreatedAt(), page.getCursorId(), goods)

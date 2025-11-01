@@ -35,6 +35,9 @@ public class ChatMember extends BaseEntity {
     private boolean reviewed = false;
 
     @Column(nullable = false)
+    private boolean active = true;
+
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private TradeRole tradeRole = TradeRole.BUYER;
 
@@ -43,6 +46,7 @@ public class ChatMember extends BaseEntity {
         this.username = member.getUsername();
         this.goods = goods;
         this.quantity = quantity;
+        this.active = true;
         this.reviewed = false;
         this.tradeRole = tradeRole;
     }
@@ -53,5 +57,13 @@ public class ChatMember extends BaseEntity {
 
     public void changeQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public void activate() {
+        this.active = true;
+    }
+
+    public void deactivate() {
+        this.active = false;
     }
 }

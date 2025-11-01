@@ -50,6 +50,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 .build()
                 .toUriString();
 
+        log.info(redirectUrl);
 //        response.addHeader("Set-Cookie", cookie.toString());
         response.sendRedirect(fullRedirectUrl);
     }

@@ -15,13 +15,13 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class GetChatListUsecase {
+public class GetChatListUseCase {
 
     private final ChatMessageService chatMessageService;
     private final ChatMemberService chatMemberService;
 
     public List<ChatInfo> execute(Long memberId, TradeRole role) {
-        List<ChatMember> chatMembers = chatMemberService.findAllByMemberIdAndTradeRole(memberId, role);
+        List<ChatMember> chatMembers = chatMemberService.findActiveAllByMemberIdAndTradeRole(memberId, role);
         List<Goods> goods = chatMembers.stream()
                 .map(ChatMember::getGoods)
                 .toList();

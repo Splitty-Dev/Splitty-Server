@@ -10,7 +10,8 @@ import lombok.Getter;
 public enum FcmMessageTemplate {
     NEW_PARTICIPANT("새로운 참여자가 들어왔어요.", "조금만 더 모이면 모집이 완료돼요!", FCM_GOODS_BASE_PATH),
     TRADE_CLOSED("모집이 완료되었어요.", "모집이 완료되었어요. 곧 거래 일정이 확정됩니다!", FCM_GOODS_BASE_PATH),
-    TRADE_COMPLETED("거래가 완료되었어요.", "거래가 성공적으로 완료되었어요. 후기를 남겨보세요!", FCM_GOODS_BASE_PATH);
+    TRADE_COMPLETED("거래가 완료되었어요.", "거래가 성공적으로 완료되었어요. 후기를 남겨보세요!", FCM_GOODS_BASE_PATH),
+    PARTICIPANT_LEAVE("거래 참여자가 거래를 떠났어요.", "새로운 참여자를 기다려주세요!", FCM_GOODS_BASE_PATH);
 
     private final String title;
     private final String body;

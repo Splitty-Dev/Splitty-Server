@@ -143,4 +143,10 @@ public class Goods extends BaseEntity {
         this.longitude = point.getX();
         this.latitude = point.getY();
     }
+
+    public void decrementCurrParticipants() {
+        if (this.currParticipants > 0) {
+            this.currParticipants--;
+        }
+    }
 }

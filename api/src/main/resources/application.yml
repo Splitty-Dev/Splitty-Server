@@ -1,3 +1,6 @@
+server:
+  port: 8080
+
 spring:
   profiles:
     active: local
@@ -7,7 +10,7 @@ spring:
   config:
     activate:
       on-profile: local
-    import: application-local.yml, application-swagger.yml, application-oauth-local.yml, application-openfeign.yml, application-s3.yml
+    import: application-local.yml, application-swagger.yml, application-oauth.yml, application-openfeign.yml, application-s3.yml
 
 ---
 spring:

@@ -1,7 +1,6 @@
 package com.chaegangjo.trade.application;
 
 import static com.chaegangjo.chat.enums.TradeRole.BUYER;
-import static com.chaegangjo.exception.errorcode.TradeErrorCode.ALREADY_JOINED;
 import static com.chaegangjo.exception.errorcode.TradeErrorCode.INSUFFICIENT_STOCK;
 import static com.chaegangjo.exception.errorcode.TradeErrorCode.TRADE_NOT_OPENED;
 import static com.chaegangjo.firebase.FcmMessageTemplate.NEW_PARTICIPANT;
@@ -55,10 +54,11 @@ public class JoinTradeUseCase {
 
         Member buyer = memberService.findMemberById(buyerId);
         if (chatMemberService.existsChatMemberByGoodsAndMember(goods, buyer)) {
-            throw new TradeException(ALREADY_JOINED);
+            chatMemberService.findChatMemberByGoodsAndMember(goods, buyer).activate();
+        } else {
+            ChatMember chatMember = chatMemberService.saveChatMember(goods, buyer, request.quantity(), BUYER);
+            chatMessageService.saveChatMessage(chatMember, MessageType.ENTER); //채팅방 입장 메시지 저장
         }
-        ChatMember chatMember = chatMemberService.saveChatMember(goods, buyer, request.quantity(), BUYER);
-        chatMessageService.saveChatMessage(chatMember, MessageType.ENTER); //채팅방 입장 메시지 저장
 
         //거래 참여 알림 전송 및 알림 기록 저장
         FcmMessageTemplate template = NEW_PARTICIPANT;

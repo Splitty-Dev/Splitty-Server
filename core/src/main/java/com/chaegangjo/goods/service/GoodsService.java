@@ -53,12 +53,12 @@ public class GoodsService {
         return goodsRepository.findAllByKeywordAndCursor(page, keyword);
     }
 
-    public Slice<Goods> findSoldGoodsByCursor(IdCreatedAtCursorPage page, Long sellerId, TradeStatus status) {
-        return goodsRepository.findSoldGoodsByCursor(page, sellerId, status);
+    public Slice<Goods> findPurchasedGoodsByCursor(IdCreatedAtCursorPage page, Long sellerId, TradeStatus status) {
+        return goodsRepository.findPurchasedGoodsByCursor(page, sellerId, status);
     }
 
-    public Slice<Goods> findPurchasedGoodsByCursor(IdCreatedAtCursorPage page, Long buyerId, TradeStatus status) {
-        return goodsRepository.findPurchasedGoodsByCursor(page, buyerId, status);
+    public Slice<Goods> findSoldGoodsByCursor(IdCreatedAtCursorPage page, Long buyerId, TradeStatus status) {
+        return goodsRepository.findSoldGoodsByCursor(page, buyerId, status);
     }
 
     public Goods findGoodsById(Long goodsId) {
@@ -83,5 +83,9 @@ public class GoodsService {
 
     public boolean existsGoodsById(Long goodsId) {
         return goodsRepository.existsById(goodsId);
+    }
+
+    public void decrementCurrentParticipant(Goods goods) {
+        goods.decrementCurrParticipants();
     }
 }

@@ -33,8 +33,12 @@ public class ChatMemberService {
         return tradeMemberRepository.findAllByGoodsId(goodsId);
     }
 
-    public List<ChatMember> findAllByMemberIdAndTradeRole(Long memberId, TradeRole role) {
-        return tradeMemberRepository.findAllByMemberIdAndTradeRole(memberId, role);
+    public List<ChatMember> findActiveAllByGoodsId(Long goodsId) {
+        return tradeMemberRepository.findAllByGoodsId(goodsId);
+    }
+
+    public List<ChatMember> findActiveAllByMemberIdAndTradeRole(Long memberId, TradeRole role) {
+        return tradeMemberRepository.findActiveAllByMemberIdAndTradeRole(memberId, role);
     }
 
     public boolean existChatMember(Long goodsId, Long memberId) {
@@ -48,5 +52,10 @@ public class ChatMemberService {
 
     public boolean existsChatMemberByGoodsAndMember(Goods goods, Member member) {
         return tradeMemberRepository.existsByGoodsAndMember(goods, member);
+    }
+
+    public void deactiveChatMember(Long memberId, Long goodsId) {
+        ChatMember chatMember = findChatMemberByGoodsIdAndMemberId(goodsId, memberId);
+        chatMember.deactivate();
     }
 }

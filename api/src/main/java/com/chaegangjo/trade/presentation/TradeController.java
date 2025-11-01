@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,10 +35,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class TradeController {
 
     private final JoinTradeUseCase joinTradeUsecase;
+    private final LeaveTradeUseCase leaveTradeUsecase;
     private final IsJoinTradeUseCase isJoinTradeUsecase;
     private final ChangeTradeStatusUseCase changeTradeStatusUsecase;
     private final ConfirmTradeQuantitiesUseCase confirmTradeQuantitiesUsecase;
     private final GetTradeQuantitiesUseCase getTradeQuantitiesUsecase;
+    private final LeaveTradeUseCase LeaveTradeUsecase;
 
     @Operation(summary = "거래 참여")
     @PostMapping
@@ -46,6 +49,16 @@ public class TradeController {
             @AuthenticationPrincipal CustomOAuth2User user
     ) {
         joinTradeUsecase.execute(request, user.getId());
+        return ResponseEntity.ok(ApiResponse.success());
+    }
+
+    @Operation(summary = "거래 나가기")
+    @PutMapping("/leave")
+    public ResponseEntity<ApiResponse<Void>> leaveTrade(
+            @RequestParam Long goodsId,
+            @AuthenticationPrincipal CustomOAuth2User user
+    ) {
+        leaveTradeUsecase.execute(user.getId(), goodsId);
         return ResponseEntity.ok(ApiResponse.success());
     }
 
