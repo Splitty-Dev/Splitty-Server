@@ -46,7 +46,7 @@ public class ChangeTradeStatusUseCase {
             return;
         }
 
-        Notification notification = notificationService.saveNotification(template, goods.getMainImageName());
+        Notification notification = notificationService.saveNotification(template, goods);
 
         List<ChatMember> chatMembers = chatMemberService.findAllByGoodsId(request.goodsId());
         List<Long> memberIds = chatMembers.stream()

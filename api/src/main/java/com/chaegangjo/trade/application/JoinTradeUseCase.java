@@ -4,12 +4,7 @@ import static com.chaegangjo.chat.enums.TradeRole.BUYER;
 import static com.chaegangjo.exception.errorcode.TradeErrorCode.ALREADY_JOINED;
 import static com.chaegangjo.exception.errorcode.TradeErrorCode.INSUFFICIENT_STOCK;
 import static com.chaegangjo.exception.errorcode.TradeErrorCode.TRADE_NOT_OPENED;
-import static com.chaegangjo.firebase.FcmMessageTemplate.NEW_PARTICIPANT;
 
-import com.chaegangjo.chat.domain.ChatMember;
-import com.chaegangjo.chat.enums.MessageType;
-import com.chaegangjo.chat.service.ChatMemberService;
-import com.chaegangjo.chat.service.ChatMessageService;
 import com.chaegangjo.exception.TradeException;
 import com.chaegangjo.fcm.FcmService;
 import com.chaegangjo.firebase.FcmMessageTemplate;
@@ -18,9 +13,10 @@ import com.chaegangjo.goods.service.GoodsService;
 import com.chaegangjo.member.domain.Member;
 import com.chaegangjo.member.domain.Notification;
 import com.chaegangjo.member.service.MemberService;
-import com.chaegangjo.member.service.NotificationHistoryService;
 import com.chaegangjo.member.service.NotificationService;
-import com.chaegangjo.trade.dto.JoinTradeRequest;
+import com.chaegangjo.trade.domain.MessageType;
+import com.chaegangjo.trade.dto.request.JoinTradeRequest;
+import com.chaegangjo.trade.service.ChatMessageService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -59,7 +55,7 @@ public class JoinTradeUseCase {
 
         //거래 참여 알림 전송 및 알림 기록 저장
         FcmMessageTemplate template = NEW_PARTICIPANT;
-        Notification notification = notificationService.saveNotification(template, goods.getMainImageName());
+        Notification notification = notificationService.saveNotification(template, goods);
 
         List<ChatMember> chatMembers = chatMemberService.findAllByGoodsId(request.goodsId());
         List<Long> memberIds = chatMembers.stream()
