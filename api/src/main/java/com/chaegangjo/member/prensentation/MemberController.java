@@ -5,6 +5,7 @@ import com.chaegangjo.dto.ApiResponse;
 import com.chaegangjo.dto.CursorPageResponse;
 import com.chaegangjo.goods.dto.GoodsInfo;
 import com.chaegangjo.goods.enums.TradeStatus;
+import com.chaegangjo.member.appllication.DeleteMySearchHistoryUseCase;
 import com.chaegangjo.member.appllication.GetMemberGoodsUseCase;
 import com.chaegangjo.member.appllication.GetMemberInfoUseCase;
 import com.chaegangjo.member.appllication.GetMyNotificationHistoriesUseCase;
@@ -25,6 +26,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,6 +48,7 @@ public class MemberController {
     private final GetMySearchHistoriesUseCase getMySearchHistoriesUseCase;
     private final SaveMyFcmTokenUseCase saveMyFcmTokenUseCase;
     private final GetMyNotificationHistoriesUseCase getMyNotificationHistoriesUseCase;
+    private final DeleteMySearchHistoryUseCase deleteMySearchHistoryUseCase;
 
     @Operation(summary = "회원 정보 조회")
 //    @PreAuthorize("#id == principal.id")
@@ -154,5 +157,21 @@ public class MemberController {
             @RequestParam(required = false) LocalDateTime cursorCreatedAt,
             @AuthenticationPrincipal CustomOAuth2User user) {
         return ResponseEntity.ok (ApiResponse.success(getMyNotificationHistoriesUseCase.execute(user.getId(), cursorId, cursorCreatedAt)));
+    }
+
+    @Operation(summary = "[New] 검색 기록 단일 삭제")
+    @DeleteMapping("/me/search/{searchHistoryId}")
+    public ResponseEntity<ApiResponse<List<SearchHistoryInfo>>> deleteMySearchHistory(
+            @Parameter(example = "1")
+            @PathVariable Long searchHistoryId,
+            @AuthenticationPrincipal CustomOAuth2User user) {
+        return ResponseEntity.ok(ApiResponse.success(deleteMySearchHistoryUseCase.single(user.getId(), searchHistoryId)));
+    }
+
+    @Operation(summary = "[New] 검색 기록 전체 삭제")
+    @DeleteMapping("/me/search")
+    public ResponseEntity<ApiResponse<List<SearchHistoryInfo>>> deleteMySearchHistory(
+            @AuthenticationPrincipal CustomOAuth2User user) {
+        return ResponseEntity.ok(ApiResponse.success(deleteMySearchHistoryUseCase.all(user.getId())));
     }
 }
