@@ -145,7 +145,7 @@ public class MemberController {
         return ResponseEntity.ok(ApiResponse.success());
     }
 
-    @Operation(summary = "[Updated] 나의 알림 기록 조회")
+    @Operation(summary = "나의 알림 기록 조회")
     @GetMapping("/me/notifications")
     public ResponseEntity<ApiResponse<CursorPageResponse<List<NotificationHistoryInfo>>>> getMyNotificationHistories(
             @Parameter(example = "20", description = "첫 요청 시 null, 이후에는 response의 nextCursor.lastId 값")

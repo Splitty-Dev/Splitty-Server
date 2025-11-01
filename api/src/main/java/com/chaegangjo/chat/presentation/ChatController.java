@@ -31,7 +31,7 @@ public class ChatController {
     private final GetChatMessagesUsecase getChatMessagesUsecase;
     private final GetChatListUsecase getChatListUsecase;
 
-    @Operation(summary = "[Updated] 채팅 목록 조회", description = "채팅 목록 구매/판매 필터링 가능하게 변경")
+    @Operation(summary = "채팅 목록 조회", description = "채팅 목록 구매/판매 필터링 가능하게 변경")
     @GetMapping
     public ResponseEntity<ApiResponse<List<ChatInfo>>> getChatList(
             @RequestParam TradeRole role,
