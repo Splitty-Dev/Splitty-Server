@@ -38,14 +38,17 @@ public class S3ActionLoggerImpl implements UserActionLogger {
     }
 
     @Override
-    public synchronized void logAction(Long userId, UserAction action, Long itemId) {
+    public synchronized void logAction(Long userId, UserAction action, Long itemId, Long categoryId, int price) {
         Map<String, Object> event = Map.of(
                 "user_id", userId,
                 "action", action,
                 "item_id", itemId,
-                "timestamp", System.currentTimeMillis()
+                "timestamp", System.currentTimeMillis(),
+                "category_id", categoryId,
+                "price", price
         );
         buffer.add(event);
+        log.info("Current buffer: {}", buffer);
         if (buffer.size() >= MAX_EVENTS) {
             flushToS3();
         }

@@ -76,6 +76,6 @@ public class JoinTradeUseCase {
         fcmService.sendGoodsMessages(memberIds, goods, template);
 
         //로그 전송
-        userActionLogger.logAction(buyerId, UserAction.ENTER, request.goodsId());
+        userActionLogger.logAction(buyerId, UserAction.ENTER, request.goodsId(), goods.getCategory().getId(), goods.getUnitPrice());
     }
 }

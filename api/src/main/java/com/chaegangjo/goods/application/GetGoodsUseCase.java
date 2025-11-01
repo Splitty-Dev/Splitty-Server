@@ -24,7 +24,7 @@ public class GetGoodsUseCase {
         goods.incrementViewCount();
 
         //로그 전송
-        userActionLogger.logAction(userId, UserAction.VIEW, goodsId);
+        userActionLogger.logAction(userId, UserAction.VIEW, goodsId, goods.getCategory().getId(), goods.getUnitPrice());
         return DetailGoodsInfo.from(goods);
     }
 

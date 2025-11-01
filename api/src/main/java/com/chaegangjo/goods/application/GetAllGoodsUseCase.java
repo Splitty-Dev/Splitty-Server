@@ -45,10 +45,11 @@ public class GetAllGoodsUseCase {
                 .build();
     }
 
-    public CursorPageResponse<List<GoodsInfo>> executeWithRecommendation(Long memberId, Long categoryId, Long cursorId) {
+    public CursorPageResponse<List<GoodsInfo>> executeWithRecommendation(Long memberId, Long categoryId, Long rank) { //cursorId는 rank와 같음 수정해야함
         List<Long> nearByIds = goodsService.getNearByIds(memberId, categoryId);
         RecommendGoodsRequest request = new RecommendGoodsRequest(memberId.toString(), GOODS_PAGE_SIZE, nearByIds);
         RecommendGoodsResponse response = recommendationOpenFeign.recommendGoods(request);
+
         List<GoodsInfo> data = response.items().stream()
                 .map(item -> {
                     Long itemId = item.itemId();

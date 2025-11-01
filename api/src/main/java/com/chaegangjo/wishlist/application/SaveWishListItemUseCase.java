@@ -25,7 +25,7 @@ public class SaveWishListItemUseCase {
         Goods goods = goodsService.findGoodsById(request.goodsId());
         goods.incrementTotalWishlist();
         //로그 전송
-        userActionLogger.logAction(memberId, UserAction.LIKE, request.goodsId());
+        userActionLogger.logAction(memberId, UserAction.LIKE, request.goodsId(), goods.getCategory().getId(), goods.getUnitPrice());
         wishListService.saveWishItem(member, goods);
     }
 }

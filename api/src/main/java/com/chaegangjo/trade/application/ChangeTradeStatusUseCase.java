@@ -67,7 +67,7 @@ public class ChangeTradeStatusUseCase {
 
         chatMembers.forEach(cm ->{
             if (cm.getTradeRole() == TradeRole.BUYER) {
-                userActionLogger.logAction(cm.getMember().getId(), PURCHASE, goods.getId());
+                userActionLogger.logAction(cm.getMember().getId(), PURCHASE, goods.getId(), goods.getCategory().getId(), goods.getUnitPrice());
             }
         });
     }
