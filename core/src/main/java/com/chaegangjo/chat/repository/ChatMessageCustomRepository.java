@@ -8,5 +8,6 @@ import org.springframework.data.domain.Slice;
 public interface ChatMessageCustomRepository {
 
     Slice<ChatMessage> findAllByCursor(IdCreatedAtCursorPage page, Long goodsId);
+    Slice<ChatMessage> findAllByCursor(IdCreatedAtCursorPage page, List<Long> chatMemberIds);
     List<ChatMessage> findLastChatMessagesByGoodsIds(List<Long> goodsIds);
 }

@@ -1,11 +1,12 @@
 package com.chaegangjo.chat.repository;
 
+import com.chaegangjo.chat.domain.ChatMember;
+import com.chaegangjo.chat.domain.ChatMessage;
 import com.chaegangjo.chat.domain.QChatMember;
 import com.chaegangjo.chat.domain.QChatMessage;
+import com.chaegangjo.chat.enums.MessageType;
 import com.chaegangjo.goods.domain.QGoods;
 import com.chaegangjo.paging.IdCreatedAtCursorPage;
-import com.chaegangjo.chat.domain.ChatMessage;
-import com.chaegangjo.chat.enums.MessageType;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.time.LocalDateTime;
@@ -43,6 +44,23 @@ public class ChatMessageCustomRepositoryImpl implements ChatMessageCustomReposit
         return new SliceImpl<>(chatMessages, PageRequest.of(0, page.getSize()), hasNext);
     }
 
+    @Override
+    public Slice<ChatMessage> findAllByCursor(IdCreatedAtCursorPage page, List<Long> chatMemberIds) {
+        QChatMessage chatMessage = QChatMessage.chatMessage;
+
+        List<ChatMessage> chatMessages = queryFactory.selectFrom(chatMessage)
+                .where(chatMessage.chatMember.id.in(chatMemberIds),
+                        createdAtAndCursorId(page.getCursorCreatedAt(), page.getCursorId(), chatMessage)
+                )
+                .orderBy(chatMessage.createdAt.desc(), chatMessage.id.desc())
+                .limit(page.getSize() + 1)
+                .fetch();
+
+        boolean hasNext = chatMessages.size() > page.getSize();
+        if (hasNext) chatMessages.removeLast();
+
+        return new SliceImpl<>(chatMessages, PageRequest.of(0, page.getSize()), hasNext);
+    }
     @Override
     public List<ChatMessage> findLastChatMessagesByGoodsIds(List<Long> goodsIds) {
         QChatMessage chatMessage = QChatMessage.chatMessage;
