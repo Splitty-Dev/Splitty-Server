@@ -1,6 +1,6 @@
 ## 스플릿티 ㅣ 함께 나누는 똑똑한 소비
 ### 고물가 시대, 소규모 가구를 위한 대용량 제품 소분 거래 플랫폼
-<img width="800" alt="1" src="https://github.com/user-attachments/assets/5e1e23a1-081b-488d-90dc-1355ff6b53c3" />
+<img width="800" alt="1" src="https://github.com/user-attachments/assets/eb66c0bf-328f-4686-ba5b-48271bfb2ee6" />
 
 ### TECH STACK
 
