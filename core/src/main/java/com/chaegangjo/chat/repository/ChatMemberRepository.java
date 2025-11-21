@@ -13,6 +13,7 @@ public interface ChatMemberRepository extends JpaRepository<ChatMember, Long>, C
     Optional<ChatMember> findByGoodsAndMember(Goods goods, Member member);
     List<ChatMember> findAllByMember_Id(Long memberId);
     boolean existsByGoods_IdAndMember_Id(Long goodsId, Long memberId);
+    boolean existsByGoods_IdAndMember_IdAndActiveIsTrue(Long goodsId, Long memberId);
     boolean existsByGoodsAndMember(Goods goods, Member member);
 }
 

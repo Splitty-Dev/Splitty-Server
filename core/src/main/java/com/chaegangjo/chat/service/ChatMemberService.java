@@ -45,6 +45,10 @@ public class ChatMemberService {
         return tradeMemberRepository.existsByGoods_IdAndMember_Id(goodsId, memberId);
     }
 
+    public boolean existActiveChatMember(Long goodsId, Long memberId) {
+        return tradeMemberRepository.existsByGoods_IdAndMember_IdAndActiveIsTrue(goodsId, memberId);
+    }
+
     @Transactional
     public ChatMember saveChatMember(Goods goods, Member buyer, int quantity, TradeRole role) {
         return tradeMemberRepository.save(new ChatMember(goods, buyer, quantity, role));
