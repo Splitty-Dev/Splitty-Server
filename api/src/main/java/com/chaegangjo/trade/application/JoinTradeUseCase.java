@@ -42,7 +42,7 @@ public class JoinTradeUseCase {
 
     @Transactional
     public void execute(JoinTradeRequest request, Long buyerId) {
-        Goods goods = goodsService.findGoodsById(request.goodsId());
+        Goods goods = goodsService.findGoodsByIdForUpdate(request.goodsId());
         if (!goods.isOpened()) {
             throw new TradeException(TRADE_NOT_OPENED);
         }
