@@ -51,27 +51,4 @@ public class GetChatMessagesUseCase {
                 .nextCursor(nextCursor)
                 .build();
     }
-        List<ChatMember> chatMembers = chatMemberService.findAllByGoodsId(goodsId); //활성, 비활성 거래 회원 모두 조회
-        List<ChatMemberInfo> members = chatMembers.stream()
-                .map(ChatMemberInfo::from).toList();
-
-        IdCreatedAtCursorPage cursorPage = new IdCreatedAtCursorPage(CHAT_MESSAGE_PAGE_SIZE, cursorId, createdAt);
-        Slice<ChatMessage> chatMessages = chatMessageService.findAllByGoodsIdAndCursor(goodsId, cursorPage);
-        List<ChatMessageInfo> messages = chatMessages.getContent().stream()
-                .map(ChatMessageInfo::from).toList();
-
-        ChatMessagesInfo data = new ChatMessagesInfo(members, messages);
-
-        IdCreatedAtNextCursor nextCursor = null;
-        if (chatMessages.hasNext()) {
-            ChatMessage last = chatMessages.getContent().getLast();
-            nextCursor = new IdCreatedAtNextCursor(last.getId(), last.getCreatedAt());
-        }
-
-        return CursorPageResponse.<ChatMessagesInfo>builder()
-                .data(data)
-                .hasNext(chatMessages.hasNext())
-                .nextCursor(nextCursor)
-                .build();
-    }
 }
