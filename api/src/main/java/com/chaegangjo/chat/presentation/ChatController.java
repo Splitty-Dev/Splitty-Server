@@ -30,18 +30,20 @@ public class ChatController {
 
     private final GetChatMessagesUseCase getChatMessagesUsecase;
     private final GetChatListUseCase getChatListUsecase;
+    private final GetPurchaseRequestChatListUseCase getPurchaseRequestChatListUseCase;
+    private final GetPurchaseRequestChatMessagesUseCase getPurchaseRequestChatMessagesUseCase;
+    private final StartPurchaseRequestChatUseCase startPurchaseRequestChatUseCase;
+    private final GetGroupChatMessagesUseCase getGroupChatMessagesUseCase;
 
-    @Operation(summary = "채팅 목록 조회", description = "채팅 목록 구매/판매 필터링 가능하게 변경")
+    @Operation(summary = "같이 사요 채팅 목록 조회", description = "물품 공동구매(같이 사요) 채팅 목록 전체 조회.")
     @GetMapping
     public ResponseEntity<ApiResponse<List<ChatInfo>>> getChatList(
-            @RequestParam TradeRole role,
-            @AuthenticationPrincipal
-            CustomOAuth2User user
+            @AuthenticationPrincipal CustomOAuth2User user
     ) {
-        return ResponseEntity.ok(ApiResponse.success(getChatListUsecase.execute(user.getId(), role)));
+        return ResponseEntity.ok(ApiResponse.success(getChatListUsecase.execute(user.getId())));
     }
 
-    @Operation(summary = "채팅 메시지 조회")
+    @Operation(summary = "같이 사요 채팅 메시지 조회")
     @GetMapping("/{goodsId}")
     public ResponseEntity<ApiResponse<CursorPageResponse<ChatMessagesInfo>>> getChatMessages(
             @Parameter(example = "1")
@@ -50,8 +52,40 @@ public class ChatController {
             @RequestParam(required = false) Long cursorId,
             @Parameter(example = "2025-10-12T14:51:24.999", description = "첫 요청 시 null, 이후에는 response의 nextCursor.lastCreatedAt 값")
             @RequestParam(required = false) LocalDateTime cursorCreatedAt
-            ) {
-
+    ) {
         return ResponseEntity.ok(ApiResponse.success(getChatMessagesUsecase.execute(goodsId, cursorId, cursorCreatedAt)));
+    }
+
+    @Operation(summary = "부탁해요 채팅 시작/조회", description = "구매 요청(부탁해요)에 채팅을 시작합니다. 이미 채팅방이 존재하면 기존 채팅방 정보를 반환합니다.")
+    @PostMapping("/purchase-requests")
+    public ResponseEntity<ApiResponse<StartPurchaseRequestChatResponse>> startPurchaseRequestChat(
+            @Parameter(description = "구매 요청 ID", example = "5")
+            @RequestParam Long purchaseRequestId,
+            @AuthenticationPrincipal CustomOAuth2User user
+    ) {
+        return ResponseEntity.ok(ApiResponse.success(
+                startPurchaseRequestChatUseCase.execute(purchaseRequestId, user.getId())));
+    }
+
+    @Operation(summary = "부탁해요 채팅 목록 조회", description = "물품 구매 요청(부탁해요) 채팅 목록을 조회합니다.")
+    @GetMapping("/purchase-requests")
+    public ResponseEntity<ApiResponse<List<PurchaseRequestChatInfo>>> getPurchaseRequestChatList(
+            @AuthenticationPrincipal CustomOAuth2User user
+    ) {
+        return ResponseEntity.ok(ApiResponse.success(getPurchaseRequestChatListUseCase.execute(user.getId())));
+    }
+    @Operation(summary = "부탁해요 채팅 메시지 조회")
+    @GetMapping("/purchase-requests/{chatRoomId}")
+    public ResponseEntity<ApiResponse<CursorPageResponse<PurchaseRequestChatMessagesInfo>>> getPurchaseRequestChatMessages(
+            @Parameter(example = "10")
+            @PathVariable Long chatRoomId,
+            @Parameter(example = "10", description = "첫 요청 시 null, 이후에는 response의 nextCursor.lastId 값")
+            @RequestParam(required = false) Long cursorId,
+            @Parameter(example = "2025-10-12T14:51:24.999", description = "첫 요청 시 null, 이후에는 response의 nextCursor.lastCreatedAt 값")
+            @RequestParam(required = false) LocalDateTime cursorCreatedAt,
+            @AuthenticationPrincipal CustomOAuth2User user
+    ) {
+        return ResponseEntity.ok(ApiResponse.success(
+                getPurchaseRequestChatMessagesUseCase.execute(chatRoomId, user.getId(), cursorId, cursorCreatedAt)));
     }
 }

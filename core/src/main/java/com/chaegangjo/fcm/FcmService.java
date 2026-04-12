@@ -60,6 +60,9 @@ public class FcmService {
         });
     }
 
+    public void sendPurchaseRequestChatMessage(Long memberId, String senderUsername, String content, Long chatRoomId) {
+        sendMessage(memberId, senderUsername, content, getFullPath(FCM_PURCHASE_REQUEST_CHAT_BASE_PATH, chatRoomId));
+    }
     private String getTradeMessageTitle(String name, String message) {
         return "'" + name + "' " + message;
     }

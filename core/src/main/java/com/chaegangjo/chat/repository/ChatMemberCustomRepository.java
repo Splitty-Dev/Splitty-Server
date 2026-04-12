@@ -9,5 +9,6 @@ public interface ChatMemberCustomRepository {
 
     List<ChatMember> findAllByGoodsId(Long goodsId);
     List<ChatMember> findActiveAllByGoodsId(Long goodsId);
+    List<ChatMember> findActiveAllByMemberId(Long memberId);
     List<ChatMember> findActiveAllByMemberIdAndTradeRole(Long memberId, TradeRole role);
 }

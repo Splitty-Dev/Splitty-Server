@@ -37,6 +37,10 @@ public class ChatMemberService {
         return tradeMemberRepository.findAllByGoodsId(goodsId);
     }
 
+    public List<ChatMember> findActiveAllByMemberId(Long memberId) {
+        return tradeMemberRepository.findActiveAllByMemberId(memberId);
+    }
+
     public List<ChatMember> findActiveAllByMemberIdAndTradeRole(Long memberId, TradeRole role) {
         return tradeMemberRepository.findActiveAllByMemberIdAndTradeRole(memberId, role);
     }
