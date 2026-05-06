@@ -1,6 +1,5 @@
 package com.chaegangjo.chat.repository;
 
-import com.chaegangjo.chat.domain.ChatMember;
 import com.chaegangjo.chat.domain.ChatMessage;
 import com.chaegangjo.chat.domain.QChatMember;
 import com.chaegangjo.chat.domain.QChatMessage;
@@ -9,13 +8,14 @@ import com.chaegangjo.goods.domain.QGoods;
 import com.chaegangjo.paging.IdCreatedAtCursorPage;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import java.time.LocalDateTime;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Repository;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Repository
@@ -61,6 +61,26 @@ public class ChatMessageCustomRepositoryImpl implements ChatMessageCustomReposit
 
         return new SliceImpl<>(chatMessages, PageRequest.of(0, page.getSize()), hasNext);
     }
+
+    @Override
+    public Slice<ChatMessage> findAllByOffset(int size, long offset, Long goodsId) {
+        QChatMessage chatMessage = QChatMessage.chatMessage;
+        QChatMember chatMember = QChatMember.chatMember;
+
+        List<ChatMessage> chatMessages = queryFactory.selectFrom(chatMessage)
+                .join(chatMessage.chatMember, chatMember).fetchJoin()
+                .where(eqGoodsId(goodsId, chatMessage))
+                .orderBy(chatMessage.createdAt.desc(), chatMessage.id.desc())
+                .offset(offset)
+                .limit(size + 1)
+                .fetch();
+
+        boolean hasNext = chatMessages.size() > size;
+        if (hasNext) chatMessages.removeLast();
+
+        return new SliceImpl<>(chatMessages, PageRequest.of(0, size), hasNext);
+    }
+
     @Override
     public List<ChatMessage> findLastChatMessagesByGoodsIds(List<Long> goodsIds) {
         QChatMessage chatMessage = QChatMessage.chatMessage;

@@ -13,7 +13,9 @@ class JwtTokenProviderTest {
 
     @Test
     void name() {
-        TokenInfo token = jwtTokenProvider.issueAccessToken("email", 7L);
-        System.out.println(token.accessToken());
+        for (int i = 1; i < 6; i++) {
+            TokenInfo token = jwtTokenProvider.issueAccessToken(i + "test.com", (long) i);
+            System.out.println(token.accessToken());
+        }
     }
 }

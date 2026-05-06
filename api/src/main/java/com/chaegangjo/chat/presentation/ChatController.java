@@ -1,12 +1,19 @@
 package com.chaegangjo.chat.presentation;
 
-import com.chaegangjo.chat.enums.TradeRole;
 import com.chaegangjo.chat.application.GetChatListUseCase;
 import com.chaegangjo.chat.application.GetChatMessagesUseCase;
+import com.chaegangjo.chat.application.GetPurchaseRequestChatListUseCase;
+import com.chaegangjo.chat.application.GetPurchaseRequestChatMessagesUseCase;
+import com.chaegangjo.chat.application.StartPurchaseRequestChatUseCase;
 import com.chaegangjo.chat.dto.ChatInfo;
 import com.chaegangjo.chat.dto.ChatMessagesInfo;
+import com.chaegangjo.chat.dto.PurchaseRequestChatInfo;
+import com.chaegangjo.chat.dto.PurchaseRequestChatMessagesInfo;
+import com.chaegangjo.chat.dto.StartPurchaseRequestChatResponse;
 import com.chaegangjo.dto.ApiResponse;
 import com.chaegangjo.dto.CursorPageResponse;
+import com.chaegangjo.group.application.GetGroupChatMessagesUseCase;
+import com.chaegangjo.group.dto.GroupChatMessagesInfo;
 import com.chaegangjo.security.oauth2.entity.CustomOAuth2User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -18,6 +25,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -74,6 +82,22 @@ public class ChatController {
     ) {
         return ResponseEntity.ok(ApiResponse.success(getPurchaseRequestChatListUseCase.execute(user.getId())));
     }
+
+    @Operation(summary = "소그룹 채팅 메시지 조회")
+    @GetMapping("/groups/{groupId}")
+    public ResponseEntity<ApiResponse<CursorPageResponse<GroupChatMessagesInfo>>> getGroupChatMessages(
+            @Parameter(example = "1")
+            @PathVariable Long groupId,
+            @Parameter(description = "첫 요청 시 null, 이후에는 response의 nextCursor.lastId 값")
+            @RequestParam(required = false) Long cursorId,
+            @Parameter(description = "첫 요청 시 null, 이후에는 response의 nextCursor.lastCreatedAt 값")
+            @RequestParam(required = false) LocalDateTime cursorCreatedAt,
+            @AuthenticationPrincipal CustomOAuth2User user
+    ) {
+        return ResponseEntity.ok(ApiResponse.success(
+                getGroupChatMessagesUseCase.execute(groupId, user.getId(), cursorId, cursorCreatedAt)));
+    }
+
     @Operation(summary = "부탁해요 채팅 메시지 조회")
     @GetMapping("/purchase-requests/{chatRoomId}")
     public ResponseEntity<ApiResponse<CursorPageResponse<PurchaseRequestChatMessagesInfo>>> getPurchaseRequestChatMessages(

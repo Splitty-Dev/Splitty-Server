@@ -1,8 +1,6 @@
 package com.chaegangjo.goods.service;
 
 
-import static com.chaegangjo.exception.errorcode.GoodsErrorCode.GOODS_NOT_FOUND;
-
 import com.chaegangjo.exception.GoodsException;
 import com.chaegangjo.goods.domain.Goods;
 import com.chaegangjo.goods.enums.TradeStatus;
@@ -10,13 +8,16 @@ import com.chaegangjo.goods.repository.GoodsRepository;
 import com.chaegangjo.paging.CursorPage;
 import com.chaegangjo.paging.IdCreatedAtCursorPage;
 import com.chaegangjo.redis.RedisUtil;
-import java.util.Comparator;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Comparator;
+import java.util.List;
+
+import static com.chaegangjo.exception.errorcode.GoodsErrorCode.GOODS_NOT_FOUND;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -26,7 +27,7 @@ public class GoodsService {
     private final GoodsRepository goodsRepository;
     private final RedisUtil redisUtil;
 
-    private final static int RESTRICT_DISTANCE = 3000000;
+    private final static int RESTRICT_DISTANCE = 300000000;
 
     public Slice<Goods> findAllByCursor(CursorPage cursorPage, Long memberId, Long categoryId) {
         List<Long> nearByIds = getNearByIds(memberId, categoryId);

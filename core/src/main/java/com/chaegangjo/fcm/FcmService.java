@@ -1,6 +1,8 @@
 package com.chaegangjo.fcm;
 
 import static com.chaegangjo.firebase.FirebaseProperties.FCM_CHAT_BASE_PATH;
+import static com.chaegangjo.firebase.FirebaseProperties.FCM_GROUP_CHAT_BASE_PATH;
+import static com.chaegangjo.firebase.FirebaseProperties.FCM_PURCHASE_REQUEST_CHAT_BASE_PATH;
 import static com.chaegangjo.firebase.FirebaseProperties.FCM_REDIS_KEY;
 
 import com.chaegangjo.firebase.FcmMessageTemplate;
@@ -63,6 +65,12 @@ public class FcmService {
     public void sendPurchaseRequestChatMessage(Long memberId, String senderUsername, String content, Long chatRoomId) {
         sendMessage(memberId, senderUsername, content, getFullPath(FCM_PURCHASE_REQUEST_CHAT_BASE_PATH, chatRoomId));
     }
+
+    public void sendGroupChatMessage(List<Long> memberIds, String senderUsername, String content, Long chatRoomId) {
+        memberIds.forEach(memberId ->
+                sendMessage(memberId, senderUsername, content, getFullPath(FCM_GROUP_CHAT_BASE_PATH, chatRoomId)));
+    }
+
     private String getTradeMessageTitle(String name, String message) {
         return "'" + name + "' " + message;
     }

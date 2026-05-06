@@ -1,8 +1,12 @@
 package com.chaegangjo.presentation;
 
 import com.chaegangjo.application.SaveChatMessageUsecase;
+import com.chaegangjo.application.SaveGroupChatMessageUsecase;
+import com.chaegangjo.application.SavePurchaseRequestChatMessageUsecase;
 import com.chaegangjo.dto.StompChatMessageRequest;
 import com.chaegangjo.dto.StompChatMessageResponse;
+import com.chaegangjo.dto.StompGroupChatMessageResponse;
+import com.chaegangjo.dto.StompPurchaseRequestChatMessageResponse;
 import com.chaegangjo.security.jwt.utils.JwtTokenAuthenticator;
 import com.chaegangjo.security.jwt.utils.JwtTokenProvider;
 import java.security.Principal;
@@ -20,6 +24,7 @@ public class StompChatController {
 
     private final SaveChatMessageUsecase saveChatMessageUsecase;
     private final SavePurchaseRequestChatMessageUsecase savePurchaseRequestChatMessageUsecase;
+    private final SaveGroupChatMessageUsecase saveGroupChatMessageUsecase;
     private final JwtTokenProvider jwtTokenProvider;
     private final JwtTokenAuthenticator jwtTokenAuthenticator;
 
@@ -39,5 +44,14 @@ public class StompChatController {
                                                                             @DestinationVariable("chatRoomId") Long chatRoomId) {
         Long senderId = Long.parseLong(principal.getName());
         return savePurchaseRequestChatMessageUsecase.execute(senderId, chatRoomId, request.message());
+    }
+
+    @MessageMapping("/group.{chatRoomId}/chat") //client->server 주소: /pub/group.{chatRoomId}/chat
+    @SendTo("/sub/group.{chatRoomId}/chat") //server->client 주소: /sub/group.{chatRoomId}/chat
+    public StompGroupChatMessageResponse sendGroupChat(StompChatMessageRequest request,
+                                                       Principal principal,
+                                                       @DestinationVariable("chatRoomId") Long chatRoomId) {
+        Long senderId = Long.parseLong(principal.getName());
+        return saveGroupChatMessageUsecase.execute(senderId, chatRoomId, request.message());
     }
 }

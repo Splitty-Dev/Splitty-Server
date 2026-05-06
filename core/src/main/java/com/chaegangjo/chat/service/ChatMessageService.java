@@ -5,12 +5,12 @@ import com.chaegangjo.chat.domain.ChatMessage;
 import com.chaegangjo.chat.enums.MessageType;
 import com.chaegangjo.chat.repository.ChatMessageRepository;
 import com.chaegangjo.paging.IdCreatedAtCursorPage;
-import com.chaegangjo.paging.PageProperties;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -38,6 +38,11 @@ public class ChatMessageService {
     public Slice<ChatMessage> findAllByGoodsIdAndCursor(List<Long> chatMemberIds, IdCreatedAtCursorPage cursorPage) {
         return chatMessageRepository.findAllByCursor(cursorPage, chatMemberIds);
     }
+
+    public Slice<ChatMessage> findAllByGoodsIdAndOffset(Long goodsId, int size, long offset) {
+        return chatMessageRepository.findAllByOffset(size, offset, goodsId);
+    }
+
     public List<ChatMessage> getLastChatMessages(List<Long> goodsIds) {
         return chatMessageRepository.findLastChatMessagesByGoodsIds(goodsIds);
     }
