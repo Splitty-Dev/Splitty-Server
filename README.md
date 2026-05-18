@@ -11,9 +11,6 @@
 #### BE
 <img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white"> <img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
 
-#### AI
-<img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=white"> <img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=FastAPI&logoColor=white">
-
 #### Database
 <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> <img src="https://img.shields.io/badge/amazon%20rds-527FFF?style=for-the-badge&logo=amazonrds&logoColor=white"> <img src="https://img.shields.io/badge/redis-DC382D?style=for-the-badge&logo=redis&logoColor=white">
 
@@ -27,4 +24,4 @@
 
 
 ### 서비스 아키텍처 
-<img width="600" alt="Group 1" src="https://github.com/user-attachments/assets/fd91eea6-b6fe-4f45-86bd-d58a10cb72da" />
+<img width="600" alt="system_architecture" src="https://github.com/user-attachments/assets/2eb2fb94-c4ea-4bda-b89e-f5e390855678" />
