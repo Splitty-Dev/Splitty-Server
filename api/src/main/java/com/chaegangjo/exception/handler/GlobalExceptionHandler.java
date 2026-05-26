@@ -2,7 +2,12 @@ package com.chaegangjo.exception.handler;
 
 
 import com.chaegangjo.dto.ApiResponse;
-import com.chaegangjo.exception.*;
+import com.chaegangjo.exception.ChatMemberException;
+import com.chaegangjo.exception.CustomJwtException;
+import com.chaegangjo.exception.GoodsException;
+import com.chaegangjo.exception.MemberException;
+import com.chaegangjo.exception.TradeException;
+import com.chaegangjo.exception.WishListException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,15 +49,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(e.getErrorCode().getStatus())
                 .body(ApiResponse.failure(e.getErrorCode()));
     }
-
-    @ExceptionHandler(FirebaseException.class)
-    public ResponseEntity<ApiResponse<Void>> handleException(FirebaseException e) {
-        log.warn("[!] Firebase Exception: {}", e);
-
-        return ResponseEntity.status(e.getErrorCode().getStatus())
-                .body(ApiResponse.failure(e.getErrorCode()));
-    }
-
 
     @ExceptionHandler(ChatMemberException.class)
     public ResponseEntity<ApiResponse<Void>> handleException(ChatMemberException e) {

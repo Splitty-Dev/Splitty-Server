@@ -56,8 +56,6 @@ public class Member extends BaseEntity {
 
     private String profileImageUrl;
 
-    private String fcmToken;
-
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<WishList> wishLists = new ArrayList<>();
 
@@ -91,7 +89,4 @@ public class Member extends BaseEntity {
         rating = totalRating / reviewCount;
     }
 
-    public void setFcmToken(String fcmToken) {
-        this.fcmToken = fcmToken;
-    }
 }

@@ -5,36 +5,22 @@ import com.chaegangjo.dto.ApiResponse;
 import com.chaegangjo.dto.CursorPageResponse;
 import com.chaegangjo.goods.dto.GoodsInfo;
 import com.chaegangjo.goods.enums.TradeStatus;
-import com.chaegangjo.member.appllication.DeleteMySearchHistoryUseCase;
-import com.chaegangjo.member.appllication.GetMemberGoodsUseCase;
-import com.chaegangjo.member.appllication.GetMemberInfoUseCase;
-import com.chaegangjo.member.appllication.GetMyNotificationHistoriesUseCase;
-import com.chaegangjo.member.appllication.GetMySearchHistoriesUseCase;
-import com.chaegangjo.member.appllication.SaveMyFcmTokenUseCase;
-import com.chaegangjo.member.appllication.SetNeighborhoodUsecase;
+import com.chaegangjo.member.appllication.*;
 import com.chaegangjo.member.dto.MemberInfo;
 import com.chaegangjo.member.dto.NotificationHistoryInfo;
 import com.chaegangjo.member.dto.SearchHistoryInfo;
-import com.chaegangjo.member.dto.request.SaveMyFcmTokenRequest;
 import com.chaegangjo.member.dto.request.SetNeighborhoodRequest;
 import com.chaegangjo.security.oauth2.entity.CustomOAuth2User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.time.LocalDateTime;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Tag(name = "회원", description = "회원 관련 API")
 @RequiredArgsConstructor
@@ -46,7 +32,6 @@ public class MemberController {
     private final SetNeighborhoodUsecase setNeighborhoodUsecase;
     private final GetMemberGoodsUseCase getMemberGoodsUseCase;
     private final GetMySearchHistoriesUseCase getMySearchHistoriesUseCase;
-    private final SaveMyFcmTokenUseCase saveMyFcmTokenUseCase;
     private final GetMyNotificationHistoriesUseCase getMyNotificationHistoriesUseCase;
     private final DeleteMySearchHistoryUseCase deleteMySearchHistoryUseCase;
 
@@ -139,15 +124,6 @@ public class MemberController {
         );
     }
 
-    @PatchMapping("/me/fcm-token")
-    @Operation(summary = "FCM 토큰 저장")
-    public ResponseEntity<ApiResponse<Void>> saveFcmToken(
-            @RequestBody SaveMyFcmTokenRequest request,
-            @AuthenticationPrincipal CustomOAuth2User user) {
-        saveMyFcmTokenUseCase.execute(user.getId(), request.token());
-        return ResponseEntity.ok(ApiResponse.success());
-    }
-
     @Operation(summary = "나의 알림 기록 조회")
     @GetMapping("/me/notifications")
     public ResponseEntity<ApiResponse<CursorPageResponse<List<NotificationHistoryInfo>>>> getMyNotificationHistories(
@@ -159,7 +135,7 @@ public class MemberController {
         return ResponseEntity.ok (ApiResponse.success(getMyNotificationHistoriesUseCase.execute(user.getId(), cursorId, cursorCreatedAt)));
     }
 
-    @Operation(summary = "[New] 검색 기록 단일 삭제")
+    @Operation(summary = "검색 기록 단일 삭제")
     @DeleteMapping("/me/search/{searchHistoryId}")
     public ResponseEntity<ApiResponse<List<SearchHistoryInfo>>> deleteMySearchHistory(
             @Parameter(example = "1")
@@ -168,7 +144,7 @@ public class MemberController {
         return ResponseEntity.ok(ApiResponse.success(deleteMySearchHistoryUseCase.single(user.getId(), searchHistoryId)));
     }
 
-    @Operation(summary = "[New] 검색 기록 전체 삭제")
+    @Operation(summary = "검색 기록 전체 삭제")
     @DeleteMapping("/me/search")
     public ResponseEntity<ApiResponse<List<SearchHistoryInfo>>> deleteMySearchHistory(
             @AuthenticationPrincipal CustomOAuth2User user) {

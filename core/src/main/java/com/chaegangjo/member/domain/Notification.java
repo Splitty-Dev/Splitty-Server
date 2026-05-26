@@ -1,7 +1,6 @@
 package com.chaegangjo.member.domain;
 
 import com.chaegangjo.common.entity.BaseCreatedEntity;
-import com.chaegangjo.firebase.FcmMessageTemplate;
 import com.chaegangjo.goods.domain.Goods;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -38,7 +37,7 @@ public class Notification extends BaseCreatedEntity {
         this.goods = goods;
     }
 
-    public static Notification of(FcmMessageTemplate template, Goods goods) {
-        return new Notification(template.getTitle(), template.getBody(), goods);
-    }
+//    public static Notification of(FcmMessageTemplate template, Goods goods) {
+//        return new Notification(template.getTitle(), template.getBody(), goods);
+//    }
 }
