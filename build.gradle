@@ -19,6 +19,12 @@ subprojects {
 	apply plugin: 'java-library'
 	apply plugin: 'io.spring.dependency-management'
 
+	java {
+		toolchain {
+			languageVersion = JavaLanguageVersion.of(21)
+		}
+	}
+
 	configurations {
 		compileOnly {
 			extendsFrom annotationProcessor
@@ -30,8 +36,8 @@ subprojects {
 	}
 
 	dependencies { //모든 하위 모듈에 적용
-		compileOnly 'org.projectlombok:lombok'
-		annotationProcessor 'org.projectlombok:lombok'
+		compileOnly 'org.projectlombok:lombok:1.18.38'
+		annotationProcessor 'org.projectlombok:lombok:1.18.38'
 		testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 		//swagger
@@ -40,5 +46,21 @@ subprojects {
 
 	test {
 		useJUnitPlatform()
+	}
+
+	tasks.withType(JavaCompile).configureEach {
+		options.fork = true
+		options.forkOptions.jvmArgs += [
+			'--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED',
+			'--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED',
+			'--add-opens=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED',
+			'--add-opens=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED',
+			'--add-opens=jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED',
+			'--add-opens=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED',
+			'--add-opens=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED',
+			'--add-opens=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED',
+			'--add-opens=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED',
+			'--add-opens=java.base/sun.reflect.annotation=ALL-UNNAMED'
+		]
 	}
 }

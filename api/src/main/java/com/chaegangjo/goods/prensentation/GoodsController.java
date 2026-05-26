@@ -3,8 +3,8 @@ package com.chaegangjo.goods.prensentation;
 
 import com.chaegangjo.dto.ApiResponse;
 import com.chaegangjo.dto.CursorPageResponse;
-import com.chaegangjo.goods.application.GetGoodsUseCase;
 import com.chaegangjo.goods.application.GetAllGoodsUseCase;
+import com.chaegangjo.goods.application.GetGoodsUseCase;
 import com.chaegangjo.goods.application.SaveGoodsUseCase;
 import com.chaegangjo.goods.application.SearchGoodsUseCase;
 import com.chaegangjo.goods.dto.DetailGoodsInfo;
@@ -14,18 +14,13 @@ import com.chaegangjo.security.oauth2.entity.CustomOAuth2User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.time.LocalDateTime;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Tag(name = "상품", description = "상품 관련 API")
 @RequiredArgsConstructor
@@ -47,7 +42,7 @@ public class GoodsController {
             @RequestParam Long categoryId,
             @AuthenticationPrincipal CustomOAuth2User user) {
         return ResponseEntity.ok(
-                ApiResponse.success(getAllGoodsUsecase.executeWithRecommendation(user.getId(), categoryId, cursorId))
+                ApiResponse.success(getAllGoodsUsecase.execute(user.getId(), categoryId, cursorId))
         );
     }
 

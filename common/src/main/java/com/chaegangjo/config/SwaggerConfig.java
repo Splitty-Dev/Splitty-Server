@@ -20,6 +20,7 @@ import org.springframework.context.annotation.Profile;
         ),
         servers = {
                 @Server(url = "https://splitty.store", description = "Production Server"),
+                @Server(url = "https://api.limcy.cloud", description = "Home Server"),
                 @Server(url = "http://localhost:8080", description = "Local Server")
         }
 )

@@ -14,6 +14,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class CorsConfig implements WebMvcConfigurer {
     private static  final String CLIENT = "splitty-client-app.vercel.app/";
     private static final String SERVER = "splitty.store";
+    private static final String LIMCY_CLIENT = "splitty.limcy.cloud";
+    private static final String LIMCY_API = "api.limcy.cloud";
 
     public static CorsConfigurationSource apiConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
@@ -24,6 +26,8 @@ public class CorsConfig implements WebMvcConfigurer {
                 "https://" + CLIENT,
                 "https://" + SERVER,
                 "http://" + SERVER,
+                "https://" + LIMCY_CLIENT,
+                "https://" + LIMCY_API,
                 "https://jiangxy.github.io/" //stomp test
         ));
 
