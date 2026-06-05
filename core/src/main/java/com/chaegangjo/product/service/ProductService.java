@@ -15,7 +15,9 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-    public List<Product> searchByKeyword(String keyword) {
+    public List<Product> findAll() {
+        return productRepository.findAll();
+    }
         return productRepository.findTop7ByNameContainingIgnoreCase(keyword);
     }
 }
