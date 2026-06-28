@@ -12,6 +12,7 @@ import com.chaegangjo.goods.service.CategoryService;
 import com.chaegangjo.goods.service.GoodsImageService;
 import com.chaegangjo.goods.service.GoodsService;
 import com.chaegangjo.member.domain.Member;
+import com.chaegangjo.member.service.KeywordNotificationService;
 import com.chaegangjo.member.service.MemberService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,7 @@ public class SaveGoodsUseCase {
     private final GoodsImageService goodsImageService;
     private final CategoryService categoryService;
     private final ChatMemberService chatMemberService;
+    private final KeywordNotificationService keywordNotificationService;
 
     @Transactional
     public DetailGoodsInfo execute(SaveGoodsRequest request, Long sellerId) {
@@ -37,6 +39,8 @@ public class SaveGoodsUseCase {
         Goods goods = goodsService.saveGoods(request.toEntity(seller, category), memberPoint);
         chatMemberService.saveChatMember(goods, seller, request.getMyQuantity(), SELLER);
         List<GoodsImage> goodsImages = goodsImageService.saveGoodsImages(goods, request.imageNames().subList(1, request.imageNames().size()));
+
+        keywordNotificationService.notifyForNewGoods(goods);
 
         return DetailGoodsInfo.of(goods, goodsImages);
     }

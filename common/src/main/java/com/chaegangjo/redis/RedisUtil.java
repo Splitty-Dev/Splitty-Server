@@ -104,6 +104,28 @@ public class RedisUtil {
         return nearByIds;
     }
 
+    public List<Long> getNearByMemberIds(Point center, int restrictDistance) {
+        GeoReference<Object> reference = GeoReference.fromCoordinate(center);
+        Distance radius = new Distance(restrictDistance, Metrics.METERS);
+
+        RedisGeoCommands.GeoRadiusCommandArgs args = RedisGeoCommands.GeoRadiusCommandArgs
+                .newGeoRadiusArgs()
+                .includeDistance()
+                .sortAscending();
+
+        GeoOperations<String, Object> geoOperations = redisTemplate.opsForGeo();
+        GeoResults<GeoLocation<Object>> results = geoOperations
+                .search(MEMBER_KEY, reference, radius, args);
+
+        List<Long> nearByMemberIds = new ArrayList<>();
+        for (GeoResult<RedisGeoCommands.GeoLocation<Object>> result : results) {
+            RedisGeoCommands.GeoLocation<Object> location = result.getContent();
+            nearByMemberIds.add(Long.parseLong(location.getName().toString()));
+        }
+
+        return nearByMemberIds;
+    }
+
     private GeoResults<GeoLocation<Object>> getGeoResults(Long memberId, int restrictDistance) {
         Point memberPoint = getPoint(MEMBER_KEY, String.valueOf(memberId));
         if (memberPoint == null) {
