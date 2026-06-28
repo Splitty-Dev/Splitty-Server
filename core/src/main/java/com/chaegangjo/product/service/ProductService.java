@@ -18,6 +18,8 @@ public class ProductService {
     public List<Product> findAll() {
         return productRepository.findAll();
     }
+
+    public List<Product> findByKeyword(String keyword) {
         return productRepository.findTop7ByNameContainingIgnoreCase(keyword);
     }
 }

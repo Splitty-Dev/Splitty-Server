@@ -6,9 +6,11 @@ import com.chaegangjo.dto.CursorPageResponse;
 import com.chaegangjo.goods.dto.GoodsInfo;
 import com.chaegangjo.goods.enums.TradeStatus;
 import com.chaegangjo.member.appllication.*;
+import com.chaegangjo.member.dto.KeywordNotificationInfo;
 import com.chaegangjo.member.dto.MemberInfo;
 import com.chaegangjo.member.dto.NotificationHistoryInfo;
 import com.chaegangjo.member.dto.SearchHistoryInfo;
+import com.chaegangjo.member.dto.request.RegisterKeywordRequest;
 import com.chaegangjo.member.dto.request.SetNeighborhoodRequest;
 import com.chaegangjo.security.oauth2.entity.CustomOAuth2User;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,6 +36,9 @@ public class MemberController {
     private final GetMySearchHistoriesUseCase getMySearchHistoriesUseCase;
     private final GetMyNotificationHistoriesUseCase getMyNotificationHistoriesUseCase;
     private final DeleteMySearchHistoryUseCase deleteMySearchHistoryUseCase;
+    private final RegisterKeywordNotificationUseCase registerKeywordNotificationUseCase;
+    private final GetMyKeywordNotificationsUseCase getMyKeywordNotificationsUseCase;
+    private final DeleteMyKeywordNotificationUseCase deleteMyKeywordNotificationUseCase;
 
     @Operation(summary = "회원 정보 조회")
 //    @PreAuthorize("#id == principal.id")
@@ -149,5 +154,35 @@ public class MemberController {
     public ResponseEntity<ApiResponse<List<SearchHistoryInfo>>> deleteMySearchHistory(
             @AuthenticationPrincipal CustomOAuth2User user) {
         return ResponseEntity.ok(ApiResponse.success(deleteMySearchHistoryUseCase.all(user.getId())));
+    }
+
+    @Operation(summary = "키워드 알림 등록", description = "관심 키워드를 등록하면 해당 키워드와 일치하는 상품이 근처에 등록될 때 알림을 받습니다.")
+    @PostMapping("/me/keywords")
+    public ResponseEntity<ApiResponse<KeywordNotificationInfo>> registerKeyword(
+            @RequestBody RegisterKeywordRequest request,
+            @AuthenticationPrincipal CustomOAuth2User user) {
+        return ResponseEntity.ok(
+                ApiResponse.success(registerKeywordNotificationUseCase.execute(user.getId(), request))
+        );
+    }
+
+    @Operation(summary = "나의 키워드 알림 목록 조회")
+    @GetMapping("/me/keywords")
+    public ResponseEntity<ApiResponse<List<KeywordNotificationInfo>>> getMyKeywords(
+            @AuthenticationPrincipal CustomOAuth2User user) {
+        return ResponseEntity.ok(
+                ApiResponse.success(getMyKeywordNotificationsUseCase.execute(user.getId()))
+        );
+    }
+
+    @Operation(summary = "키워드 알림 삭제")
+    @DeleteMapping("/me/keywords/{keywordNotificationId}")
+    public ResponseEntity<ApiResponse<List<KeywordNotificationInfo>>> deleteMyKeyword(
+            @Parameter(example = "1")
+            @PathVariable Long keywordNotificationId,
+            @AuthenticationPrincipal CustomOAuth2User user) {
+        return ResponseEntity.ok(
+                ApiResponse.success(deleteMyKeywordNotificationUseCase.execute(user.getId(), keywordNotificationId))
+        );
     }
 }
